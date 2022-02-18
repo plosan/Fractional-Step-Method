@@ -1,24 +1,28 @@
 
 #include "RCGrid.h"
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CONSTRUCTORS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 RCGrid::RCGrid(double _lx, double _ly, double _lz, int _nx, int _ny) :
     lx(_lx), ly(_ly), lz(_lz), nx(_nx), ny(_ny) {
     computeNodeXY();
+    computeDistXY();
     computeFaceXY();
     computeSurfXY();
     computeVol();
-
-    for(int j = ny-1; j >= 0; j--) {
-        for(int i = 0; i < nx; i++)
-            printf("%5d", j*nx+i);
-        printf("\n");
-    }
 }
 
 RCGrid::RCGrid(double _lx, double _ly, double _lz, int _nx, int _ny, double* _nodeX, double* _nodeY) {
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FUNCTIONS TO COMPUTE GRID PARAMETERS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Compute the position of nodes in X and Y coordinates
 void RCGrid::computeNodeXY() {
     // Compute nodeX, position of nodes in X coordinate
     nodeX = (double*) calloc(nx, sizeof(double));
@@ -32,7 +36,7 @@ void RCGrid::computeNodeXY() {
     for(int i = 1; i < nx-1; i++)
         nodeX[i] = i*d;
 
-    // Compute nodeOY, position of nodes in Y coordinate
+    // Compute nodeY, position of nodes in Y coordinate
     nodeY = (double*) calloc(ny, sizeof(double));
     if(!nodeY) {
         printf("Error: could not allocate enough memory for nodeY\n");
@@ -45,6 +49,28 @@ void RCGrid::computeNodeXY() {
         nodeY[j] = j*d;
 }
 
+// Compute the distances between nodes in X coordinate and Y coordinate
+void RCGrid::computeDistXY() {
+    // Compute distX, distance between nodes in X coordinate
+    distX = (double*) calloc(nx-1, sizeof(double));
+    if(!distX) {
+        printf("Error: could not allocate enough memory for distX\n");
+        return;
+    }
+    for(int i = 0; i < nx-1; i++)
+        distX[i] = nodeX[i+1] - nodeX[i];
+
+    // Compute distY, distance between nodes in Y coordinate
+    distY = (double*) calloc(ny-1, sizeof(double));
+    if(!distY) {
+        printf("Error: could not allocate enough memory for distY\n");
+        return;
+    }
+    for(int j = 0; j < ny-1; j++)
+        distY[j] = nodeY[j+1] - nodeY[j];
+}
+
+// Compute the location of faces perpendicular to the X axis and Y axis
 void RCGrid::computeFaceXY() {
     // Compute faceX, location of the faces perpendicular to the X axis
     faceX = (double*) calloc(nx+1, sizeof(double));
@@ -69,6 +95,7 @@ void RCGrid::computeFaceXY() {
         faceY[j] = 0.5*(nodeY[j-1] + nodeY[j]);
 }
 
+// Compute the surface of the faces perpendicular to the X axis and Y axis
 void RCGrid::computeSurfXY() {
     // Compute surfX, surface of the faces perpendicular to the X axis
     surfX = (double*) calloc(ny, sizeof(double));
@@ -89,6 +116,7 @@ void RCGrid::computeSurfXY() {
         surfY[i] = (faceX[i+1] - faceX[i])*lz;
 }
 
+// Compute the volume of each control volume
 void RCGrid::computeVol() {
     // Compute vol, volume of each control volume
     vol = (double*) calloc(nx*ny, sizeof(double));
@@ -102,43 +130,100 @@ void RCGrid::computeVol() {
         }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GETTERS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int RCGrid::getNX() const {
+    return nx;
+}
+
+int RCGrid::getNY() const {
+    return ny;
+}
+
+double* RCGrid::getNodeX() const {
+    return nodeX;
+}
+
+double* RCGrid::getNodeY() const {
+    return nodeY;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// INFORMATION FUNCTIONS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Prints the mesh parameters
 void RCGrid::printMeshData() const {
 
-    printf("%15s%10s%10s%10s\n", "", "x", "y", "z");
-    printf("%15s%10.3f%10.3f%10.3f\n", "Length [m]", lx, ly, lz);
-    printf("%15s%10d%10d%10d\n", "Nodes", nx, ny, 1);
+    // General data
+    printf("\nGeneral data\n");
+    printf("%10s%3s%10s%10s%10s\n", "", "", "x", "y", "z");
+    printf("%10s%2s|%10.5f%10.5f%10.5f\n", "Length", "", lx, ly, lz);
+    printf("%10s%2s|%10d%10d%10d\n", "Nodes", "", nx, ny, 1);
 
     // Print node id and location
     printf("\nNode number and location\n");
-    printf("%8s", "");
+    printf("%13s", "");
     for(int i = 0; i < nx; i++)
         printf("%5d", i);
-    printf("\n%8s", "");
-    for(int i = 0; i < 5*nx; i++)
+    printf("\n%12s", "");
+    for(int i = 0; i < 5*nx+1; i++)
         printf("-");
     printf("\n");
 
     for(int j = 0; j < ny; j++) {
-        printf("%5d%2s%s", ny-1-j, "", "|");
+        printf("%10d%2s|", ny-1-j, "");
         for(int i = 0; i < nx; i++)
             printf("%5d", (ny-1-j)*nx+i);
         printf("\n");
     }
 
+    // Print distX
+    printf("\nDistance X\n");
+
+    printf("%10s%2s|", "i", "");
+    for(int i = 0; i < nx-1; i++)
+        printf("%10d", i);
+
+    printf("\n%10s%2s|", "distX[i]", "");
+    for(int i = 0; i < nx-1; i++)
+        printf("%10.5f", distX[i]);
+    printf("\n");
+
+    // Print distY
+    printf("\nDistance Y\n");
+    printf("%10s%5s%s\n", "j", "", "distY[j]");
+    for(int j = ny-2; j >= 0; j--)
+        printf("%10d%5s%.5f\n", j, "", distY[j]);
+
     // Surface X
     printf("\nSurfaces X\n");
-    printf("%5s%5s%s\n", "j", "", "surfX[j] [m2]");
-    for(int j = 0; j < ny; j++)
-        printf("%5d%5s%.3f\n", j, "", surfX[j]);
+    printf("%10s%5s%s\n", "j", "", "surfX[j]");
+    for(int j = ny-1; j >= 0; j--)
+        printf("%10d%5s%.5f\n", j, "", surfX[j]);
 
     // Surface Y
     printf("\nSurfaces Y\n");
-    printf("%5s%5s%s\n", "i", "", "surfY[i] [m2]");
+    printf("%10s%2s|", "i", "");
     for(int i = 0; i < nx; i++)
-        printf("%5d%5s%.3f\n", i, "", surfY[i]);
+        printf("%10d", i);
+    printf("\n");
+    printf("%10s%2s|", "surfY[i]", "");
+    for(int i = 0; i < nx; i++)
+        printf("%10.5f", surfY[i]);
+    printf("\n");
 
     // Volumes
     printf("\nVolumes\n");
+    printf("%8s", "");
+    for(int i = 0; i < nx; i++)
+        printf("%10d", i);
+    printf("\n%7s", "");
+    for(int i = 0; i < 10*nx+1; i++)
+        printf("-");
+    printf("\n");
     for(int j = ny-1; j >= 0; j--) {
         printf("%5d%2s%s", j, "", "|");
         for(int i = 0; i < nx; i++)
@@ -147,6 +232,7 @@ void RCGrid::printMeshData() const {
     }
 }
 
+// Saves the mesh parameters to different files to plot it later on
 void RCGrid::saveMeshData() const {
 
     FILE *fp;
