@@ -133,21 +133,77 @@ void RCGrid::computeVol() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // GETTERS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Returns lx
+double RCGrid::getLX() const {
+    return lx;
+}
+
+// Returns ly
+double RCGrid::getLY() const {
+    return ly;
+}
+
+// Returns lz
+double RCGrid::getLZ() const {
+    return lz;
+}
+
+// Returns nx
 int RCGrid::getNX() const {
     return nx;
 }
 
+// Returns nu
 int RCGrid::getNY() const {
     return ny;
 }
 
+// Returns nodeX
 double* RCGrid::getNodeX() const {
     return nodeX;
 }
 
+// Returns nodeY
 double* RCGrid::getNodeY() const {
     return nodeY;
 }
+
+// Returns distX
+double* RCGrid::getDistX() const {
+    return distX;
+}
+
+// Returns distY
+double* RCGrid::getDistY() const {
+   return distY;
+}
+
+// Returns faceX
+double* RCGrid::getFaceX() const {
+   return faceX;
+}
+
+// Returns faceY
+double* RCGrid::getFaceY() const {
+   return faceY;
+}
+
+// Returns surfX
+double* RCGrid::getSurfX() const {
+    return surfX;
+}
+
+// Returns surfY
+double* RCGrid::getSurfY() const {
+    return surfY;
+}
+
+// Returns vol
+double* RCGrid::getVol() const {
+    return vol;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
