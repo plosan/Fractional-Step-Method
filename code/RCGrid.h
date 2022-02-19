@@ -6,6 +6,7 @@
 class RCGrid {
 
 private:
+    bool built;     // Tells whether or not the object is built
     double lx;      // Length of the domain in X coordinate
     double ly;      // Length of the domain in Y coordinate
     double lz;      // Length of the domain in Z coordinate
@@ -22,11 +23,12 @@ private:
     double* vol;    // Volume of each control volume. Size: nx*ny
 
     // Compute grid parameters
-    void computeNodeXY();   // Compute the position of nodes in X and Y coordinates
-    void computeDistXY();   // Compute the distances between nodes in X coordinate and Y coordinate
-    void computeFaceXY();   // Compute the location of faces perpendicular to the X axis and Y axis
-    void computeSurfXY();   // Compute the surface of the faces perpendicular to the X axis and Y axis
-    void computeVol();      // Compute the volume of each control volume
+    bool computeNodeXY();   // Compute the position of nodes in X and Y coordinates for a uniform mesh
+    bool computeDistXY();   // Compute the distances between nodes in X coordinate and Y coordinate
+    bool computeFaceXY();   // Compute the location of faces perpendicular to the X axis and Y axis
+    bool computeSurfXY();   // Compute the surface of the faces perpendicular to the X axis and Y axis
+    bool computeVol();      // Compute the volume of each control volume
+
 
 
 public:
@@ -36,6 +38,7 @@ public:
     RCGrid(double _lx, double _ly, double _lz, int _nx, int _ny, double* _nodeX, double* _nodeY);
 
     // Getters
+    bool isBuilt() const;       // Returns built
     double getLX() const;       // Returns lx
     double getLY() const;       // Returns ly
     double getLZ() const;       // Returns lz
@@ -51,6 +54,7 @@ public:
     double* getSurfY() const;   // Returns surfY
     double* getVol() const;     // Returns vol
 
+    // Safe getters
     double getNodeX(int) const;     // Returns nodeX[i] safely (checks if 0 <= i < nx)
     double getNodeY(int) const;     // Returns nodeY[j] safely (checks if 0 <= j < ny)
     double getDistX(int) const;     // Returns distX[i] safely (checks if 0 <= i < nx-1)
@@ -61,6 +65,7 @@ public:
     double getSurfY(int) const;     // Returns surfY[i] safely (checks if 0 <= i < nx)
     double getVol(int, int) const;  // Returns vol[j*nx+i] safely (checks if 0 <= i < nx and 0 <= j < ny)
 
+    // Unsafe getters
     double atNodeX(int) const;     // Returns nodeX[i] unsafely (does not check if 0 <= i < nx)
     double atNodeY(int) const;     // Returns nodeY[j] unsafely (does not check if 0 <= j < ny)
     double atDistX(int) const;     // Returns distX[i] unsafely (does not check if 0 <= i < nx-1)
