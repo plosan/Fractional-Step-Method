@@ -55,15 +55,15 @@ public:
     double* getVol() const;     // Returns vol
 
     // Safe getters
-    double getNodeX(int) const;     // Returns nodeX[i] safely (checks if 0 <= i < nx)
-    double getNodeY(int) const;     // Returns nodeY[j] safely (checks if 0 <= j < ny)
-    double getDistX(int) const;     // Returns distX[i] safely (checks if 0 <= i < nx-1)
-    double getDistY(int) const;     // Returns distY[j] safely (checks if 0 <= j < ny-1)
-    double getFaceX(int) const;     // Returns faceX[i] safely (checks if 0 <= i < nx+1)
-    double getFaceY(int) const;     // Returns faceY[j] safely (checks if 0 <= j < ny+1)
-    double getSurfX(int) const;     // Returns surfX[j] safely (checks if 0 <= j < ny)
-    double getSurfY(int) const;     // Returns surfY[i] safely (checks if 0 <= i < nx)
-    double getVol(int, int) const;  // Returns vol[j*nx+i] safely (checks if 0 <= i < nx and 0 <= j < ny)
+    double getNodeX(int) const;     // Returns nodeX[i] safely (checks if the object is built and if 0 <= i < nx)
+    double getNodeY(int) const;     // Returns nodeY[j] safely (checks if the object is built and if 0 <= j < ny)
+    double getDistX(int) const;     // Returns distX[i] safely (checks if the object is built and if 0 <= i < nx-1)
+    double getDistY(int) const;     // Returns distY[j] safely (checks if the object is built and if 0 <= j < ny-1)
+    double getFaceX(int) const;     // Returns faceX[i] safely (checks if the object is built and if 0 <= i < nx+1)
+    double getFaceY(int) const;     // Returns faceY[j] safely (checks if the object is built and if 0 <= j < ny+1)
+    double getSurfX(int) const;     // Returns surfX[j] safely (checks if the object is built and if 0 <= j < ny)
+    double getSurfY(int) const;     // Returns surfY[i] safely (checks if the object is built and if 0 <= i < nx)
+    double getVol(int, int) const;  // Returns vol[j*nx+i] safely (checks if the object is built and if 0 <= i < nx and 0 <= j < ny)
 
     // Unsafe getters
     double atNodeX(int) const;     // Returns nodeX[i] unsafely (does not check if 0 <= i < nx)

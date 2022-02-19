@@ -314,6 +314,8 @@ double* RCGrid::getVol() const {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // SAFE GETTERS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Returns nodeX[i] safely (checks if the object is built and if 0 <= i < nx)
 double RCGrid::getNodeX(int i) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for nodeX[%d]\n", i);
@@ -326,6 +328,7 @@ double RCGrid::getNodeX(int i) const {
     return nodeX[i];
 }
 
+// Returns nodeY[j] safely (checks if the object is built and if 0 <= j < ny)
 double RCGrid::getNodeY(int j) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for nodeY[%d]\n", j);
@@ -338,6 +341,7 @@ double RCGrid::getNodeY(int j) const {
     return nodeY[j];
 }
 
+// Returns distX[i] safely (checks if the object is built and if 0 <= i < nx-1)
 double RCGrid::getDistX(int i) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for distX[%d]\n", i);
@@ -350,6 +354,7 @@ double RCGrid::getDistX(int i) const {
     return distX[i];
 }
 
+// Returns distY[j] safely (checks if the object is built and if 0 <= j < ny-1)
 double RCGrid::getDistY(int j) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for distY[%d]\n", j);
@@ -362,6 +367,7 @@ double RCGrid::getDistY(int j) const {
     return distY[j];
 }
 
+// Returns faceX[i] safely (checks if the object is built and if 0 <= i < nx+1)
 double RCGrid::getFaceX(int i) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for faceX[%d]\n", i);
@@ -374,6 +380,7 @@ double RCGrid::getFaceX(int i) const {
     return faceX[i];
 }
 
+// Returns faceY[j] safely (checks if the object is built and if 0 <= j < ny+1)
 double RCGrid::getFaceY(int j) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for faceY[%d]\n", j);
@@ -386,6 +393,7 @@ double RCGrid::getFaceY(int j) const {
     return faceY[j];
 }
 
+// Returns surfX[j] safely (checks if the object is built and if 0 <= j < ny)
 double RCGrid::getSurfX(int j) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for surfX[%d]\n", j);
@@ -398,6 +406,7 @@ double RCGrid::getSurfX(int j) const {
     return surfX[j];
 }
 
+// Returns surfY[i] safely (checks if the object is built and if 0 <= i < nx)
 double RCGrid::getSurfY(int i) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for surfY[%d]\n", i);
@@ -410,6 +419,7 @@ double RCGrid::getSurfY(int i) const {
     return surfY[i];
 }
 
+// Returns vol[i+j*nx] safely (checks if the object is built and if 0 <= i < nx nad 0 <= j < ny)
 double RCGrid::getVol(int i, int j) const {
     if(!built) {
         printf("Error: the mesh is not built. Returning 0 for vol[%d,%d]\n", i, j);
@@ -474,10 +484,6 @@ double RCGrid::atSurfY(int i) const {
 double RCGrid::atVol(int i, int j) const {
     return vol[i+j*nx];
 }
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // INFORMATION FUNCTIONS
