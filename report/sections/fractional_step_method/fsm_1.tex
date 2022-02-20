@@ -1,0 +1,151 @@
+
+\section{First approach to the FSM}
+
+\subsection{Time integration of the incompressible Navier--Stokes equations}
+
+Recall that the Navier--Stokes equations (NS) for an incompressible flow are
+\begin{equation}
+    \left\{
+        \begin{aligned}
+            \div{\vb{v}} &= 0 \\
+            \rho \pdv{\vb{v}}{t} + (\rho \vb{v} \vdot \nabla) \vb{v} &=
+            -\grad{p} + \mu \, \Delta \vb{v}
+        \end{aligned}
+    \right.
+\end{equation}
+where $\vb{v} = u \vb{i} + v \vb{j} + w \vb{k}$. By defining the operator
+\begin{equation*}
+    \rv{} = \mu \, \Delta \vb{v} - (\rho \vb{v} \vdot \nabla) \vb{v}
+\end{equation*}
+these equations may be rewritten as
+\begin{equation}
+    \left\{
+        \begin{aligned}
+            \div{\vb{v}} &= 0                                   \\
+            \rho \pdv{\vb{v}}{t} &= \rv{} - \grad{p}
+        \end{aligned}
+    \right.
+\end{equation}
+Time integration of the continuity equation yields
+\begin{align*}
+    \int_{t^n}^{t^{n+1}} \div{\vb{v}} \dd{t} &=
+    \int_{t^n}^{t^{n+1}} (u_x + v_y + w_z) \dd{t} \\ &=
+    \left\{ \beta \left( u_x^{n+1} + v_y^{n+1} + w_z^{n+1} \right) +
+    (1 - \beta) \left( u_x^{n} + v_y^{n} + w_z^{n} \right) \right\} \, \Delta t \\ &=
+    \left\{ \beta (\div{\vb{v}})^{n+1} + (1 - \beta) (\div{\vb{v}})^{n} \right\} \, \Delta t = 0
+\end{align*}
+where $\beta \in \{ 0, 0.5, 1 \}$ depends upon the selected integration scheme.
+The implicit scheme $(\beta = 1)$ is enough, whence
+\begin{equation*}
+    \int_{t^n}^{t^{n+1}} \div{\vb{v}} \dd{t} =
+    (\div{\vb{v}})^{n+1} \, \Delta t = 0
+\end{equation*}
+and, since $\Delta t > 0$, the time--integrated continuity equation is obtained:
+\begin{equation} \label{eq:time_integrated_continuity_equation}
+    (\div{\vb{v}})^{n+1} = \div{\vb{v}^{n+1}} = 0
+\end{equation}
+
+
+Time integration of the momentum equation over $[t^n, t^{n+1}]$ gives
+\begin{equation*}
+    \int_{t^n}^{t^{n+1}} \rho \pdv{\vb{v}}{t} \dd{t} =
+    \int_{t^n}^{t^{n+1}} \rv{} \dd{t} -
+    \int_{t^n}^{t^{n+1}} \grad{p} \dd{t}
+\end{equation*}
+The evaluation of the first term is exact:
+\begin{equation*}
+    \int_{t^n}^{t^{n+1}} \rho \pdv{\vb{v}}{t} \dd{t} =
+    \rho \int_{t^n}^{t^{n+1}} \pdv{\vb{v}}{t} \dd{t} =
+    \rho \left[ \vb{v} \right]_{t^n}^{t^{n+1}} = \rho (\vb{v}^{n+1} - \vb{v}^n)
+\end{equation*}
+In order to compute the second integral, the two--step Adams--Bashforth method is used as follows:
+\begin{equation*}
+    \int_{t^n}^{t^{n+1}} \rv{} \dd{t} =
+    \frac{\Delta t}{2}
+    \left\{ 3 \rv{n} - \rv{n-1} + \colorbox{red}{$\mathcal{O}({\Delta t}^2)$} \right\}
+\end{equation*}
+Finally, the third term is evaluated using an implicit integration scheme:
+\begin{equation*}
+    \int_{t^n}^{t^{n+1}} \grad{p} \dd{t} =
+    \left\{ \beta (\grad{p})^{n+1} + (1 - \beta) (\grad{p})^n + \colorbox{red}{$\mathcal{O}(\Delta t)$} \right\} \, \Delta t =
+    (\grad{p})^{n+1} \, \Delta t =
+    \grad{p}^{n+1} \, \Delta t
+\end{equation*}
+Therefore, the integrated time--equation is
+\begin{equation} \label{eq:time_integrated_momentum_equation}
+    \rho \frac{\vb{v}^{n+1} - \vb{v}^n}{\Delta t} =
+    \frac{3}{2} \rv{n} - \frac{1}{2} \rv{n-1} - \grad{p^{n+1}}
+\end{equation}
+
+\subsubsection*{Application of the Helmholtz--Hodge theorem}
+
+In order to remove $\grad{p}^{n+1}$ from \eqref{eq:time_integrated_momentum_equation}, the equation may be rearranged as
+\begin{equation} \label{eq:application_of_hh_theorem_1}
+    \rho \frac{\vb{v}^{n+1} - \vb{v}^n}{\Delta t} + \grad{p}^{n+1} =
+    \rho \frac{\vb{v}^{n+1} + \dfrac{\Delta t}{\rho} \grad{p^{n+1}} - \vb{v}^n}{\Delta t} =
+    \frac{3}{2} \rv{n} - \frac{1}{2} \rv{n-1}
+\end{equation}
+Now by defining the vector field
+\begin{equation} \label{eq:hh_decomposition_velocity_pressure}
+    \vb{v}^p = \vb{v}^{n+1} + \dfrac{\Delta t}{\rho} \grad{p^{n+1}}
+\end{equation}
+equation \eqref{eq:application_of_hh_theorem_1} becomes
+\begin{equation}
+    \rho \frac{\vb{v}^p - \vb{v}^n}{\Delta t} =
+    \frac{3}{2} \vb{R}(\vb{v}^n) - \frac{1}{2} \vb{R}(\vb{v}^{n-1})
+\end{equation}
+
+Equation \eqref{eq:hh_decomposition_velocity_pressure} states that the vector field $\vb{v}^p \colon \Omega \subset \real^3 \to \real^3$ can be expressed as the sum of the divergence--free vector field $\vb{v}^{n+1}$ and the gradient $\grad(\frac{\Delta t}{\rho} p^{n+1})$. By the Helmholtz--Hodge theorem, the decomposition of $\vb{v}^p$ is unique. Applying the divergence operator on both sides of \eqref{eq:hh_decomposition_velocity_pressure} and using equation \eqref{eq:time_integrated_continuity_equation} yields
+\begin{equation*}
+    \div{\vb{v}^p} = \frac{\Delta t}{\rho} \div{\grad{p}^{n+1}}
+\end{equation*}
+whence a Poisson equation for the pressure is found:
+\begin{equation*}
+    \Delta p^{n+1} = \frac{\rho}{\Delta t} \div{\vb{v}^p}
+\end{equation*}
+Whenever the pressure on the boundary of $\Omega$ is given by a known function $P \colon \partial \Omega \to \real$, the following Cauchy problem can be posed:
+\begin{equation}
+    \left\{
+        \begin{aligned}
+            \Delta p^{n+1}  &= \frac{\rho}{\Delta t} \div{\vb{v}^p} & &\text{in } \Omega            \\
+            p^{n+1}         &= P                                    & &\text{on } \partial \Omega
+        \end{aligned}
+    \right.
+\end{equation}
+\colorbox{red}{Existence and uniqueness of the problem}
+
+Finally, the velocity at time $t^{n+1}$ is given by
+\begin{equation} \label{eq:velocity_time_n+1_fsm_first_approach}
+    \vb{v}^{n+1} = \vb{v}^p - \frac{\Delta t}{\rho} \grad{p}^{n+1}
+\end{equation}
+
+\subsubsection*{Algorithm}
+
+\begin{algorithm}[ht]
+	\caption{Fractional Step Method -- First approach}
+	\label{algorithm:fsm_first_approach}
+	\begin{algorithmic}[0]
+		\State
+		\begin{enumerate}[label=\textbf{\arabic*.},topsep=0pt]
+			\item Evaluation of $\rv{n}$
+			\item Evaluation of $\vb{v}^p$:
+            \[
+                \vb{v}^p =
+                \vb{v}^n + \frac{\Delta t}{\rho} \left[ \frac{3}{2} \rv{n} - \frac{1}{2} \rv{n-1} \right]
+            \]
+            \item Solve the problem
+            \[
+                \left\{
+                    \begin{aligned}
+                        \Delta p^{n+1}  &= \frac{\rho}{\Delta t} \div{\vb{v}^p} & &\text{in } \Omega            \\
+                        p^{n+1}         &= P                                    & &\text{on } \partial \Omega
+                    \end{aligned}
+                \right.
+            \]
+            \item Compute $\vb{v}^{n+1}$: \label{algorithm_item:fsm_first_approach}
+            \[
+                \vb{v}^{n+1} = \vb{v}^p - \frac{\Delta t}{\rho} \grad{p}^{n+1}
+            \]
+		\end{enumerate}
+	\end{algorithmic}
+\end{algorithm}

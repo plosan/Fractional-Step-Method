@@ -1,0 +1,77 @@
+
+\section{First approach to the FSM}
+
+\subsection{Time integration of the Navier--Stokes equations}
+
+Recall that the Navier--Stokes equations for incompressible and constant viscosity flows are
+\begin{equation} \label{eq:navier_stokes_01}
+    \left\{
+    \begin{aligned}
+        \div{\vb{v}} &= 0 \\
+        \rho \pdv{\vb{v}}{t} + (\rho \vb{v} \vdot \grad) \vb{v} &= -\grad{p} + \mu \laplacian{\vb{v}}
+    \end{aligned}
+    \right.
+\end{equation}
+where $\vb{u} = u \vb{i} + v \vb{j} + w \vb{k}$. By defining the operator
+\begin{equation}
+    \vb{R}(\vb{v}) = \mu \laplacian{\vb{v}} - (\rho \vb{v} \vdot \grad) \vb{v}
+\end{equation}
+\eqref{eq:navier_stokes_01} may be rewritten as follows:
+\begin{equation} \label{eq:navier_stokes_02}
+    \left\{
+    \begin{aligned}
+        \div{\vb{v}} &= 0 \\
+        \rho \pdv{\vb{v}}{t} &= \vb{R}(\vb{v}) - \grad{p}
+    \end{aligned}
+    \right.
+\end{equation}
+
+\colorbox{red}{why integrate the equations?}
+
+Let $[t^n, t^{n+1}] \subset [t_0, t_f]$ be a non--degenerate time interval with $\Delta t = t^{n+1} - t^n$. An implicit integration scheme ($\beta = 1$) is used to integrate the continuity equation with respect to time:
+\begin{gather*}
+    \int_{t^n}^{t^{n+1}} \div{\vb{v}} \dd{t} =
+    \left( \beta \div{\vb{v}}^{n+1} + (1 - \beta) \div{\vb{v}}^{n} \right) \, \Delta t =
+    \div{\vb{v}}^{n+1} \, \Delta t = 0
+\end{gather*}
+Since $\Delta t > 0$, it follows that
+\begin{equation} \label{eq:continuity_time_integrated}
+    \div{\vb{v}}^{n+1} = 0
+\end{equation}
+which is the time--integrated continuity equation. As for the momentum equation,
+\begin{equation*}
+    \int_{t^n}^{t^{n+1}} \rho \pdv{\vb{v}}{t} \dd{t} =
+    \int_{t^n}^{t^{n+1}} \vb{R}(\vb{v}) \dd{t} -
+    \int_{t^n}^{t^{n+1}} \grad{p} \dd{t}
+\end{equation*}
+The left--hand side computation is straightforward as the density is constant and the fundamental theorem of calculus is applied:
+\begin{equation*}
+    \int_{t^n}^{t^{n+1}} \rho \pdv{\vb{v}}{t} \dd{t} =
+    \rho \int_{t^n}^{t^{n+1}} \pdv{\vb{v}}{t} \dd{t} =
+    \rho ( \vb{v}^{n+1} - \vb{v}^n )
+\end{equation*}
+In order to integrate $\vb{R}(\vb{v})$, define
+\begin{equation*}
+    \mathfrak{R}(\vb{v},t) = \int_{t_0}^s \vb{R}(\vb{v}) \dd{s}
+\end{equation*}
+so that
+\begin{equation} \label{eq:integral_Rv}
+    \mathfrak{R}(\vb{v},t^{n+1}) - \mathfrak{R}(\vb{v},t^{n}) =
+    \int_{t^n}^{t^{n+1}} \vb{R}(\vb{v}) \dd{t}
+\end{equation}
+By applying the two--step Adams--Bashforth method, \eqref{eq:integral_Rv} results in
+\begin{equation*}
+    \int_{t^n}^{t^{n+1}} \vb{R}(\vb{v}) \dd{t} =
+    \left( \frac{3}{2} \vb{R}(\vb{v}^{n+1}) - \frac{1}{2} \vb{R}(\vb{v}^n) \right) \, \Delta t
+\end{equation*}
+Again the implicit integration scheme ($\beta = 1$) is used to compute the third term:
+\begin{equation*}
+    \int_{t^n}^{t^{n+}} \grad{p} \dd{t} =
+    \left( \beta \grad{p}^{n+1} + (1 - \beta) \grad{p}^n \right) \, \Delta t =
+    \grad{p}^{n+1} \, \Delta t
+\end{equation*}
+Rearranging terms yields the time--integrated momentum equation:
+\begin{equation}
+    \rho \frac{\vb{v}^{n+1} - \vb{v}^n}{\Delta t} =
+    \frac{3}{2} \vb{R}(\vb{v}^{n+1}) - \frac{1}{2} \vb{R}(\vb{v}^n) - \grad{p}^{n+1}
+\end{equation}

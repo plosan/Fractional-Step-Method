@@ -1,0 +1,113 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\geometry{a4paper, left = 20mm, right = 20mm, top = 30mm, bottom = 30mm}
+\usepackage{enumitem}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage{calc}
+\usepackage{xcolor}
+\usepackage{empheq}
+\usepackage{xspace}
+\usepackage{relsize}
+\usepackage{fancyhdr}
+\usepackage{pdflscape}
+\usepackage{csquotes}
+\usepackage{titling}
+\usepackage{accents}
+\usepackage{caption}
+\captionsetup{labelfont=bf,labelsep=period}
+\usepackage{subcaption}
+\usepackage{placeins} % FloatBarrier
+\usepackage{physics}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{chngcntr}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage[sorting=none, style=numeric]{biblatex}
+\addbibresource{references.bib}
+
+
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks,
+	citecolor=green,
+	filecolor=black,
+	linkcolor=blue,
+	urlcolor=blue
+}
+
+% Commands
+\newcommand{\n}{\mathbb{N}}
+\newcommand{\z}{\mathbb{Z}}
+\newcommand{\q}{\mathbb{Q}}
+\renewcommand{\real}{\mathbb{R}}
+\newcommand{\cplex}{\mathbb{C}}
+\renewcommand{\k}{\mathbb{K}}
+\newcommand{\car}[1]{\mathrm{char}\left(#1\right)}
+\newcommand{\class}[1]{\overline{#1}}
+\newcommand{\mcd}[1]{\mathrm{mcd}{#1}}
+\renewcommand{\mod}[1]{\ (\mathrm{mod}\ #1)}
+\newcommand{\fractions}[1]{\mathrm{Fr}(#1)}
+\renewcommand{\gcd}[1]{\mathrm{mcd} #1}
+\newcommand{\mcm}[1]{\mathrm{mcm} #1}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\prob}[1]{p \left( #1 \right)}
+\newcommand{\esp}[1]{\mathbb{E} \left[ #1 \right]}
+\newcommand{\scr}[2]{\left\langle #1, #2 \right\rangle}
+\newcommand{\Int}{\int\limits}
+\newcommand{\id}{\mathrm{Id}}
+\newcommand{\quotient}[2]{{\raisebox{.2em}{$#1$}\left/\raisebox{-.2em}{$#2$}\right.}}	% Quotient set
+
+\renewcommand{\laplacian}[1]{\boldsymbol\Delta{#1}}
+
+
+\newcommand{\divides}{\mid}			% Divides
+\newcommand{\notdivides}{\nmid}		% Not divides
+\newcommand{\CC}{C\nolinebreak[4]\hspace{-.05em}\raisebox{.4ex}{\relsize{-3}{\textbf{++}}}}	% C++ in a cooler way
+\newcommand{\MATLAB}{\textsc{Matlab}\xspace}												% MATLAB in a cooler way
+\DeclareMathOperator{\image}{Im}	% Image of a function
+
+% Emptyset
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+% Ceil and floor functions
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}		% ceil
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}		% floor
+
+
+% Abbreviations
+\newcommand*{\eg}{e.g.\@\xspace}
+\newcommand*{\ie}{i.e.\@\xspace}
+
+
+\numberwithin{equation}{section}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+
+
+\tikzset{
+	measureline/.style={latex-latex, thick, blue},
+	measureaux/.style={thick, blue},
+	velocity/.style={->, thick, blue},
+	wall/.style={black, very thick},
+	cvfill/.style={black!50!white, opacity=0.5}
+}

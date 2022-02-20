@@ -2,20 +2,26 @@
 #include <vector>
 #include <cstring>
 #include "RCGrid.h"
+#include "schemes.h"
 
+
+void computePredictorVelocityX();
+void computePredictorVelocityY();
 
 int main(int argc, char* argv[]) {
 
-    double lx = 1;
-    double ly = 1;
-    double lz = 1;
-    int nx = 7;
-    int ny = 5;
-    // RCGrid m;
-    RCGrid m(lx, ly, lz, nx, ny);
+    double L = 1;
+    int nx = 10;
+    int ny = 10;
+    RCGrid m(L, L, 1, nx, ny);
+
+    double* u = (double*) calloc(nx*ny, sizeof(double*));
+    double* v = (double*) calloc(nx*ny, sizeof(double*));
 
     // m.saveMeshData();
     m.printMeshData();
 
 
 }
+
+void computePredictorVelocityX(double* up, const RCGrid m, const double* un)

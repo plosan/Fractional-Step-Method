@@ -1,3 +1,6 @@
+#ifndef RCGRID_H
+#define RCGRID_H
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -81,3 +84,5 @@ public:
     void saveMeshData() const;  // Saves the mesh parameters to different files to plot it later on
 
 };
+
+#endif // RCGRID_H
