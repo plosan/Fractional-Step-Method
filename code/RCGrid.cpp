@@ -170,7 +170,7 @@ bool RCGrid::computeVol() {
     }
     for(int j = 0; j < ny; j++)
         for(int i = 0; i < nx; i++)
-            vol[j*nx+i] = surfX[j]*surfY[i];
+            vol[j*nx+i] = surfX[j] * surfY[i] * lz;
 
     // Everything good so far
     return true;
