@@ -1,6 +1,8 @@
 #ifndef NCMESH_H
 #define NCMESH_H
 
+#include <iostream>
+
 class NCMesh {
 
 private:
@@ -25,9 +27,14 @@ private:
 
 public:
 
+    // Constructors
     NCMesh();
     NCMesh(double _lx, double _ly, double _lz, int _nx, int _ny);
     NCMesh(double _lx, double _ly, double _lz, int _nx, int _ny, double* _faceX, double* _faceY);
+
+    // Info functions
+    void printMeshData() const; // Prints the mesh parameters
+    void saveMeshData() const;  // Saves the mesh parameters to different files to plot it later on
 
 
 

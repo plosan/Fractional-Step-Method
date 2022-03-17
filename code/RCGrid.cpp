@@ -43,7 +43,7 @@ RCGrid::RCGrid(double _lx, double _ly, double _lz, int _nx, int _ny) :
     }
 
     built = true;
-    printf("The mesh was successfully built\n");
+    printf("The mesh was successfully constructed\n");
 }
 
 RCGrid::RCGrid(double _lx, double _ly, double _lz, int _nx, int _ny, double* _nodeX, double* _nodeY) {
@@ -489,7 +489,14 @@ double RCGrid::atVol(int i, int j) const {
 // INFORMATION FUNCTIONS
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Prints the mesh parameters
+// Displays the following mesh member variables:
+//  - built
+//  - lx, ly, lz
+//  - nx, ny
+//  - Node number and location
+//  - distX, distY
+//  - surfX, surfY
+//  - vol
 void RCGrid::printMeshData() const {
 
     // General data
@@ -572,7 +579,11 @@ void RCGrid::printMeshData() const {
     }
 }
 
-// Saves the mesh parameters to different files to plot it later on
+// Saves to files some mesh parameters that can be plotted later on using plotmesh.gnu. Parameters and files:
+//  - lx, ly        File: data/domain_data.dat
+//  - nodeX, nodeY  File: data/node_data.dat
+//  - faceX         File: data/facex_data.dat
+//  - faceY         File: data/facey_data.dat
 void RCGrid::saveMeshData() const {
 
     if(!built) {
@@ -580,7 +591,7 @@ void RCGrid::saveMeshData() const {
         return;
     }
 
-    FILE *fp;
+    FILE *fp;   // Pointer to file
     // Save domain size
     fp = fopen("data/domain_data.dat", "w");
     if(!fp) {
@@ -607,7 +618,7 @@ void RCGrid::saveMeshData() const {
     // Save faceX location
     fp = fopen("data/facex_data.dat", "w");
     if(!fp) {
-        printf("Error: could not open file 'facex_data-dat'\n");
+        printf("Error: could not open file 'facex_data.dat'\n");
         return;
     }
     for(int i = 0; i < nx+1; i++)
