@@ -6,11 +6,7 @@
 class NCMesh {
 
 private:
-<<<<<<< HEAD
-    bool built;     // Whether the mesh is built (functions) or not. Used to tell if getters can access member variables
-=======
     bool built;     // Whether the mesh is built (functions) or not. Used to tell if getters should access member variables
->>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
     double lx;      // Length of the domain in the X coordinate
     double ly;      // Length of the domain in the Y coordinate
     double lz;      // Length of the domain in the Z coordinate
@@ -18,19 +14,6 @@ private:
     int ny;         // Number of control volumes for discretisation in the Y coordinate
     double* nodeX;  // Position of nodes in the X coordinate. Size: nx+2
     double* nodeY;  // Position of nodes in the Y coordinate. Size: ny+2
-<<<<<<< HEAD
-    double* faceX;  // Position in the X coordinate of the faces perpendicular to the X axis. Size: nx+1
-    double* faceY;  // Position in the Y coordinate of the faces perpendicular to the Y axis. Size: ny+1
-    double* surfX;  // Surface of the faces perpendicular to the X axis. Size: ny
-    double* surfY;  // Surface of the faces perpendicular to the Y axis. Size: nx
-    double* vol;    // Volume of the control volumes. Size: nx*ny
-
-    bool computeFaceXY();
-    bool computeNodeXY();
-    bool computeSurfXY();
-    bool computeVol();
-
-=======
     double* distX;  // Distances between nodes in the X coordinate. Size: nx+1
     double* distY;  // Distances between nodes in the Y coordinate. Size: ny+1
     double* faceX;  // Position in the X coordinate of the faces perpendicular to the X axis. Size: nx+1
@@ -48,7 +31,6 @@ private:
     bool computeSurfXY2();
     bool computeVol2();
 
->>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 public:
 
     // Constructors
@@ -56,8 +38,6 @@ public:
     NCMesh(double _lx, double _ly, double _lz, int _nx, int _ny);
     NCMesh(double _lx, double _ly, double _lz, int _nx, int _ny, double* _faceX, double* _faceY);
 
-<<<<<<< HEAD
-=======
     // Getters
     bool isBuilt() const;       // Returns built
     double getLX() const;       // Returns lx
@@ -97,11 +77,9 @@ public:
     double atSurfY(int) const;     // Returns surfY[i] unsafely (does not check if 0 <= i < nx+2)
     double atVol(int, int) const;  // Returns vol[j*nx+i] unsafely (does not check if 0 <= i < nx+2 and 0 <= j < ny+2)
 
->>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
     // Info functions
     void printMeshData() const; // Prints the mesh parameters
     void saveMeshData() const;  // Saves the mesh parameters to different files to plot it later on
-
 
 
 };

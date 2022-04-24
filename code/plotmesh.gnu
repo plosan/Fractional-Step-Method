@@ -1,10 +1,10 @@
 # Type of terminal (wxt, x11, qt, pngcairo, ...) and size
-set terminal qt size 700,700
+set terminal wxt size 700,700
 
 # Line styles
 set style line 1 lc rgb 'black' lw 2        # Domain border
 set style line 2 lc rgb 'blue' pt 7 ps 2    # Nodes
-set style line 3 lc rgb 'red' lw 1 dt 2     # Control volume
+set style line 3 lc rgb 'red' lw 2 dt 2     # Control volume
 
 # No legend
 set nokey

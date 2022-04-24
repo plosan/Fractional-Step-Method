@@ -5,13 +5,9 @@
 #include "NCMesh.h"
 #include "schemes.h"
 
-<<<<<<< HEAD
-=======
 #define NX 10
 #define NY 10
 #define INDEX(I,J) I+J*(NY+2)
-
->>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 
 void computePredictorVelocityX();
 void computePredictorVelocityY();
@@ -19,8 +15,8 @@ void computePredictorVelocityY();
 int main(int argc, char* argv[]) {
 
     double L = 1;
-    int nx = 10;
-    int ny = 10;
+    int nx = NX;
+    int ny = NY;
 
     NCMesh m(L, L, 1, nx, ny);
     m.saveMeshData();
@@ -34,13 +30,11 @@ int main(int argc, char* argv[]) {
     // m.saveMeshData();
     // m.printMeshData();
 
-<<<<<<< HEAD
-=======
-    for(int j = NY+1; j >= 0; j--) {
-        for(int i = 0; i < NX+2; i++)
-            printf("(%2d,%2d) %3d %5s", i, j, INDEX(i,j), "");
-        printf("\n");
-    }
+    // for(int j = NY+1; j >= 0; j--) {
+    //     for(int i = 0; i < NX+2; i++)
+    //         printf("(%2d,%2d) %3d %5s", i, j, INDEX(i,j), "");
+    //     printf("\n");
+    // }
 
 
 }
@@ -71,8 +65,6 @@ bool f(double lx, double ly, double lz, int nx, int ny) {
 
 
     return true;
-
->>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 
 }
 
