@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 \subsection{The checkerboard problem}
 
 Notice that \eqref{eq:velocity_time_n+1_fsm_first_approach} is a vector equation, hence expanding it by components gives:
@@ -18,19 +19,35 @@ Consider the discretization of the $x$--component of \eqref{eq:velocity_checkerb
 \end{equation}
 Notice that the discrete approximation of $\grad{p}^{n+1}$ is independent of $p_P^{n+1}$.
 
+=======
+\section{The checkerboard problem}
+
+Consider the $x$--component of Equation \eqref{eq:velocity_at_next_instant}
+\begin{equation} \label{eq:velocity_at_next_instant_x_component}
+    u^{n+1} = 
+    u^p - \frac{\Delta t}{\rho} \left( \pdv{p}{x} \right)^{n+1} \approx
+    u^p - \frac{\Delta t}{\rho} \pdv{p^{n+1}}{x}
+\end{equation}
+and the following discretisation in the $x$--direction of a neighbourhood of a point $P$:
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 \begin{figure}[h]
     \centering
     \begin{tikzpicture}
         \def\side{2cm}
         \def\ys{0.5cm}
         \def\ofset{0.1cm}
+<<<<<<< HEAD
         \def\arrowlength{0.75cm}
+=======
+        \def\velocitylength{0.75cm}
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
         % Control volume
         \fill[cvfill] (0,0) rectangle (3*\side,\side);
         \draw[wall] (0,0) rectangle (3*\side,\side);
         \draw[wall] (\side,0) -- ++(0,\side);
         \draw[wall] (2*\side,0) -- ++(0,\side);
         % Node W
+<<<<<<< HEAD
         \draw[velocity] (0.5*\side,0.5*\side) -- node[midway, below]{$u_W^{n+1}$} ++(\arrowlength,0);
         \filldraw[black] (0.5*\side,0.5*\side) circle (2pt);
         \node[black, yshift=+\ys] at (0.5*\side,0.5*\side) {$p_W^{n+1}$};
@@ -40,6 +57,17 @@ Notice that the discrete approximation of $\grad{p}^{n+1}$ is independent of $p_
         \node[black, yshift=+\ys] at (1.5*\side,0.5*\side) {$p_P^{n+1}$};
         % Node E
         \draw[velocity] (2.5*\side,0.5*\side) -- node[midway, below]{$u_E^{n+1}$} ++(\arrowlength,0);
+=======
+        \draw[velocity] (0.5*\side,0.5*\side) -- node[midway, below]{$u_W^{n+1}$} ++(\velocitylength,0);
+        \filldraw[black] (0.5*\side,0.5*\side) circle (2pt);
+        \node[black, yshift=+\ys] at (0.5*\side,0.5*\side) {$p_W^{n+1}$};
+        % Node P
+        \draw[velocity] (1.5*\side,0.5*\side) -- node[midway, below]{$u_P^{n+1}$} ++(\velocitylength,0);
+        \filldraw[black] (1.5*\side,0.5*\side) circle (2pt);
+        \node[black, yshift=+\ys] at (1.5*\side,0.5*\side) {$p_P^{n+1}$};
+        % Node E
+        \draw[velocity] (2.5*\side,0.5*\side) -- node[midway, below]{$u_E^{n+1}$} ++(\velocitylength,0);
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
         \filldraw[black] (2.5*\side,0.5*\side) circle (2pt);
         \node[black, yshift=+\ys] at (2.5*\side,0.5*\side) {$p_E^{n+1}$};
         % Measuring line
@@ -49,8 +77,22 @@ Notice that the discrete approximation of $\grad{p}^{n+1}$ is independent of $p_
         \draw[measureaux, yshift=-\ofset] (1.5*\side,-0.5*\side) -- ++(0,0.5*\side);
         \draw[measureaux, yshift=-\ofset] (2.5*\side,-0.5*\side) -- ++(0,0.5*\side);
     \end{tikzpicture}
+<<<<<<< HEAD
 \end{figure}
 
+=======
+    \caption{}
+    \label{fig:checkerboard_problem_figure_1}
+\end{figure}
+
+By applying finite differences at $P$ to compute the partial derivative in Equation \eqref{eq:velocity_at_next_instant_x_component}, one may approximate $u_P^{n+1}$ as follows:
+\begin{equation}
+    u_P^{n+1} = u^p - \frac{\Delta t}{\rho} \frac{p_E^{n+1} - p_W^{n+1}}{2 \Delta x}
+\end{equation}
+We notice that $u_P^{n+1}$ does not depend upon $p_P^{n+1}$. The same is true for the $y$ and $z$--components of \eqref{eq:velocity_at_next_instant}. This is a consequence of the pressure $p_P^{n+1}$ and the gradient $\grad{p}^{n+1}$ being decoupled, \ie independent of one another.
+
+This leads to converged velocity fields for unphysical pressure distributions. For instance, consider the following situation
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 
 \begin{figure}[h]
     \centering
@@ -58,7 +100,11 @@ Notice that the discrete approximation of $\grad{p}^{n+1}$ is independent of $p_
         \def\side{2cm}
         \def\ys{0.5cm}
         \def\ofset{0.1cm}
+<<<<<<< HEAD
         \def\arrowlength{0.75cm}
+=======
+        \def\velocitylength{0.75cm}
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
         % Control volumes
         \fill[cvfill] (0,0) rectangle (5*\side,\side);
         \draw[wall] (0,0) rectangle (5*\side,\side);
@@ -71,6 +117,7 @@ Notice that the discrete approximation of $\grad{p}^{n+1}$ is independent of $p_
 
         % Node WW
         \begin{scope}[shift={(0.5*\side, 0.5*\side)}]
+<<<<<<< HEAD
             \draw[velocity] (0,0) -- node[midway, below]{$u_{WW}^{n+1}$} ++(\arrowlength,0);
             \filldraw[black] (0,0) circle (2pt);
             \node[black, yshift=+\ys] at (0,0) {$p_{WW}^{n+1}$};
@@ -87,3 +134,55 @@ Notice that the discrete approximation of $\grad{p}^{n+1}$ is independent of $p_
         \node[black, yshift=+\ys] at (2.5*\side,0.5*\side) {$p_E^{n+1}$};
     \end{tikzpicture}
 \end{figure}
+=======
+            \draw[velocity] (0,0) -- node[midway, below]{$u_{WW}^{n+1}$} ++(\velocitylength,0);
+            \filldraw[black] (0,0) circle (2pt);
+            \node[black, yshift=+\ys] at (0,0) {$p_{WW}^{n+1}$};
+        \end{scope}
+        
+        % Node W
+        \begin{scope}[shift={(1.5*\side,0.5*\side)}]
+            \draw[velocity] (0,0) -- node[midway, below]{$u_{W}^{n+1}$} ++(\velocitylength,0);
+            \filldraw[black] (0,0) circle (2pt);
+            \node[black, yshift=+\ys] at (0,0) {$p_{W}^{n+1}$};
+        \end{scope}
+        
+        % Node P
+        \begin{scope}[shift={(2.5*\side,0.5*\side)}]
+            \draw[velocity] (0,0) -- node[midway, below]{$u_{P}^{n+1}$} ++(\velocitylength,0);
+            \filldraw[black] (0,0) circle (2pt);
+            \node[black, yshift=+\ys] at (0,0) {$p_{P}^{n+1}$};
+        \end{scope}
+        
+        % Node E
+        \begin{scope}[shift={(3.5*\side,0.5*\side)}]
+            \draw[velocity] (0,0) -- node[midway, below]{$u_{E}^{n+1}$} ++(\velocitylength,0);
+            \filldraw[black] (0,0) circle (2pt);
+            \node[black, yshift=+\ys] at (0,0) {$p_{E}^{n+1}$};
+        \end{scope}
+        
+        % Node EE
+        \begin{scope}[shift={(4.5*\side,0.5*\side)}]
+            \draw[velocity] (0,0) -- node[midway, below]{$u_{EE}^{n+1}$} ++(\velocitylength,0);
+            \filldraw[black] (0,0) circle (2pt);
+            \node[black, yshift=+\ys] at (0,0) {$p_{EE}^{n+1}$};            
+        \end{scope}
+
+        \begin{scope}[shift={(5*\side,0.5*\side)}]
+            \node[anchor=west] at (0,0) {
+                \begin{tabular}{c}
+                    $p_{WW}^{n+1} = p_{P}^{n+1} = p_{EE}^{n+1} = 100$ \\
+                    $p_{W}^{n+1} = p_{E}^{n+1} = 0$
+                \end{tabular}
+            };
+        \end{scope}
+    \end{tikzpicture}
+    \caption{}
+    \label{fig:checkerboard_problem_figure_2}
+\end{figure}
+
+which is a checkerboard pattern as far as the pressure distribution is concerned. The partial derivative of pressure satisfies $\partial_x p^{n+1} = 0$ at nodes $W$, $P$ and $E$, despite being a pressure distribution with no physical sense, thus yielding incorrect converged velocities at these nodes. It is clear that a more sophisticated strategy to relate the velocity and pressure fields is needed. 
+
+
+
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol

@@ -1,0 +1,107 @@
+
+\section{Second approach to the FSM}
+
+\subsection{Staggered meshes}
+
+In order to solve the decoupling of the velocity and pressure fields, two strategies have been developed, namely staggered meshes and collocated meshes. Nonetheless, we shall focus only on the former, more specifically, in the case of cartesian meshes. 
+
+In a staggered mesh, rather than locating the pressure and velocity terms at the same point in space as we have done so far, these pressure is set at the centre of the control volume whereas the velocity components are located at the faces of the control volume, as Figure \ref{fig:staggered_mesh} shows.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \def\lx{3cm}
+        \def\ly{1.85cm}
+        \def\velocitylength{1cm}
+
+        % Grid
+        \draw[] (0,0) rectangle (3*\lx,3*\ly);
+        \draw[] (1*\lx,0) -- ++(0,3*\ly);
+        \draw[] (2*\lx,0) -- ++(0,3*\ly);
+        \draw[] (0,1*\ly) -- ++(3*\lx,0);
+        \draw[] (0,2*\ly) -- ++(3*\lx,0);
+
+        % Nodes
+        \begin{scope}[shift={(0.5*\lx,0.5*\ly)}]
+            \foreach \x in {0,1,2} {
+                \foreach \y in {0,1,2} {
+                    \filldraw[] ({\x*\lx},{\y*\ly}) circle (2pt);
+                }
+            }
+        \end{scope}
+
+        
+
+        % No stagg CV
+        \begin{scope}[shift={(\lx,\ly)}]
+            \fill[blackcv] (0,0) rectangle ++(\lx,\ly);
+            \draw[blackfill] (0,0) rectangle ++(\lx,\ly);
+            % Node P
+            \node[anchor=north east] at ({0.5*\lx}, {0.5*\ly}) {$P$};
+        \end{scope}
+
+
+        % Stagg-x CV
+        \begin{scope}[shift={(1.5*\lx,\ly)}]
+            % Control volume
+            \fill[bluecv] (0,0) rectangle ++(\lx,\ly);
+            \draw[bluefill] (0,0) rectangle ++(\lx,\ly);
+            % Velocity
+            \node[anchor=south, blue] at ({0.5*\lx+0.5*\velocitylength},{0.5*\ly}) {$u$};
+        \end{scope}
+
+        % Stagg-y CV
+        \begin{scope}[shift={(\lx,1.5*\ly)}]
+            % Control volume
+            \fill[redcv] (0,0) rectangle ++(\lx,\ly);
+            \draw[redfill] (0,0) rectangle ++(\lx,\ly);
+            % Velocity
+            \node[anchor=west, red] at ({0.5*\lx},{0.5*\ly+0.5*\velocitylength}) {$v$};
+        \end{scope}
+
+        % Velocity u
+        \begin{scope}[shift={(0,0.5*\ly)}]
+            \foreach \x in {0,...,3} {
+                \foreach \y in {0,1,2} {
+                    \draw[velocity] ({\x*\lx-0.5*\velocitylength},\y*\ly) -- ++(\velocitylength,0);
+                }
+            }
+        \end{scope}
+
+        
+        % Velocity v
+        \begin{scope}[shift={(0.5*\lx,0)}]
+            \foreach \x in {0,1,2} {
+                \foreach \y in {0,...,3} {
+                    \draw[velocity, red] (\x*\lx,{\y*\ly-0.5*\velocitylength}) -- ++(0,\velocitylength);
+                }
+            }
+        \end{scope}
+
+
+    \end{tikzpicture}
+    \caption{Staggered mesh. Source: adapted from \colorbox{red}{asdas}}
+    \label{fig:staggered_mesh}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \input{figures/test/pressio_cares_centrades_1.tex}
+    \caption*{Pressió: cares centrades.}
+    \vspace{0.7cm}
+    \input{figures/test/pressio_cares_centrades_2.tex}
+    \caption*{Pressió: cares centrades. Velocitat $u$: staggered--$x$. Velocitat $v$: staggered--$y$.}
+\end{figure}
+
+
+\clearpage
+\begin{figure}[h]
+    \centering
+    \input{figures/test/pressio_nodes_centrats_1.tex}
+    \caption*{Pressió: nodes centrats.}
+    \vspace{0.7cm}
+    \input{figures/test/pressio_nodes_centrats_2.tex}
+    \caption*{Pressió: nodes centrades. Velocitat $u$: staggered--$x$. Velocitat $v$: staggered--$y$.}
+\end{figure}
+

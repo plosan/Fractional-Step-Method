@@ -1,0 +1,27 @@
+
+\begin{tikzpicture}[scale=0.9]
+    \def\Lx{10cm}
+    \def\Ly{10cm}
+    \def\velocitylength{1.5cm}
+    \draw[line width=1mm] (0,0) rectangle (\Lx,\Ly);
+
+    % Nodes
+    \foreach \x in {0,...,5} {
+        \foreach \y in {0,...,5} {
+            \filldraw[green!50!black] (2*\x,2*\y) circle (3pt);
+        }
+    }
+
+    \begin{scope}[shift={(1,0)}]
+        \foreach \x in {0,...,4} {
+            \draw[line width=0.5mm, dashed] (2*\x,0) -- ++(0,\Ly);
+        }
+    \end{scope}
+
+    % Control volume boundaries y
+    \begin{scope}[shift={(0,1)}]
+        \foreach \y in {0,...,4} {
+            \draw[line width=0.5mm, dashed] (0,2*\y) -- ++(\Lx,0);
+        }
+    \end{scope}
+\end{tikzpicture}

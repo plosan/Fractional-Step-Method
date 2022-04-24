@@ -5,6 +5,13 @@
 #include "NCMesh.h"
 #include "schemes.h"
 
+<<<<<<< HEAD
+=======
+#define NX 10
+#define NY 10
+#define INDEX(I,J) I+J*(NY+2)
+
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 
 void computePredictorVelocityX();
 void computePredictorVelocityY();
@@ -27,6 +34,45 @@ int main(int argc, char* argv[]) {
     // m.saveMeshData();
     // m.printMeshData();
 
+<<<<<<< HEAD
+=======
+    for(int j = NY+1; j >= 0; j--) {
+        for(int i = 0; i < NX+2; i++)
+            printf("(%2d,%2d) %3d %5s", i, j, INDEX(i,j), "");
+        printf("\n");
+    }
+
+
+}
+
+bool f(double lx, double ly, double lz, int nx, int ny) {
+
+    // X-component of velocity
+    double* u = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    if(!u) {
+        printf("Error: could not allocate enough memory for u\n");
+        return false;
+    }
+
+    // Y-component of velocity
+    double* v = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    if(!v) {
+        printf("Error: could not allocate enough memory for v\n");
+        return false;
+    }
+
+    // Pressure
+    double* p = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    if(!p) {
+        printf("Error: could not allocate enough memory for p\n");
+        return false;
+    }
+
+
+
+    return true;
+
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 
 }
 

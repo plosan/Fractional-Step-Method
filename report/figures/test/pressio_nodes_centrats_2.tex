@@ -1,0 +1,72 @@
+\begin{tikzpicture}[scale=0.9]
+    \def\Lx{10cm}
+    \def\Ly{10cm}
+    \def\velocitylength{1.5cm}
+    \draw[line width=1mm] (0,0) rectangle (\Lx,\Ly);
+
+    % Control volume boundaries
+    \foreach \x in {1,...,4} {
+        \draw[line width=0.5mm, dashed] (2*\x,0) -- ++(0,\Ly);
+    }
+
+    \foreach \y in {1,...,4} {
+        \draw[line width=0.5mm, dashed] (0,2*\y) -- ++(\Lx,0);
+    }
+
+    % Nodes
+    \begin{scope}[shift={(1,0)}]
+        \foreach \x in {0,...,4} {
+            \foreach \y in {0,...,4} {
+                \filldraw[green!50!black] (2*\x,2*\y cm + 1 cm) circle (3pt);
+            }
+        }
+    \end{scope}
+
+    % Boundary nodes
+    \foreach \y in {0,1} {
+        \filldraw[green!50!black] (0,\y*\Ly) circle (3pt);
+        \filldraw[green!50!black] (\Lx,\y*\Ly) circle (3pt);
+        \begin{scope}[shift={(1,0)}]
+            \foreach \x in {0,...,4} {
+                \filldraw[green!50!black] (2*\x,\y*\Ly) circle (3pt);
+            }
+        \end{scope}
+    }
+    \begin{scope}[shift={(0,1)}]
+        \foreach \x in {0,1} {
+            \foreach \y in {0,...,4} {
+                \filldraw[green!50!black] (\x*\Lx,2*\y cm) circle (3pt);
+            }
+        }
+    \end{scope}
+
+    % Velocity u
+    \foreach \y in {0,1} {
+        \foreach \x in {0,...,5} {
+            \draw[velocity, line width=0.5mm] (2*\x cm -0.5*\velocitylength,\y*\Ly) -- ++(\velocitylength,0);
+        }
+    }
+    \begin{scope}[shift={(0,1)}]
+        \foreach \y in {0,...,4} {
+            \foreach \x in {0,...,5} {
+                \draw[velocity, line width=0.5mm] (2*\x cm -0.5*\velocitylength,2*\y) -- ++(\velocitylength,0);
+                
+            }
+        }
+    \end{scope}
+
+    % Velocity v
+    \foreach \x in {0,1} {
+        \foreach \y in {0,...,5} {
+            \draw[velocity, line width=0.5mm, red] (\x*\Lx,2*\y cm - 0.5*\velocitylength) -- ++(0,\velocitylength);
+        }
+    }
+    \begin{scope}[shift={(1,0)}]
+        \foreach \x in {0,...,4} {
+            \foreach \y in {0,...,5} {
+                \draw[velocity, line width=0.5mm, red] (2*\x,2*\y cm - 0.5*\velocitylength) -- ++(0,\velocitylength);
+            }
+        }
+    \end{scope}
+
+\end{tikzpicture}

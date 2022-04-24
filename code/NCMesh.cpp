@@ -51,10 +51,21 @@ bool NCMesh::computeFaceXY() {
         printf("Error: could not allocate enough memory for faceX\n");
         return false;
     }
+<<<<<<< HEAD
     faceX[0] = 0;       // First face at x = 0
     faceX[nx] = lx;     // Last face at x = lx
     double d = lx/nx;   // X-size of a control volume in a uniform mesh
     for(int i = 1; i < nx; i++)
+=======
+    // faceX[0] = 0;       // First face at x = 0
+    // faceX[nx] = lx;     // Last face at x = lx
+    // double d = lx/nx;   // X-size of a control volume in a uniform mesh
+    // for(int i = 1; i < nx; i++)
+    //     faceX[i] = i*d;
+
+    double d = lx/nx;
+    for(int i = 0; i < nx+1; i++)
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
         faceX[i] = i*d;
 
     // Compute faceY: Y-position of the faces perpendicular to the Y axis in a uniform mesh
@@ -63,10 +74,20 @@ bool NCMesh::computeFaceXY() {
         printf("Error: could not allocate enough memory for faceY\n");
         return false;
     }
+<<<<<<< HEAD
     faceY[0] = 0;       // First face at y = 0
     faceY[ny] = ly;     // Last face at y = ly
     d = ly/ny;          // Y-size of a control volume in a uniform mesh
     for(int j = 1; j < ny; j++)
+=======
+    // faceY[0] = 0;       // First face at y = 0
+    // faceY[ny] = ly;     // Last face at y = ly
+    // d = ly/ny;          // Y-size of a control volume in a uniform mesh
+    // for(int j = 1; j < ny; j++)
+    //     faceY[j] = j*d;
+    d = ly/ny;
+    for(int j = 0; j < ny+1; j++)
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
         faceY[j] = j*d;
 
     // Everything good so far
@@ -107,6 +128,38 @@ bool NCMesh::computeNodeXY() {
 }
 
 // For a uniform or non-uniform mesh, the function computes:
+<<<<<<< HEAD
+=======
+//  - distX: distances between nodes in the X coordinate
+//  - distY: distances between nodes in the Y coordinate
+// Return value:
+//  - false: if the function was unable to allocate memory either for distX or distY
+//  - true: otherwise
+bool NCMesh::computeDistXY() {
+    // Compute distX: distances between nodes in the X coordinate
+    distX = (double*) calloc(nx+1, sizeof(double));
+    if(!distX) {
+        printf("Error: could not allocate enough memory for distX\n");
+        return false;
+    }
+    for(int i = 0; i < nx+1; i++)
+        distX[i] = nodeX[i+1] - nodeX[i];
+
+    // Compute distY: distances between nodes in the Y coordinate
+    distY = (double*) calloc(ny+1, sizeof(double));
+    if(!distY)  {
+        printf("Error: could not allocate enough memory for distY\n");
+        return false;
+    }
+    for(int j = 0; j < ny+1; j++)
+        distY[j] = nodeY[j+1] - nodeY[j];
+
+    // Everything good so far
+    return false;
+}
+
+// For a uniform or non-uniform mesh, the function computes:
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 //  - surfX: surface of the faces perpendicular to the X axis
 //  - surfY: surface of the faces perpendicular to the Y axis
 // Return value:
@@ -155,6 +208,244 @@ bool NCMesh::computeVol() {
     return true;
 }
 
+<<<<<<< HEAD
+=======
+// For a uniform or non-uniform mesh, the function computes:
+//  - surfX: surface of the faces perpendicular to the X axis
+//  - surfY: surface of the faces perpendicular to the Y axis
+// Return value:
+//  - false: if the function was unable to allocate memory either for surfX or surfY
+//  - true: otherwise
+bool NCMesh::computeSurfXY2() {
+    // Compute surfX: surface of the faces perpendicular to the X axis
+    surfX = (double*) calloc(ny+2, sizeof(double));
+    if(!surfX) {
+        printf("Error: could not allocate enough memory for surfX\n");
+        return false;
+    }
+    surfX[0] = 0;
+    surfX[ny+1] = 0;
+    for(int j = 1; j < ny+1; j++)
+        surfX[j] = (faceY[j] - faceY[j-1]) * lz;
+
+    // Compute surfY: surface of the faces perpendicular to the Y axis
+    surfY = (double*) calloc(nx+2, sizeof(double));
+    if(!surfY) {
+        printf("Error: could not allocate enough memory for surfY\n");
+        return false;
+    }
+    surfY[0] = 0;
+    surfY[nx+1] = 0;
+    for(int i = 1; i < nx+1; i++)
+        surfY[i] = (faceX[i] - faceX[i-1]) * lz;
+
+    // Everything good so far
+    return false;
+}
+
+// For a uniform or non-uniform mesh, the function computes:
+//  - vol: volume of the control volumes
+// Return value:
+//  - false: if the function was unable to allocate memory for vol
+//  - true: otherwise
+bool NCMesh::computeVol2() {
+    // Compute vol: volume of the control volumes
+    vol = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    if(!vol) {
+        printf("Error: could not allocate enough memory for vol\n");
+        return false;
+    }
+    for(int i = 0; i < nx+2; i++)
+        for(int j = 0; j < ny+2; j++)
+            vol[i+j*(nx+2)] = surfX[j] * surfY[i] / lz;
+
+    // Everything good so far
+    return true;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// GETTERS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Returns built
+bool NCMesh::isBuilt() const {
+    return built;
+}
+
+// Returns lx
+double NCMesh::getLX() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning 0 for lx\n");
+        return 0;
+    }
+    return lx;
+}
+
+// Returns ly
+double NCMesh::getLY() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning 0 for lY\n");
+        return 0;
+    }
+    return ly;
+}
+
+// Returns lz
+double NCMesh::getLZ() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning 0 for lZ\n");
+        return 0;
+    }
+    return lz;
+}
+
+// Returns nx
+int NCMesh::getNX() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning 0 for nx\n");
+        return 0;
+    }
+    return nx;
+}
+
+// Returns ny
+int NCMesh::getNY() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning 0 for ny\n");
+        return 0;
+    }
+    return ny;
+}
+
+// Returns nodeX
+double* NCMesh::getNodeX() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for nodeX\n");
+        return nullptr;
+    }
+    return nodeX;
+}
+
+// Returns nodeY
+double* NCMesh::getNodeY() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for nodeY\n");
+        return nullptr;
+    }
+    return nodeY;
+}
+
+// Returns distX
+double* NCMesh::getDistX() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for distX\n");
+        return nullptr;
+    }
+    return distX;
+}
+
+// Returns distY
+double* NCMesh::getDistY() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for distY\n");
+        return nullptr;
+    }
+    return distY;
+}
+
+// Returns faceX
+double* NCMesh::getFaceX() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for faceX\n");
+        return nullptr;
+    }
+    return faceX;
+}
+
+// Returns faceY
+double* NCMesh::getFaceY() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for faceY\n");
+        return nullptr;
+    }
+    return faceY;
+}
+
+// Returns surfX
+double* NCMesh::getSurfX() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for surfX\n");
+        return nullptr;
+    }
+    return surfX;
+}
+
+// Returns surfY
+double* NCMesh::getSurfY() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for surfY\n");
+        return nullptr;
+    }
+    return surfY;
+}
+
+// Returns vol
+double* NCMesh::getVol() const {
+    if(!built) {
+        printf("Error: the mesh is not built. Returning nullptr for vol\n");
+        return nullptr;
+    }
+    return vol;
+}
+
+// Returns nodeX[i] unsafely (does not check if 0 <= i < nx+2)
+double NCMesh::atNodeX(int i) const {
+    return nodeX[i];
+}
+
+// Returns nodeY[j] unsafely (does not check if 0 <= j < ny+2)
+double NCMesh::atNodeY(int j) const {
+    return nodeY[j];
+}
+
+// Returns distX[i] unsafely (does not check if 0 <= i < nx+1)
+double NCMesh::atDistX(int i) const {
+    return distX[i];
+}
+
+// Returns distY[j] unsafely (does not check if 0 <= j < ny+1)
+double NCMesh::atDistY(int j) const {
+    return distY[j];
+}
+
+// Returns faceX[i] unsafely (does not check if 0 <= i < nx+1)
+double NCMesh::atFaceX(int i) const {
+    return faceX[i];
+}
+
+// Returns faceY[j] unsafely (does not check if 0 <= j < ny+1)
+double NCMesh::atFaceY(int j) const {
+    return faceY[j];
+}
+
+// Returns surfX[j] unsafely (does not check if 0 <= j < ny+2)
+double NCMesh::atSurfX(int j) const {
+    return surfX[j];
+}
+
+// Returns surfY[i] unsafely (does not check if 0 <= i < nx+2)
+double NCMesh::atSurfY(int i) const {
+    return surfY[i];
+}
+
+// Returns vol[j*nx+i] unsafely (does not check if 0 <= i < nx+2 and 0 <= j < ny+2)
+double NCMesh::atVol(int i, int j) const {
+    return vol[i+j*(nx+2)];
+}
+
+
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
 // Displays the following mesh member variables:
 //  - built
 //  - lx, ly, lz

@@ -99,6 +99,7 @@
 \newcommand*{\ie}{i.e.\@\xspace}
 
 
+<<<<<<< HEAD
 \numberwithin{equation}{section}
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
@@ -113,3 +114,29 @@
 }
 
 \colorlet{domainFill}{cyan!70!white}
+=======
+\numberwithin{equation}{chapter}
+\counterwithin{figure}{chapter}
+\counterwithin{table}{chapter}
+
+
+
+
+\colorlet{domainFill}{cyan!70!white}
+\colorlet{blackfill}{black!50!white}
+\colorlet{bluefill}{blue!50!white}
+\colorlet{redfill}{red!50!white}
+
+
+\tikzset{
+	axisline/.style={-latex, thick, black},
+	measureline/.style={latex-latex, thick, blue},
+	measureaux/.style={thick, blue},
+	velocity/.style={-stealth, thick, blue},
+	wall/.style={black, very thick},
+	cvfill/.style={black!50!white, opacity=0.5},
+	blackcv/.style={blackfill, opacity=0.5},
+	bluecv/.style={bluefill, opacity=0.5},
+	redcv/.style={redfill, opacity=0.5}
+}
+>>>>>>> Changes in report. Changes in code: redefinition of surfX, surfY, vol
