@@ -9,6 +9,8 @@
 #define NY 10
 #define INDEX(I,J) I+J*(NY+2)
 
+void computeRu();
+void computeRv();
 void computePredictorVelocityX();
 void computePredictorVelocityY();
 
@@ -21,8 +23,9 @@ int main(int argc, char* argv[]) {
     NCMesh m(L, L, 1, nx, ny);
     m.saveMeshData();
     m.printMeshData();
+    // m.printStaggeredVolumes();
 
-    // RCGrid m(L, L, 1, nx, ny);
+    // double* vol = m.getVolStaggY();
 
     // double* u = (double*) calloc(nx*ny, sizeof(double*));
     // double* v = (double*) calloc(nx*ny, sizeof(double*));
@@ -36,6 +39,13 @@ int main(int argc, char* argv[]) {
     //     printf("\n");
     // }
 
+
+
+}
+
+void computeRu() {
+
+    // double* Ru = (double*) calloc();
 
 }
 

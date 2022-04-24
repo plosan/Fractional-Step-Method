@@ -39,6 +39,24 @@ NCMesh::NCMesh(double _lx, double _ly, double _lz, int _nx, int _ny) : built(fal
         return;
     }
 
+    construction = computeDistFaceXY();
+    if(!construction) {
+        printf("Mesh: error. The mesh will halt its construction\n");
+        return;
+    }
+
+    construction = computeVolStaggX();
+    if(!construction) {
+        printf("Mesh: error. The mesh will halt its construction\n");
+        return;
+    }
+
+    construction = computeVolStaggY();
+    if(!construction) {
+        printf("Mesh: error. The mesh will halt its construction\n");
+        return;
+    }
+
     built = true;
     printf("Mesh: the mesh was successfully constructed\n");
 
@@ -206,6 +224,77 @@ bool NCMesh::computeVol() {
     return true;
 }
 
+// For a uniform or non-uniform mesh, the function computes:
+//  - distFaceX: distances between faces in the X coordinate
+//  - distFaceY: distances between faces in the Y coordinate
+// Return value:
+//  - false: if the function was unable to allocate memory for distFaceX or distFaceY
+//  - true: otherwise
+bool NCMesh::computeDistFaceXY() {
+    // Compute distFaceX: distances between faces in the X coordinate
+    distFaceX = (double*) calloc(nx, sizeof(double));
+    if(!distFaceX) {
+        printf("Mesh: error. Could not allocate enough memory for distFaceX\n");
+        return false;
+    }
+    for(int i = 0; i < nx; i++)
+        distFaceX[i] = faceX[i+1] - faceX[i];
+
+    // Compute distFaceY: distances between faces in the Y coordinate
+    distFaceY = (double*) calloc(ny, sizeof(double));
+    if(!distFaceY) {
+        printf("Mesh: error. Could not allocate enough memory for distFaceY\n");
+        return false;
+    }
+    for(int j = 0; j < ny; j++)
+        distFaceY[j] = faceY[j+1] - faceY[j];
+
+    // Everything good so far
+    printf("Mesh: X and Y distances between faces computed successfully\n");
+    return true;
+}
+
+// For a uniform or non-uniform mesh, the function computes:
+//  - volStaggX: volume associated to X-staggered nodes
+// Return value:
+//  - false: if the function was unable to allocate memory for volStaggX
+//  - true: otherwise
+bool NCMesh::computeVolStaggX() {
+    // Compute volStaggX: volume associated to X-staggered nodes
+    volStaggX = (double*) calloc((nx+1)*(ny+2), sizeof(double));
+    if(!volStaggX) {
+        printf("Mesh: error. Could not allocate enough memory for volStaggX\n");
+        return false;
+    }
+    for(int i = 0; i < nx+1; i++)
+        for(int j = 1; j < ny+1; j++)
+            volStaggX[i+j*(nx+1)] = distX[i] * surfX[j];
+
+    // Everything good so far
+    printf("Mesh: X-staggered volumes computed successfully\n");
+    return true;
+}
+
+// For a uniform or non-uniform mesh, the function computes:
+//  - volStaggY: volume associated to y-staggered nodes
+// Return value:
+//  - false: if the function was unable to allocate memory for volStaggY
+//  - true: otherwise
+bool NCMesh::computeVolStaggY() {
+    // Compute volStaggY: volume associated to Y-staggered nodes
+    volStaggY = (double*) calloc((nx+2)*(ny+1), sizeof(double));
+    if(!volStaggY) {
+        printf("Mesh: error. Could not allocate enough memory for volStaggY\n");
+        return false;
+    }
+    for(int i = 1; i < nx+1; i++)
+        for(int j = 0; j < ny+1; j++)
+            volStaggY[i+j*(nx+2)] = distY[j] * surfY[i];
+
+    // Everything good so far
+    printf("Mesh: Y-staggered volumes computed successfully\n");
+    return true;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // GETTERS
@@ -342,6 +431,42 @@ double* NCMesh::getVol() const {
     return vol;
 }
 
+// Returns distFaceX
+double* NCMesh::getDistFaceX() const {
+    if(!built) {
+        printf("Mesh: error. The mesh is not built. Returning nullptr for distFaceX\n");
+        return nullptr;
+    }
+    return distFaceX;
+}
+
+// Returns distFaceY
+double* NCMesh::getDistFaceY() const {
+    if(!built) {
+        printf("Mesh: error. The mesh is not built. Returning nullptr for distFaceY\n");
+        return nullptr;
+    }
+    return distFaceY;
+}
+
+// Returns volStaggX
+double* NCMesh::getVolStaggX() const {
+    if(!volStaggX) {
+        printf("Mesh: error. The mesh is not built. Returning nullptr for volStaggX\n");
+        return nullptr;
+    }
+    return volStaggX;
+}
+
+// Returns volStaggY
+double* NCMesh::getVolStaggY() const {
+    if(!volStaggY) {
+        printf("Mesh: error. The mesh is not built. Returning nullptr for volStaggY\n");
+        return nullptr;
+    }
+    return volStaggY;
+}
+
 // Returns nodeX[i] unsafely (does not check if 0 <= i < nx+2)
 double NCMesh::atNodeX(int i) const {
     return nodeX[i];
@@ -387,6 +512,200 @@ double NCMesh::atVol(int i, int j) const {
     return vol[i+j*(nx+2)];
 }
 
+// Returns distFaceX[i] unsafely (does not check if 0 <= i < nx)
+double NCMesh::atDistFaceX(int i) const {
+    return distFaceX[i];
+}
+
+// Returns distFaceY[j] unsafely (does not check if 0 <= j < ny)
+double NCMesh::atDistFaceY(int j) const {
+    return distFaceY[j];
+}
+
+// Returns volStaggX[i+j*(nx+1)] unsafely (does not check if 0 <= i < nx+1 and 0 <= j < ny+2)
+double NCMesh::atVolStaggX(int i, int j) const {
+    return volStaggX[i+j*(nx+1)];
+}
+
+// Returns volStaggY[i+j*(nx+2)] unsafely (does not check if 0 <= i < nx+2 and 0 <= j < ny+1)
+double NCMesh::atVolStaggY(int i, int j) const {
+    return volStaggY[i+j*(nx+2)];
+}
+
+// Prints the following mesh data:
+//  - lx, ly, lz
+//  - nx, ny, nz=1
+void NCMesh::printBasicData() const {
+    // GENERAL DATA 2
+    printf("%10s%3s%10s%10s%10s\n", "", "", "x", "y", "z");
+    printf("%10s%2s|%10.5f%10.5f%10.5f\n", "Length", "", lx, ly, lz);
+    printf("%10s%2s|%10d%10d%10d\n", "CVs", "", nx, ny, 1);
+}
+
+// Prints node location (i,j) and number
+void NCMesh::printNodeLocation() const {
+    // NODE NUMBER AND LOCATION
+    printf("\nNode number and location\n");
+    // Print column numbers
+    printf("%13s", "");
+    for(int i = 0; i < nx+2; i++)
+        printf("%5d", i);
+    // Print horizontal line separating column numbers and table content
+    printf("\n%12s", "");
+    for(int i = 0; i < 5*(nx+2)+1; i++)
+        printf("-");
+    printf("\n");
+    // Print node number and location
+    for(int j = ny+1; j >= 0; j--) {
+        printf("%10d%2s|", j, "");
+        for(int i = 0; i < nx+2; i++)
+            printf("%5d", i+j*(nx+2));
+        printf("\n");
+    }
+}
+
+// Prints distances between nodes (distX and distY)
+void NCMesh::printNodeDistances() const {
+    // Print distX
+    printf("\nDistance X\n");
+    printf("%10s%2s|", "i", "");
+    for(int i = 0; i < nx+1; i++)
+        printf("%10d", i);
+
+    printf("\n%10s%2s|", "distX[i]", "");
+    for(int i = 0; i < nx+1; i++)
+        printf("%10.5f", distX[i]);
+    printf("\n");
+
+    // Print distY
+    printf("\nDistance Y\n");
+    printf("%10s%5s%s\n", "j", "", "distY[j]");
+    printf("%7s", "");
+    for(int i = 0; i < 16; i++)
+        printf("-");
+    printf("\n");
+    for(int j = ny; j >= 0; j--)
+        printf("%10d%5s%.5f\n", j, "", distY[j]);
+}
+
+// Prints faces surface (surfX and surfY)
+void NCMesh::printSurfaces() const {
+    // SURFACE X
+    printf("\nSurfaces X\n");
+    // Print table header
+    printf("%10s%5s%s\n", "j", "", "surfX[j]");
+    printf("%7s", "");
+    for(int i = 0; i < 16; i++)
+        printf("-");
+    printf("\n");
+    // Print surfaces X
+    for(int j = ny+1; j >= 0; j--)
+        printf("%10d%5s%.5f\n", j, "", surfX[j]);
+
+    // SURFACE Y
+    printf("\nSurfaces Y\n");
+    // Print column numbers
+    printf("%10s%2s|", "i", "");
+    for(int i = 0; i < nx+2; i++)
+        printf("%10d", i);
+    // Print surfaces Y
+    printf("\n%10s%2s|", "surfY[i]", "");
+    for(int i = 0; i < nx+2; i++)
+        printf("%10.5f", surfY[i]);
+    printf("\n");
+}
+
+// Prints control volumes volume (vol)
+void NCMesh::printVolumes() const {
+    // VOLUMES ASSOCIATED TO EVERY NODE
+    printf("\nVolumes * 1e3\n");
+    // Print column numbers
+    printf("%8s", "");
+    for(int i = 0; i < nx+2; i++)
+        printf("%10d", i);
+    printf("\n%7s", "");
+    // Print horizontal line separating column numbers and table content
+    for(int i = 0; i < 10*(nx+2)+1; i++)
+        printf("-");
+    printf("\n");
+    // Print volumes
+    for(int j = ny+1; j >= 0; j--) {
+        printf("%5d%2s%s", j, "", "|");
+        for(int i = 0; i < nx+2; i++)
+            printf("%10.2f", 1e3*vol[i+j*(nx+2)]);
+        printf("\n");
+    }
+}
+
+// Prints distance between faces (distFaceX and distFaceY)
+void NCMesh::printFaceDistances() const {
+    // DISTANCES BETWEEN FACES X
+    printf("\nDistance Faces X\n");
+    printf("%16s%2s|", "i", "");
+    for(int i = 0; i < nx; i++)
+        printf("%10d", i);
+    printf("\n%16s%2s|", "distFaceX[i]", "");
+    for(int i = 0; i < nx; i++)
+        printf("%10.5f", distFaceX[i]);
+    printf("\n");
+
+    // DISTANCES BETWEEN FACES Y
+    printf("\nDistance Faces Y\n");
+    printf("%10s%5s%s\n", "j", "", "distFaceY[j]");
+    printf("%7s", "");
+    for(int i = 0; i < 16; i++)
+        printf("-");
+    printf("\n");
+    for(int j = ny-1; j >= 0; j--)
+        printf("%10d%5s%.5f\n", j, "", distFaceY[j]);
+}
+
+// Prints volumes associated to stagg-x and stagg-y control volumes
+void NCMesh::printStaggeredVolumes() const {
+    // VOLUMES ASSOCIATED TO STAGG-X MESH
+    printf("\nVolumes X-Staggered * 1e3\n");
+
+    // Print column numbers
+    printf("%8s", "");
+    for(int i = 0; i < nx+1; i++)
+        printf("%10d", i);
+    printf("\n%7s", "");
+
+    // Print horizontal line separating column numbers and table content
+    for(int i = 0; i < 10*(nx+1)+1; i++)
+        printf("-");
+    printf("\n");
+
+    // Print volumes
+    for(int j = ny+1; j >= 0; j--) {
+        printf("%5d%2s%s", j, "", "|");
+        for(int i = 0; i < nx+1; i++)
+            printf("%10.2f", 1e3*volStaggX[i+j*(nx+1)]);
+        printf("\n");
+    }
+
+    // VOLUMES ASSOCIATED TO STAGG-Y MESH
+    printf("\nVolumes Y-Staggered * 1e3\n");
+
+    // Print column numbers
+    printf("%8s", "");
+    for(int i = 0; i < nx+2; i++)
+        printf("%10d", i);
+    printf("\n%7s", "");
+
+    // Print horizontal line separating column numbers and table content
+    for(int i = 0; i < 10*(nx+2)+1; i++)
+        printf("-");
+    printf("\n");
+
+    // Print volumes
+    for(int j = ny; j >= 0; j--) {
+        printf("%5d%2s%s", j, "", "|");
+        for(int i = 0; i < nx+2; i++)
+            printf("%10.2f", 1e3*volStaggY[i+j*(nx+2)]);
+        printf("\n");
+    }
+}
 
 // Displays the following mesh member variables:
 //  - built
@@ -396,6 +715,8 @@ double NCMesh::atVol(int i, int j) const {
 //  - distX, distY
 //  - surfX, surfY
 //  - vol
+//  - distFaceX, distFaceY
+//  - volStaggX, volStaggY
 void NCMesh::printMeshData() const {
 
     // GENERAL DATA 1
@@ -403,95 +724,13 @@ void NCMesh::printMeshData() const {
     printf("%10s%2s|%2s%s\n\n", "Built", "", "", (built ? "Yes" : "No"));
 
     if(built) {
-
-        // GENERAL DATA 2
-        printf("%10s%3s%10s%10s%10s\n", "", "", "x", "y", "z");
-        printf("%10s%2s|%10.5f%10.5f%10.5f\n", "Length", "", lx, ly, lz);
-        printf("%10s%2s|%10d%10d%10d\n", "CVs", "", nx, ny, 1);
-
-        // NODE NUMBER AND LOCATION
-        printf("\nNode number and location\n");
-        // Print column numbers
-        printf("%13s", "");
-        for(int i = 0; i < nx+2; i++)
-            printf("%5d", i);
-        // Print horizontal line separating column numbers and table content
-        printf("\n%12s", "");
-        for(int i = 0; i < 5*(nx+2)+1; i++)
-            printf("-");
-        printf("\n");
-        // Print node number and location
-        for(int j = ny+1; j >= 0; j--) {
-            printf("%10d%2s|", j, "");
-            for(int i = 0; i < nx+2; i++)
-                printf("%5d", i+j*(nx+2));
-            printf("\n");
-        }
-
-        // Print distX
-        printf("\nDistance X\n");
-
-        printf("%10s%2s|", "i", "");
-        for(int i = 0; i < nx+1; i++)
-            printf("%10d", i);
-
-        printf("\n%10s%2s|", "distX[i]", "");
-        for(int i = 0; i < nx+1; i++)
-            printf("%10.5f", distX[i]);
-        printf("\n");
-
-        // Print distY
-        printf("\nDistance Y\n");
-        printf("%10s%5s%s\n", "j", "", "distY[j]");
-        printf("%7s", "");
-        for(int i = 0; i < 16; i++)
-            printf("-");
-        printf("\n");
-        for(int j = ny; j >= 0; j--)
-            printf("%10d%5s%.5f\n", j, "", distY[j]);
-
-        // SURFACE X
-        printf("\nSurfaces X\n");
-        // Print table header
-        printf("%10s%5s%s\n", "j", "", "surfX[j]");
-        printf("%7s", "");
-        for(int i = 0; i < 16; i++)
-            printf("-");
-        printf("\n");
-        // Print surfaces X
-        for(int j = ny+1; j >= 0; j--)
-            printf("%10d%5s%.5f\n", j, "", surfX[j]);
-
-        // SURFACE Y
-        printf("\nSurfaces Y\n");
-        // Print column numbers
-        printf("%10s%2s|", "i", "");
-        for(int i = 0; i < nx+2; i++)
-            printf("%10d", i);
-        // Print surfaces Y
-        printf("\n%10s%2s|", "surfY[i]", "");
-        for(int i = 0; i < nx+2; i++)
-            printf("%10.5f", surfY[i]);
-        printf("\n");
-
-        // VOLUMES ASSOCIATED TO EVERY NODE
-        printf("\nVolumes * 1e2\n");
-        // Print column numbers
-        printf("%8s", "");
-        for(int i = 0; i < nx+2; i++)
-            printf("%10d", i);
-        printf("\n%7s", "");
-        // Print horizontal line separating column numbers and table content
-        for(int i = 0; i < 10*(nx+2)+1; i++)
-            printf("-");
-        printf("\n");
-
-        for(int j = ny+1; j >= 0; j--) {
-            printf("%5d%2s%s", j, "", "|");
-            for(int i = 0; i < nx+2; i++)
-                printf("%10.2f", 1e2*vol[i+j*(nx+2)]);
-            printf("\n");
-        }
+        printBasicData();
+        printNodeLocation();
+        printNodeDistances();
+        printSurfaces();
+        printVolumes();
+        printFaceDistances();
+        printStaggeredVolumes();
     }
 }
 

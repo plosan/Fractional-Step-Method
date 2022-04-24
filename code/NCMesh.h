@@ -22,14 +22,21 @@ private:
     double* surfY;  // Surface of the faces perpendicular to the Y axis. One surface associated to each node along the Y axis. Size: nx+2
     double* vol;    // Volume of the control volumes. For simplicity, one control volume associated to each node although some have 0 volume. Size: (nx+2)*(ny+2)
 
-    bool computeFaceXY();
-    bool computeNodeXY();
-    bool computeDistXY();
-    bool computeSurfXY();
-    bool computeVol();
+    double* distFaceX;  // Distances between faces in the X coordinate. Size: nx
+    double* distFaceY;  // Distances between faces in the Y coordinate. Size: ny
 
-    bool computeSurfXY2();
-    bool computeVol2();
+    double* volStaggX;  // Volume associated to X-staggered nodes. Size:
+    double* volStaggY;  // Volume associated to Y-staggered nodes. Size:
+
+    bool computeFaceXY();   // Computes faceX and faceY for uniform and non-uniform meshes
+    bool computeNodeXY();   // Computes nodeX and nodeY
+    bool computeDistXY();   // Computes distX and distY
+    bool computeSurfXY();   // Computes surfX and surfY
+    bool computeVol();      // Computes vol
+
+    bool computeDistFaceXY();   // Computes distFaceX and distFaceY
+    bool computeVolStaggX();    // Computes volStaggX
+    bool computeVolStaggY();    // Computes volStaggY
 
 public:
 
@@ -54,6 +61,10 @@ public:
     double* getSurfX() const;   // Returns surfX
     double* getSurfY() const;   // Returns surfY
     double* getVol() const;     // Returns vol
+    double* getDistFaceX() const;   // Returns distFaceX
+    double* getDistFaceY() const;   // Returns distFaceY
+    double* getVolStaggX() const;   // Returns volStaggX
+    double* getVolStaggY() const;   // Returns volStaggY
 
     // Safe getters
     double getNodeX(int) const;     // Returns nodeX[i] safely (checks if the object is built and if 0 <= i < nx)
@@ -76,12 +87,22 @@ public:
     double atSurfX(int) const;     // Returns surfX[j] unsafely (does not check if 0 <= j < ny+2)
     double atSurfY(int) const;     // Returns surfY[i] unsafely (does not check if 0 <= i < nx+2)
     double atVol(int, int) const;  // Returns vol[j*nx+i] unsafely (does not check if 0 <= i < nx+2 and 0 <= j < ny+2)
+    double atDistFaceX(int) const;      // Returns distFaceX[i] unsafely (does not check if 0 <= i < nx)
+    double atDistFaceY(int) const;      // Returns distFaceY[j] unsafely (does not check if 0 <= j < ny)
+    double atVolStaggX(int, int) const; // Returns volStaggX[i+j*(nx+1)] unsafely (does not check if 0 <= i < nx+1 and 0 <= j < ny+2)
+    double atVolStaggY(int, int) const; // Returns volStaggY[i+j*(nx+2)] unsafely (does not check if 0 <= i < nx+2 and 0 <= j < ny+1)
 
     // Info functions
-    void printMeshData() const; // Prints the mesh parameters
-    void saveMeshData() const;  // Saves the mesh parameters to different files to plot it later on
+    void printBasicData() const;        // Prints: built, lx, ly, lz, nx, ny, nz=1
+    void printNodeLocation() const;     // Prints node location and number (not nodeX nor nodeY)
+    void printNodeDistances() const;    // Prints distX and distY
+    void printSurfaces() const;         // Prints surfX and surfY
+    void printVolumes() const;          // Prints vol
+    void printFaceDistances() const;    // Prints distFaceX and distFaceY
+    void printStaggeredVolumes() const; // Prints volStaggX and volStaggY
+    void printMeshData() const;         // Prints all the previous member variables
 
-
+    void saveMeshData() const;  // Saves the mesh parameters to different files to plot them later on with gnuplot
 };
 
 #endif /* NCMESH_H */
