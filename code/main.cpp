@@ -13,6 +13,7 @@ void computeRu();
 void computeRv();
 void computePredictorVelocityX();
 void computePredictorVelocityY();
+double schemeCDS(double A, double B);
 
 int main(int argc, char* argv[]) {
 
@@ -23,33 +24,7 @@ int main(int argc, char* argv[]) {
     NCMesh m(L, L, 1, nx, ny);
     m.saveMeshData();
     m.printMeshData();
-    // m.printStaggeredVolumes();
 
-    // double* vol = m.getVolStaggY();
-
-    // double* u = (double*) calloc(nx*ny, sizeof(double*));
-    // double* v = (double*) calloc(nx*ny, sizeof(double*));
-
-    // m.saveMeshData();
-    // m.printMeshData();
-
-    // for(int j = NY+1; j >= 0; j--) {
-    //     for(int i = 0; i < NX+2; i++)
-    //         printf("(%2d,%2d) %3d %5s", i, j, INDEX(i,j), "");
-    //     printf("\n");
-    // }
-
-
-
-}
-
-void computeRu() {
-
-    // double* Ru = (double*) calloc();
-
-}
-
-bool f(double lx, double ly, double lz, int nx, int ny) {
 
     // X-component of velocity
     double* u = (double*) calloc((nx+2)*(ny+2), sizeof(double));
@@ -73,9 +48,66 @@ bool f(double lx, double ly, double lz, int nx, int ny) {
     }
 
 
+}
 
-    return true;
+
+double schemeCDS(double A, double B) {
+    return 0.5*(A + B);
+}
+
+void computeRu() {
+
+    // Horizontal component of operator R
+    // For corner nodes ((0,0) and (nx,0) and (0,ny+1) and (nx,ny+1)) Ru is zero
+    double* Ru = (double*) calloc((nx+1)*(ny+2), sizeof(double));
+
+    // Left wall
+    for(int j = 1; j < ny+1; j++) {
+        // Velocity ue
+        double uP = u[j*(nx+1)];
+        double uE = u[1+j*(nx+1)];
+        double ue = schemeCDS(uP, uE);
+        // Velocity un
+        double un = 0;
+        if(j < ny) {
+            un = schemeCDS(u[j*(nx+1)], u[(j+1)*(nx+1)]);
+        }
+        // Velocity us
+        double us = 0;
+        if(j > 1) {
+            us = schemeCDS(u[j*(nx+1)], u[(j-1)*(nx+1)]);
+        }
+        // Velocities us_A and us_B
+        double usA = 0;
+        double usB = v[1+(j-1)*(nx+2)];
+        double AsB = distX[0]*lz;
+        // Velocities un_A, un_B and areas
+        double unA = 0;
+        double unB = v[1+j*(nx+2)];
+        double AnB = distX[0]*lz;
+        // Mass flow mn
+        double mn = rho*unB*AnB;
+        // Mass flow me
+        double me = 0.5*rho*(u[0+j*(nx+1)] + u[1+j*(nx+1)])*surfX[j];
+        // Mass flow ms
+        double ms = rho*usB*AsB;
+        // Mass flow mw
+        double mw = 0;
+
+        // Velocity un
+        double uP = u[j*(nx+1)];
+        double uE = u[1+j*(nx+1)];
+        double uS = u[(j-1)*(nx+1)];
+        double uN = u[(j+1)*(nx+1)];
+
+        double Aw = distX[0] * lz;
+        double An = Aw;
+        Ru[j*(nx+1)] = -(me*ue - mw*uw + mn*un - ms*us);
+        Ru[j*(nx+1)] += mu*(uE-uP)*surfX[j]/distX[0] + mu*(uN-uP)*An/distY[j] - mu*(uP-uS)*As/distY[j-1];
+        Ru[j*(nx+1)] /= volStaggX[j*(nx+1)];
+    }
 
 }
+
 
 // void computePredictorVelocityX(double* up, const RCGrid m, const double* un)

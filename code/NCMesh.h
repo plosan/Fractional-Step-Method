@@ -25,8 +25,8 @@ private:
     double* distFaceX;  // Distances between faces in the X coordinate. Size: nx
     double* distFaceY;  // Distances between faces in the Y coordinate. Size: ny
 
-    double* volStaggX;  // Volume associated to X-staggered nodes. Size:
-    double* volStaggY;  // Volume associated to Y-staggered nodes. Size:
+    double* volStaggX;  // Volume associated to X-staggered nodes. Size: (nx+1)*(ny+2)
+    double* volStaggY;  // Volume associated to Y-staggered nodes. Size: (nx+2)*(ny+1)
 
     bool computeFaceXY();   // Computes faceX and faceY for uniform and non-uniform meshes
     bool computeNodeXY();   // Computes nodeX and nodeY
