@@ -18,8 +18,8 @@ private:
     double* distY;  // Distances between nodes in the Y coordinate. Size: ny+1
     double* faceX;  // Position in the X coordinate of the faces perpendicular to the X axis. Size: nx+1
     double* faceY;  // Position in the Y coordinate of the faces perpendicular to the Y axis. Size: ny+1
-    double* surfX;  // Surface of the faces perpendicular to the X axis. One surface associated to each node along the X axis. Size: ny+2
-    double* surfY;  // Surface of the faces perpendicular to the Y axis. One surface associated to each node along the Y axis. Size: nx+2
+    double* surfX;  // Surface of the faces perpendicular to the X axis. One surface associated to each node along the Y axis. Size: ny+2
+    double* surfY;  // Surface of the faces perpendicular to the Y axis. One surface associated to each node along the X axis. Size: nx+2
     double* vol;    // Volume of the control volumes. For simplicity, one control volume associated to each node although some have 0 volume. Size: (nx+2)*(ny+2)
 
     double* distFaceX;  // Distances between faces in the X coordinate. Size: nx
