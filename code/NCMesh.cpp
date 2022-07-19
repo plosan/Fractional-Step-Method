@@ -33,6 +33,12 @@ NCMesh::NCMesh(double _lx, double _ly, double _lz, int _nx, int _ny) : built(fal
         return;
     }
 
+    construction = computeSemiSurfXY();
+    if(!construction) {
+        printf("Mesh: error. The mesh will halt its construction\n");
+        return;
+    }
+
     construction = computeVol();
     if(!construction) {
         printf("Mesh: error. The mesh will halt its construction\n");
@@ -40,6 +46,12 @@ NCMesh::NCMesh(double _lx, double _ly, double _lz, int _nx, int _ny) : built(fal
     }
 
     construction = computeDistFaceXY();
+    if(!construction) {
+        printf("Mesh: error. The mesh will halt its construction\n");
+        return;
+    }
+
+    construction = computeSurfStaggXY();
     if(!construction) {
         printf("Mesh: error. The mesh will halt its construction\n");
         return;
@@ -204,6 +216,41 @@ bool NCMesh::computeSurfXY() {
 }
 
 // For a uniform or non-uniform mesh, the function computes:
+//  - semiSurfX: control volume surface between the wall and the node (perpendicular to the Y axis)
+//  - semiSurfY: control volume surface between the wall and the node (perpendicular to the X axis)
+// Return value:
+//  - false: if the function was unable to allocate memory either for semiSurfX or semiSurfY
+//  - true: otherwise
+bool NCMesh::computeSemiSurfXY() {
+
+    // Compute semiSurfX: control volume surface between the wall and the node (perpendicular to the Y axis)
+    semiSurfX = (double*) calloc(2*ny, sizeof(double));
+    if(!semiSurfX) {
+        printf("Mesh: error. Could not allocate enough memory for semiSurfX\n");
+        return false;
+    }
+    for(int j = 1; j < ny+1; j++) {
+        semiSurfX[2*j-2] = (nodeY[j] - faceY[j-1]) * lz;
+        semiSurfX[2*j-1] = (faceY[j] - nodeY[j]) * lz;
+    }
+
+    // Compute semiSurfY: control volume surface between the wall and the node (perpendicular to the X axis)
+    semiSurfY = (double*) calloc(2*nx, sizeof(double));
+    if(!semiSurfY) {
+        printf("Mesh: error. Could not allocate enough memory for semiSurfY\n");
+        return false;
+    }
+    for(int i = 1; i < nx+1; i++) {
+        semiSurfY[2*i-2] = (nodeX[i] - faceX[i-1]) * lz;
+        semiSurfY[2*i-1] = (faceX[i] - nodeX[i]) * lz;
+    }
+
+    // Everything good so far
+    printf("Mesh: semi surfaces computed successfully\n");
+    return true;
+}
+
+// For a uniform or non-uniform mesh, the function computes:
 //  - vol: volume of the control volumes
 // Return value:
 //  - false: if the function was unable to allocate memory for vol
@@ -251,6 +298,36 @@ bool NCMesh::computeDistFaceXY() {
 
     // Everything good so far
     printf("Mesh: X and Y distances between faces computed successfully\n");
+    return true;
+}
+
+// For a uniform or non-uniform mesh, the function computes:
+//  - surfX_StaggY: Surface of the faces perpendicular to the X axis, associated to the staggered volumes along the Y axis. Size: ny+1
+//  - surfY_StaggX: Surface of the faces perpendicular to the Y axis, associated to the staggered volumes along the X axis. Size: nx+1
+// Return value:
+//  - false: if the function was unable to allocate memory for surfX_StaggY or surfY_StaggX
+//  - true: otherwise
+bool NCMesh::computeSurfStaggXY() {
+    // Compute surfX_StaggY:
+    surfX_StaggY = (double*) calloc(ny+1, sizeof(double));
+    if(!surfX_StaggY) {
+        printf("Mesh: error. Could not allocate enough memory for surfX_StaggY\n");
+        return false;
+    }
+    for(int j = 0; j < ny+1; j++)
+        surfX_StaggY[j] = lz * distY[j];
+
+    // Compute surfY_StaggX:
+    surfY_StaggX = (double*) calloc(nx+1, sizeof(double));
+    if(!surfY_StaggX) {
+        printf("Mesh: error. Could not allocate enough memory for surfY_StaggX\n");
+        return false;
+    }
+    for(int i = 0; i < nx+1; i++)
+        surfY_StaggX[i] = lz * distX[i];
+
+    // Everything good so far
+    printf("Mesh: X and Y staggered surfaces computed successfully\n");
     return true;
 }
 
@@ -507,6 +584,20 @@ double NCMesh::atSurfY(int i) const {
     return surfY[i];
 }
 
+// Returns semiSurfX[2*j+(k-2)] (does not check  if 0 <= 2*j+(k-2) < 2*ny). Parameters:
+//  - j: node where the semi surface is located
+//  - k: if k=0, it refers to the semi surface located below the node; if k=1, it refers to the semi surface located above the node
+double NCMesh::atSemiSurfX(int j, int k) const {
+    return semiSurfX[2*j+(k-2)];
+}
+
+// Returns semiSurfY[2*i+(k-2)] (does not check if 0 <= 2*i+(k-2) < 2*nx). Parameters:
+//  - i: node where the semi surface is located
+//  - k: if k=0, it refers to the semi surface located left of the node; if k=1, it refers to the semi surface located right of the node
+double NCMesh::atSemiSurfY(int i, int k) const {
+    return semiSurfY[2*i+(k-2)];
+}
+
 // Returns vol[j*nx+i] unsafely (does not check if 0 <= i < nx+2 and 0 <= j < ny+2)
 double NCMesh::atVol(int i, int j) const {
     return vol[i+j*(nx+2)];
@@ -520,6 +611,16 @@ double NCMesh::atDistFaceX(int i) const {
 // Returns distFaceY[j] unsafely (does not check if 0 <= j < ny)
 double NCMesh::atDistFaceY(int j) const {
     return distFaceY[j];
+}
+
+// Returns surfX_StaggY[j] unsafely (does not check if 0 <= i < ny+1)
+double NCMesh::atSurfX_StaggY(int j) const {
+    return surfX_StaggY[j];
+}
+
+// Returns surfY_StaggX[i] unsafely (does not check if 0 <= i < nx+1)
+double NCMesh::atSurfY_StaggX(int i) const {
+    return surfY_StaggX[i];
 }
 
 // Returns volStaggX[i+j*(nx+1)] unsafely (does not check if 0 <= i < nx+1 and 0 <= j < ny+2)
@@ -612,6 +713,33 @@ void NCMesh::printSurfaces() const {
     printf("\n%10s%2s|", "surfY[i]", "");
     for(int i = 0; i < nx+2; i++)
         printf("%10.5f", surfY[i]);
+    printf("\n");
+}
+
+// Prints semiSurfX and semiSurfY
+void NCMesh::printSemiSurfaces() const {
+    // SEMI SURFACE X
+    printf("\nSemi Surfaces X\n");
+    // Print table header
+    printf("%10s%5s%2s\n", "j", "", "semisurfX[j]");
+    printf("%7s", "");
+    for(int i = 0; i < 20; i++)
+        printf("-");
+    printf("\n");
+    // Print semiSurfX
+    for(int j = 2*ny-1; j >= 0; j--)
+        printf("%10d%5s%.5f\n", j, "", semiSurfX[j]);
+
+    // SEMI SURFACE Y
+    printf("\nSemi Surfaces Y\n");
+    // Print column numbers
+    printf("%16s%2s|", "i", "");
+    for(int i = 0; i < 2*nx; i++)
+        printf("%10d", i);
+    // Print semiSurfY
+    printf("\n%16s%2s|", "semiSurfY[i]", "");
+    for(int i = 0; i < 2*nx; i++)
+        printf("%10.5f", semiSurfY[i]);
     printf("\n");
 }
 
@@ -728,6 +856,7 @@ void NCMesh::printMeshData() const {
         printNodeLocation();
         printNodeDistances();
         printSurfaces();
+        printSemiSurfaces();
         printVolumes();
         printFaceDistances();
         printStaggeredVolumes();

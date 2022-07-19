@@ -22,19 +22,27 @@ private:
     double* surfY;  // Surface of the faces perpendicular to the Y axis. One surface associated to each node along the X axis. Size: nx+2
     double* vol;    // Volume of the control volumes. For simplicity, one control volume associated to each node although some have 0 volume. Size: (nx+2)*(ny+2)
 
+    double* semiSurfX;  // Control volume surface between the wall and the node (perpendicular to the Y axis). Size: 2*ny
+    double* semiSurfY;  // Control volume surface between the wall and the node (perpendicular to the X axis). Size: 2*nx
+
     double* distFaceX;  // Distances between faces in the X coordinate. Size: nx
     double* distFaceY;  // Distances between faces in the Y coordinate. Size: ny
+
+    double* surfX_StaggY;   // Surface of the faces perpendicular to the X axis, associated to the staggered volumes along the Y axis. Size: ny+1. One surface for each y-staggered node
+    double* surfY_StaggX;   // Surface of the faces perpendicular to the Y axis, associated to the staggered volumes along the X axis. Size: nx+1. One surface for each x-staggered node
 
     double* volStaggX;  // Volume associated to X-staggered nodes. Size: (nx+1)*(ny+2)
     double* volStaggY;  // Volume associated to Y-staggered nodes. Size: (nx+2)*(ny+1)
 
-    bool computeFaceXY();   // Computes faceX and faceY for uniform and non-uniform meshes
-    bool computeNodeXY();   // Computes nodeX and nodeY
-    bool computeDistXY();   // Computes distX and distY
-    bool computeSurfXY();   // Computes surfX and surfY
-    bool computeVol();      // Computes vol
+    bool computeFaceXY();       // Computes faceX and faceY for uniform and non-uniform meshes
+    bool computeNodeXY();       // Computes nodeX and nodeY
+    bool computeDistXY();       // Computes distX and distY
+    bool computeSurfXY();       // Computes surfX and surfY
+    bool computeSemiSurfXY();   // Computes semiSurfX and semiSurfY
+    bool computeVol();          // Computes vol
 
     bool computeDistFaceXY();   // Computes distFaceX and distFaceY
+    bool computeSurfStaggXY();   // Computes distFaceX and distFaceY
     bool computeVolStaggX();    // Computes volStaggX
     bool computeVolStaggY();    // Computes volStaggY
 
@@ -66,7 +74,7 @@ public:
     double* getVolStaggX() const;   // Returns volStaggX
     double* getVolStaggY() const;   // Returns volStaggY
 
-    // Safe getters
+    // Safe getters (not defined)
     double getNodeX(int) const;     // Returns nodeX[i] safely (checks if the object is built and if 0 <= i < nx)
     double getNodeY(int) const;     // Returns nodeY[j] safely (checks if the object is built and if 0 <= j < ny)
     double getDistX(int) const;     // Returns distX[i] safely (checks if the object is built and if 0 <= i < nx-1)
@@ -75,6 +83,8 @@ public:
     double getFaceY(int) const;     // Returns faceY[j] safely (checks if the object is built and if 0 <= j < ny+1)
     double getSurfX(int) const;     // Returns surfX[j] safely (checks if the object is built and if 0 <= j < ny)
     double getSurfY(int) const;     // Returns surfY[i] safely (checks if the object is built and if 0 <= i < nx)
+    // double getSemiSurfX(int j, int k) const;    // Returns semiSurfX[2*j+(k-2)] (checks if the object is built and if 0 <= 2*j+(k-2) < 2*ny)
+    // double getSemiSurfY(int i, int k) const;    // Returns semiSurfY[2*i+(k-2)] (checks if the object is built and if 0 <= 2*i+(k-2) < 2*nx)
     double getVol(int, int) const;  // Returns vol[j*nx+i] safely (checks if the object is built and if 0 <= i < nx and 0 <= j < ny)
 
     // Unsafe getters
@@ -86,9 +96,18 @@ public:
     double atFaceY(int) const;     // Returns faceY[j] unsafely (does not check if 0 <= j < ny+1)
     double atSurfX(int) const;     // Returns surfX[j] unsafely (does not check if 0 <= j < ny+2)
     double atSurfY(int) const;     // Returns surfY[i] unsafely (does not check if 0 <= i < nx+2)
+    double atSemiSurfX(int j, int k) const;    // Returns semiSurfX[2*j+(k-2)] (checks if the object is built and if 0 <= 2*j+(k-2) < 2*ny)
+    double atSemiSurfY(int i, int k) const;    // Returns semiSurfY[2*i+(k-2)] (checks if the object is built and if 0 <= 2*i+(k-2) < 2*nx)
     double atVol(int, int) const;  // Returns vol[j*nx+i] unsafely (does not check if 0 <= i < nx+2 and 0 <= j < ny+2)
     double atDistFaceX(int) const;      // Returns distFaceX[i] unsafely (does not check if 0 <= i < nx)
     double atDistFaceY(int) const;      // Returns distFaceY[j] unsafely (does not check if 0 <= j < ny)
+
+    // double* surfX_StaggY;   // Surface of the faces perpendicular to the X axis, associated to the staggered volumes along the Y axis. Size: ny+1
+    // double* surfY_StaggX;   // Surface of the faces perpendicular to the Y axis, associated to the staggered volumes along the X axis. Size: nx+1
+
+    double atSurfX_StaggY(int) const;   // Returns surfX_StaggY[j] unsafely (does not check if 0 <= i < ny+1)
+    double atSurfY_StaggX(int) const;   // Returns surfY_StaggX[i] unsafely (does not check if 0 <= i < nx+1)
+
     double atVolStaggX(int, int) const; // Returns volStaggX[i+j*(nx+1)] unsafely (does not check if 0 <= i < nx+1 and 0 <= j < ny+2)
     double atVolStaggY(int, int) const; // Returns volStaggY[i+j*(nx+2)] unsafely (does not check if 0 <= i < nx+2 and 0 <= j < ny+1)
 
@@ -97,6 +116,7 @@ public:
     void printNodeLocation() const;     // Prints node location and number (not nodeX nor nodeY)
     void printNodeDistances() const;    // Prints distX and distY
     void printSurfaces() const;         // Prints surfX and surfY
+    void printSemiSurfaces() const;     // Prints semiSurfX and semiSurfY
     void printVolumes() const;          // Prints vol
     void printFaceDistances() const;    // Prints distFaceX and distFaceY
     void printStaggeredVolumes() const; // Prints volStaggX and volStaggY
