@@ -5,10 +5,6 @@
 #include "NCMesh.h"
 #include "schemes.h"
 
-#define NX 10
-#define NY 10
-#define INDEX(I,J) I+J*(NY+2)
-
 struct Properties {
     double rho;
     double mu;
@@ -17,15 +13,20 @@ struct Properties {
 double* allocateDoubleArray(int n, int m);
 void allocateMatrices(double* &u, double* &v, double* &Ru, double* &Rv, const NCMesh m);
 
-
-void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
-void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
-void computePredictorVelocityX();
-void computePredictorVelocityY();
-
+// Convection schemes
 double schemeUDS(double A, double B, double mf);
 double schemeCDS(double A, double B);
 
+// General functions
+void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
+void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
+void computePredictorVelocityU(double* u_pred, const NCMesh m, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep);
+void computePredictorVelocityV(double* v_pred, const NCMesh m, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep);
+void computeDiscretizationCoefficients(double* A, const NCMesh m, const double* u_pred, const double* v_pred, const Properties props);
+void computeTimeStep(double &tstep, const NCMesh m, const double* u, const double* v, const Properties props);
+
+// Lid-driven cavity
+void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh m, const double u_ref);
 
 
 int main(int argc, char* argv[]) {
@@ -37,8 +38,8 @@ int main(int argc, char* argv[]) {
 
     double L = 1;
 
-    int nx = NX;
-    int ny = NY;
+    int nx = 10;
+    int ny = 10;
 
     NCMesh m(L, L, 1, nx, ny);
     // m.saveMeshData();
@@ -237,6 +238,222 @@ void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, con
 
 void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props) {
 
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    double* mx = (double*) calloc(ny+1, sizeof(double));
+    if(!mx) {
+        printf("Error: could not allocate enough memory for variable mx\n");
+        return;
+    }
+
+    // Column i = 1
+    int i = 1;
+    int j = 1;
+    double vS = v[(j-1)*(nx+2)+i];                          // South node y-velocity
+    double vP = v[j*(nx+2)+i];                              // Current node y-velocity
+    double vs = schemeCDS(vP, vS);                          // South face y-velocity
+    double ms = 0.5 * props.rho * (vP + vS) * m.atSurfY(i); // South face mass flow
+
+    for(j = 1; j < ny; j++) {
+
+        // Nodal velocities
+        double vW = v[j*(nx+2)+i-1];    // West node y-velocity
+        double vE = v[j*(nx+2)+i+1];    // East node y-velocity
+        double vN = v[(j+1)*(nx+2)+i];  // North node y-velocity
+
+        // Mass flows
+        double mw = props.rho * (u[j*(nx+1)+i-1] * m.atSemiSurfX(j,1) + u[(j+1)*(nx+1)+i-1] * m.atSemiSurfX(j+1,0));    // West face mass flow
+        double me = props.rho * (u[j*(nx+1)+i] * m.atSemiSurfX(j,1) + u[(j+1)*(nx+1)+i] * m.atSemiSurfX(j+1,0));        // East face mass flow
+        double mn = 0.5 * props.rho * (vP + vN) * m.atSurfY(i);                                                         // North face mass flow
+        mx[j] = me;
+
+        // Face velocities
+        double vw = vW;                 // West face y-velocity
+        double ve = schemeCDS(vP, vE);  // East face y-velocity. This may give problems
+        double vn = schemeCDS(vP, vN);  // North face y-velocity
+
+        // Operator R(v)
+        double integral1 = -(me * ve - mw * vw + mn * vn - ms * vs);
+        double integral2 = m.atSurfX_StaggY(j) * (vE - vP) / m.atDistX(i) - m.atSurfX_StaggY(j) * (vP - vW) / m.atDistX(i-1);
+        integral2 += m.atSurfY(i) * (vN - vP) / m.atDistFaceY(j) - m.atSurfY(i) * (vP - vS) / m.atDistFaceY(j-1);
+        integral2 *= props.mu;
+        Rv[j*(nx+2)+i] = (integral1 + integral2) / m.atVolStaggY(i,j);
+
+        // Next node
+        vS = vP;
+        vP = vE;
+        vs = vn;
+        ms = mn;
+
+    }
+
+    // Inner columns (2 <= i < nx)
+    for(i = 2; i < nx; i++) {
+
+        vS = v[(j-1)*(nx+2)+i];                             // South node y-velocity
+        vP = v[j*(nx+2)+i];                                 // Current node y-velocity
+        vs = schemeCDS(vP, vS);                             // South face y-velocity
+        ms = 0.5 * props.rho * (vP + vS) * m.atSurfY(i);    // South face mass flow
+
+        for(int j = 1; j < ny; j++) {
+
+            // Nodal velocities
+            double vW = v[j*(nx+2)+i-1];
+            double vE = v[j*(nx+2)+i+1];
+            double vN = v[(j+1)*(nx+2)+i];
+
+            // Mass flows
+            double mw = mx[j];                                                                                          // West face mass flow
+            double me = props.rho * (u[j*(nx+1)+i] * m.atSemiSurfX(j,1) + u[(j+1)*(nx+1)+i] * m.atSemiSurfX(j+1,0));    // West face mass flow
+            double mn = 0.5 * props.rho * (vP + vN) * m.atSurfY(i);                                                     // North face mass flow
+            mx[j] = me;
+
+            // Face velocities
+            double vw = schemeCDS(vP, vW);  // West face y-velocity. This may give problems
+            double ve = schemeCDS(vP, vE);  // East face y-velocity. This may give problems
+            double vn = schemeCDS(vP, vN);  // North face y-velocity. This may give problems
+
+            // Operator R(v)
+            double integral1 = -(me * ve - mw * vw + mn * vn - ms * vs);
+            double integral2 = m.atSurfX_StaggY(j) * (vE - vP) / m.atDistX(i) - m.atSurfX_StaggY(j) * (vP - vW) / m.atDistX(i-1);
+            integral2 += m.atSurfY(i) * (vN - vP) / m.atDistFaceY(j) - m.atSurfY(i) * (vP - vS) / m.atDistFaceY(j-1);
+            integral2 *= props.mu;
+            Rv[j*(nx+2)+i] = (integral1 + integral2) / m.atVolStaggY(i,j);
+
+            // Next node
+            vS = vP;
+            vP = vN;
+            vs = vn;
+            ms = mn;
+
+        }
+
+
+    }
+
+    // Last column (i = nx)
+    i = nx;
+
+    for(j = 1; j < ny; j++) {
+
+        // Nodal velocities
+        double vW = v[j*(nx+2)+i-1];    // West node y-velocity
+        double vE = v[j*(nx+2)+i+1];    // East node y-velocity
+        double vN = v[(j+1)*(nx+2)+i];  // North node y-velocity
+
+        // Mass flows
+        double mw = mx[j];
+        double me = props.rho * (u[j*(nx+1)+i] * m.atSemiSurfX(j,1) + u[(j+1)*(nx+1)+i] * m.atSemiSurfX(j+1,0));
+        double mn = 0.5 * props.rho * (vP + vN) * m.atSurfY(i);
+
+        // Face velocities
+        double vw = schemeCDS(vP, vW);  // West face y-velocity. This may give problems
+        double ve = schemeCDS(vP, vE);  // East face y-velocity. This may give problems
+        double vn = schemeCDS(vP, vN);  // North face y-velocity
+
+        // Operator R(v)
+        double integral1 = -(me * ve - mw * vw + mn * vn - ms * vs);
+        double integral2 = m.atSurfX_StaggY(j) * (vE - vP) / m.atDistX(i) - m.atSurfX_StaggY(j) * (vP - vW) / m.atDistX(i-1);
+        integral2 += m.atSurfY(i) * (vN - vP) / m.atDistFaceY(j) - m.atSurfY(i) * (vP - vS) / m.atDistFaceY(j-1);
+        integral2 *= props.mu;
+        Rv[j*(nx+2)+i] = (integral1 + integral2) / m.atVolStaggY(i,j);
+
+        // Next node
+        vS = vP;
+        vP = vN;
+        vs = vn;
+        ms = mn;
+    }
+
+
+
+}
+
+void computePredictorVelocityU(double* u_pred, const NCMesh m, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    for(int i = 1; i < nx; i++) {
+        for(int j = 1; j < ny+1; j++) {
+            int k = j*(nx+1) + i;
+            u_pred[k] = u[k] + tstep / props.rho * (1.5 * Ru[k] - 0.5 * Ru_prev[k]);
+        }
+    }
+
+}
+
+
+void computePredictorVelocityV(double* v_pred, const NCMesh m, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    for(int i = 1; i < nx+1; i++) {
+        for(int j = 1; j < ny; j++) {
+            int k = j*(nx+2) + i;
+            v_pred[k] = v[k] + tstep / props.rho * (1.5 * Rv[k] - 0.5 * Rv_prev[k]);
+        }
+    }
+
+}
+
+void computeInternalNodesDiscretizationCoefficients(double* A, double* b, const NCMesh m, const double* u_pred, const double* v_pred, const Properties props, const double tstep) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    for(int i = 1; i < nx+1; i++) {
+        for(int j = 1; j < ny+1; j++) {
+            int node = j*(nx+2) + i;
+
+            double Ax = m.atSurfX(j);
+            double Ay = m.atSurfY(i);
+            double dPE = m.atDistX(i);
+            double dPW = m.atDistX(i-1);
+            double dPN = m.atDistY(j);
+            double dPS = m.atDistY(j-1);
+
+            // South node
+            A[5*node] = Ay / dPS;
+
+            // West node
+            A[5*node+1] = Ax / dPW;
+
+            // East node
+            A[5*node+2] = Ax / dPE;
+
+            // North node
+            A[5*node+3] = Ay / dPN;
+
+            // Current node
+            A[5*node+4] = A[5*node] + A[5*node+1] + A[5*node+2] + A[5*node+3];
+
+            // Independent term
+            int node_x = j*(nx+1) + i;
+            int node_y = j*(nx+2) + i;
+            b[node] = u_pred[node_x] * Ax - u_pred[node_x-1] * Ax;          // Independent term: predictor x-velocity terms
+            b[node] += v_pred[node_y] * Ay - v_pred[node_y-(nx+2)] * Ay;    // Independent term: predictor y-velocity terms
+            b[node] *= (-props.rho) / tstep;
+
+        }
+    }
+
+}
+
+void computeTimeStep(double &tstep, const NCMesh m, const double* u, const double* v, const Properties props) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    for(int i = 1; i < nx+1; i++) {
+        for(int j = 1; j < ny+1; j++) {
+
+        }
+    }
+
 }
 
 double* allocateDoubleArray(int n, int m) {
@@ -277,16 +494,37 @@ double schemeCDS(double A, double B) {
     return 0.5*(A + B);
 }
 
-// void computeRu() {
-//
-//     // Horizontal component of operator R
-//     // For corner nodes ((0,0) and (nx,0) and (0,ny+1) and (nx,ny+1)) Ru is zero
-//     double* u = (double*) calloc((nx+1)*(ny+2), sizeof(double));
-//     double* Ru = (double*) calloc((nx+1)*(ny+2), sizeof(double));
-//
-//
-//
-// }
 
+// Lid-driven cavity
+void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh m, const double u_ref) {
 
-// void computePredictorVelocityX(double* up, const RCGrid m, const double* un)
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    // PREDICTOR VELOCITY X
+    // Lower and upper boundaries
+    for(int i = 0; i < nx+1; i++) {
+        u_pred[i] = 0;                      // Lower boundary
+        u_pred[(ny+1)*(nx+1)+i] = u_ref;    // Upper boundary
+    }
+
+    // Left and right boundaries
+    for(int j = 1; j < ny+2; j++) {
+        u_pred[j*(nx+1)] = 0;           // Left boundary
+        u_pred[j*(nx+1)+nx] = 0;        // Right boundary
+    }
+
+    // PREDICTOR VELOCITY Y
+    // Lower and upper boundaries
+    for(int i = 0; i < nx+2; i++) {
+        v_pred[i] = 0;                  // Lower boundary
+        v_pred[ny*(nx+2)+i] = 0;        // Upper boundary
+    }
+
+    // Left and right boundaries
+    for(int j = 1; j < ny+1; j++) {
+        v_pred[j*(nx+2)] = 0;           // Left boundary
+        v_pred[j*(nx+2)+nx+1] = 0;      // Right boundary
+    }
+
+}
