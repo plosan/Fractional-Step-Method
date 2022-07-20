@@ -4,6 +4,7 @@
 #include "RCGrid.h"
 #include "NCMesh.h"
 #include "schemes.h"
+#include "solver.h"
 
 struct Properties {
     double rho;
@@ -50,6 +51,10 @@ int main(int argc, char* argv[]) {
     m.printMeshData();
 
     double tstep = 1e-2;
+
+    const double tol = 1e-12;
+    const int maxIt = 500;
+
 
     // m.printSemiSurfaces();
 
@@ -151,7 +156,9 @@ int main(int argc, char* argv[]) {
     computeDiscretizationCoefficients(A, b, m, u_pred, v_pred, props, tstep);
     computeBoundaryDiscretizationCoefficients(A, b, m);
 
+    int exitCode = solveSystemGS(nx, ny, tol, maxIt, A, b, p);
 
+    printf("exitCode: %d\n", exitCode);
 
 }
 
@@ -587,8 +594,8 @@ void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMes
     int nx = m.getNX();
     int ny = m.getNY();
 
-    // lOWER AND UPPER BOUNDARIES
-    for(int i = 1; i < nx+1; i++) {
+    // lOWER AND UPPER BOUNDARIES (including corner nodes, i.e. singular nodes)
+    for(int i = 0; i < nx+2; i++) {
         // Lower boundary
         int node = i;       // Node identifier
         A[5*node] = 0;      // South node
@@ -626,5 +633,4 @@ void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMes
         A[5*node+4] = 1;    // Central node
         b[node] = 0;        // Independent term
     }
-
 }
