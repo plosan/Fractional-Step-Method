@@ -22,19 +22,23 @@ void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, con
 void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
 void computePredictorVelocityU(double* u_pred, const NCMesh m, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep);
 void computePredictorVelocityV(double* v_pred, const NCMesh m, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep);
-void computeDiscretizationCoefficients(double* A, const NCMesh m, const double* u_pred, const double* v_pred, const Properties props);
+void computeDiscretizationCoefficients(double* A, double* b, const NCMesh m, const double* u_pred, const double* v_pred, const Properties props, const double tstep);
+
+
+
 void computeTimeStep(double &tstep, const NCMesh m, const double* u, const double* v, const Properties props);
 
 // Lid-driven cavity
 void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh m, const double u_ref);
+void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMesh m);
 
 
 int main(int argc, char* argv[]) {
 
     double rho = 0.9982;    // Water density at 20 ºC           [kg/m^3]
     double mu = 1.0016e-3;  // Water dynamic viscosity at 20 ºC [Pa s]
-    double uref = 1;        // X-velocity boundary condition    [m/s]
-    double pref = 1e5;      // Pressure
+    double u_ref = 1;       // X-velocity boundary condition    [m/s]
+    double p_ref = 1e5;     // Pressure
 
     double L = 1;
 
@@ -44,6 +48,8 @@ int main(int argc, char* argv[]) {
     NCMesh m(L, L, 1, nx, ny);
     // m.saveMeshData();
     m.printMeshData();
+
+    double tstep = 1e-2;
 
     // m.printSemiSurfaces();
 
@@ -76,7 +82,10 @@ int main(int argc, char* argv[]) {
     for(int i = 1; i < nx; i++) {
         int j = ny + 1;
         int id = j * (nx + 1) + i;
-        u[id] = uref;
+        u[id] = u_ref;
+    }
+    for(int k = 0; k < (nx+2)*(ny+2); k++) {
+        p[k] = p_ref;
     }
 
     // Operator Ru
@@ -85,18 +94,62 @@ int main(int argc, char* argv[]) {
         printf("Error: could not allocate enough memory for Ru\n");
         return false;
     }
+    double* Ru_prev = (double*) calloc((nx+1)*(ny+2), sizeof(double));
+    if(!Ru_prev) {
+        printf("Error: could not allocate enough memory for Ru\n");
+        return false;
+    }
 
-    computeRu(Ru, m, u, v, props);
 
-    double * Rv = (double*) calloc((nx+2)*(ny+1), sizeof(double));
+    double* Rv = (double*) calloc((nx+2)*(ny+1), sizeof(double));
     if(!Rv) {
         printf("Error: could not allocate enough memory for Rv\n");
         return false;
     }
+    double* Rv_prev = (double*) calloc((nx+2)*(ny+1), sizeof(double));
+    if(!Rv) {
+        printf("Error: could not allocate enough memory for Rv_prev\n");
+        return false;
+    }
 
+    computeRu(Ru, m, u, v, props);
     computeRv(Rv, m, u, v, props);
 
 
+    double* u_pred = (double*) calloc((nx+1)*(ny+2), sizeof(double));
+    if(!u_pred) {
+        printf("Error: could not allocate enough memory for u_pred\n");
+        return false;
+    }
+
+    double* v_pred = (double*) calloc((nx+2)*(ny+1), sizeof(double));
+    if(!v_pred) {
+        printf("Error: could not allocate enough memory for u_pred\n");
+        return false;
+    }
+
+    computePredictorVelocityU(u_pred, m, u, Ru, Ru_prev, props, tstep);
+    computePredictorVelocityV(v_pred, m, v, Rv, Rv_prev, props, tstep);
+
+
+
+    setBoundaryPredictorVelocities(u_pred, v_pred, m, u_ref);
+
+    double* A = (double*) calloc(5*(nx+2)*(ny+2), sizeof(double));
+    if(!A) {
+        printf("Error: could not allocate enough memory for coefficients matrix\n");
+        return false;
+    }
+
+    double* b = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    if(!b) {
+        printf("Error: could not allocate enough memory for independent terms vector\n");
+        return false;
+    }
+
+
+    computeDiscretizationCoefficients(A, b, m, u_pred, v_pred, props, tstep);
+    computeBoundaryDiscretizationCoefficients(A, b, m);
 
 
 
@@ -400,7 +453,7 @@ void computePredictorVelocityV(double* v_pred, const NCMesh m, const double* v, 
 
 }
 
-void computeInternalNodesDiscretizationCoefficients(double* A, double* b, const NCMesh m, const double* u_pred, const double* v_pred, const Properties props, const double tstep) {
+void computeDiscretizationCoefficients(double* A, double* b, const NCMesh m, const double* u_pred, const double* v_pred, const Properties props, const double tstep) {
 
     int nx = m.getNX();
     int ny = m.getNY();
@@ -525,6 +578,53 @@ void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh
     for(int j = 1; j < ny+1; j++) {
         v_pred[j*(nx+2)] = 0;           // Left boundary
         v_pred[j*(nx+2)+nx+1] = 0;      // Right boundary
+    }
+
+}
+
+void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMesh m) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    // lOWER AND UPPER BOUNDARIES
+    for(int i = 1; i < nx+1; i++) {
+        // Lower boundary
+        int node = i;       // Node identifier
+        A[5*node] = 0;      // South node
+        A[5*node+1] = 0;    // West node
+        A[5*node+2] = 0;    // East node
+        A[5*node+3] = 1;    // North node
+        A[5*node+4] = 1;    // Central node
+        b[node] = 0;        // Independent term
+        // Upper boundary
+        node = (nx+2)*(ny+1) + i;
+        A[5*node] = 1;      // South node
+        A[5*node+1] = 0;    // West node
+        A[5*node+2] = 0;    // East node
+        A[5*node+3] = 0;    // North node
+        A[5*node+4] = 1;    // Central node
+        b[node] = 0;        // Independent term
+    }
+
+    // LEFT AND RIGHT BOUNDARIES
+    for(int j = 1; j < ny+1; j++) {
+        // Left boundary
+        int node = j*(nx+2);
+        A[5*node] = 0;      // South node
+        A[5*node+1] = 0;    // West node
+        A[5*node+2] = 1;    // East node
+        A[5*node+3] = 0;    // North node
+        A[5*node+4] = 1;    // Central node
+        b[node] = 0;        // Independent term
+        // Right boundary
+        node = j*(nx+2) + (nx+1);
+        A[5*node] = 0;      // South node
+        A[5*node+1] = 1;    // West node
+        A[5*node+2] = 0;    // East node
+        A[5*node+3] = 0;    // North node
+        A[5*node+4] = 1;    // Central node
+        b[node] = 0;        // Independent term
     }
 
 }
