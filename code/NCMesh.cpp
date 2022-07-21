@@ -743,6 +743,33 @@ void NCMesh::printSemiSurfaces() const {
     printf("\n");
 }
 
+// Prints surfY_StaggX and surfX_StaggY
+void NCMesh::printStaggeredSurfaces() const {
+    // SURFACE PERPENDICULAR TO X AXIS, FOR Y-STAGGERED CONTROL VOLUMES
+    printf("\nSurfaces X, Y-staggered control volumes\n");
+    // Print table header
+    printf("%10s%5s%2s\n", "j", "", "surfX_StaggY[j]");
+    printf("%7s", "");
+    for(int i = 0; i < 20; i++)
+        printf("-");
+    printf("\n");
+    // Print semiSurfX
+    for(int j = ny; j >= 0; j--)
+        printf("%10d%5s%.5f\n", j, "", surfX_StaggY[j]);
+
+    // SURFACE PERPENDICULAR TO Y AXIS, FOR X-STAGGERED CONTROL VOLUMES
+    printf("\nSurfaces Y, X-staggered control volumes\n");
+    // Print table header
+    printf("%16s%2s|", "i", "");
+    for(int i = 0; i < nx+1; i++)
+        printf("%10d", i);
+    // Print surfY_StaggX
+    printf("\n%16s%2s|", "surfY_StaggX[i]", "");
+    for(int i = 0; i < nx+1; i++)
+        printf("%10.5f", surfY_StaggX[i]);
+    printf("\n");
+}
+
 // Prints control volumes volume (vol)
 void NCMesh::printVolumes() const {
     // VOLUMES ASSOCIATED TO EVERY NODE
@@ -859,6 +886,8 @@ void NCMesh::printMeshData() const {
         printSemiSurfaces();
         printVolumes();
         printFaceDistances();
+        printSemiSurfaces();
+        printStaggeredSurfaces();
         printStaggeredVolumes();
     }
 }

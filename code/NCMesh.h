@@ -117,6 +117,7 @@ public:
     void printNodeDistances() const;    // Prints distX and distY
     void printSurfaces() const;         // Prints surfX and surfY
     void printSemiSurfaces() const;     // Prints semiSurfX and semiSurfY
+    void printStaggeredSurfaces() const;// Prints surfY_StaggX and surfX_StaggY
     void printVolumes() const;          // Prints vol
     void printFaceDistances() const;    // Prints distFaceX and distFaceY
     void printStaggeredVolumes() const; // Prints volStaggX and volStaggY

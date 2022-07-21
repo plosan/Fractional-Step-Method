@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <chrono>
 #include "RCGrid.h"
 #include "NCMesh.h"
 #include "schemes.h"
@@ -11,6 +12,8 @@ struct Properties {
     double mu;
 };
 
+void printMatrix(const double* a, const int n, const int m, const std::string name);
+
 double* allocateDoubleArray(int n, int m);
 void allocateMatrices(double* &u, double* &v, double* &Ru, double* &Rv, const NCMesh m);
 
@@ -19,19 +22,25 @@ double schemeUDS(double A, double B, double mf);
 double schemeCDS(double A, double B);
 
 // General functions
+void computeRuSimplified(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
+void computeRvSimplified(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
 void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
 void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
-void computePredictorVelocityU(double* u_pred, const NCMesh m, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep);
-void computePredictorVelocityV(double* v_pred, const NCMesh m, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep);
+void computePredictorVelocityU(double* u_pred, const int nx, const int ny, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep);
+void computePredictorVelocityV(double* v_pred, const int nx, const int ny, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep);
 void computeDiscretizationCoefficients(double* A, double* b, const NCMesh m, const double* u_pred, const double* v_pred, const Properties props, const double tstep);
-
-
-
 void computeTimeStep(double &tstep, const NCMesh m, const double* u, const double* v, const Properties props);
 
+void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, double* &Ru_prev, double* &Rv_prev, int& exitCode);
+
 // Lid-driven cavity
-void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh m, const double u_ref);
-void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMesh m);
+namespace lid_driven {
+    void setInitialMaps(double* u, double* v, double* p, const NCMesh m, const double u_ref, const double p_ref);
+    void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh m, const double u_ref);
+    void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMesh m);
+};
+
+
 
 
 int main(int argc, char* argv[]) {
@@ -40,26 +49,22 @@ int main(int argc, char* argv[]) {
     double mu = 1.0016e-3;  // Water dynamic viscosity at 20 ºC [Pa s]
     double u_ref = 1;       // X-velocity boundary condition    [m/s]
     double p_ref = 1e5;     // Pressure
+    Properties props = {rho, mu};
 
-    double L = 1;
+    const double L = 1;
 
-    int nx = 10;
-    int ny = 10;
-
-    NCMesh m(L, L, 1, nx, ny);
-    // m.saveMeshData();
-    m.printMeshData();
-
+    const int nx = 10;
+    const int ny = 10;
     double tstep = 1e-2;
 
     const double tol = 1e-12;
     const int maxIt = 500;
+    NCMesh m(L, L, 1, nx, ny);
+    // m.saveMeshData();
+    // m.printMeshData();
 
 
-    // m.printSemiSurfaces();
 
-
-    Properties props = {rho, mu};
 
 
     // X-component of velocity
@@ -83,43 +88,35 @@ int main(int argc, char* argv[]) {
         return false;
     }
 
-    // Initial maps
-    for(int i = 1; i < nx; i++) {
-        int j = ny + 1;
-        int id = j * (nx + 1) + i;
-        u[id] = u_ref;
-    }
-    for(int k = 0; k < (nx+2)*(ny+2); k++) {
-        p[k] = p_ref;
-    }
+    lid_driven::setInitialMaps(u, v, p, m, u_ref, p_ref);
 
-    // Operator Ru
-    double* Ru = (double*) calloc((nx+1)*(ny+2), sizeof(double));
-    if(!Ru) {
-        printf("Error: could not allocate enough memory for Ru\n");
-        return false;
-    }
-    double* Ru_prev = (double*) calloc((nx+1)*(ny+2), sizeof(double));
-    if(!Ru_prev) {
-        printf("Error: could not allocate enough memory for Ru\n");
+    double t = 0;   // Current time
+    bool steady = false;    // Steady state bool. true = steady state reached, false = steady state not reached
+
+    int exitCode = 0;
+    double* Ru;
+    double* Rv;
+    double* Ru_prev;
+    double* Rv_prev;
+    allocateOperatorR(nx, ny, Ru, Rv, Ru_prev, Rv_prev, exitCode);
+    if(exitCode == -1) {
+        printf("Error. The simulation will stop\n");
         return false;
     }
 
+    // printMatrix(Ru, nx+1, ny+2, "Ru");
+    // printMatrix(Ru_prev, nx+1, ny+2, "Ru_prev");
 
-    double* Rv = (double*) calloc((nx+2)*(ny+1), sizeof(double));
-    if(!Rv) {
-        printf("Error: could not allocate enough memory for Rv\n");
-        return false;
-    }
-    double* Rv_prev = (double*) calloc((nx+2)*(ny+1), sizeof(double));
-    if(!Rv) {
-        printf("Error: could not allocate enough memory for Rv_prev\n");
-        return false;
-    }
+    // std::chrono::steady_clock::time_point begin, end;
+
 
     computeRu(Ru, m, u, v, props);
-    computeRv(Rv, m, u, v, props);
+    computeRuSimplified(Ru_prev, m, u, v, props);
+    std::memcpy(Ru_prev, Ru, (nx+1)*(ny+2)*sizeof(double));
 
+    computeRvSimplified(Rv, m, u, v, props);
+    computeRvSimplified(Rv_prev, m, u, v, props);
+    std::memcpy(Rv_prev, Rv, (nx+2)*(ny+1)*sizeof(double));
 
     double* u_pred = (double*) calloc((nx+1)*(ny+2), sizeof(double));
     if(!u_pred) {
@@ -133,12 +130,10 @@ int main(int argc, char* argv[]) {
         return false;
     }
 
-    computePredictorVelocityU(u_pred, m, u, Ru, Ru_prev, props, tstep);
-    computePredictorVelocityV(v_pred, m, v, Rv, Rv_prev, props, tstep);
+    computePredictorVelocityU(u_pred, nx, ny, u, Ru, Ru_prev, props, tstep);
+    computePredictorVelocityV(v_pred, nx, ny, v, Rv, Rv_prev, props, tstep);
 
-
-
-    setBoundaryPredictorVelocities(u_pred, v_pred, m, u_ref);
+    lid_driven::setBoundaryPredictorVelocities(u_pred, v_pred, m, u_ref);
 
     double* A = (double*) calloc(5*(nx+2)*(ny+2), sizeof(double));
     if(!A) {
@@ -154,11 +149,104 @@ int main(int argc, char* argv[]) {
 
 
     computeDiscretizationCoefficients(A, b, m, u_pred, v_pred, props, tstep);
-    computeBoundaryDiscretizationCoefficients(A, b, m);
+    lid_driven::computeBoundaryDiscretizationCoefficients(A, b, m);
 
-    int exitCode = solveSystemGS(nx, ny, tol, maxIt, A, b, p);
+    for(int j = 0; j < ny+2; j++) {
+        for(int i = 0; i < nx+2; i++) {
+            int k = j * (nx + 2) + i;
+            printf("(%3d,%3d)%10d", i, j, k);
+            for(int i = 0; i < 5; i++)
+                printf("%15.2f", A[5*k+i]);
+            printf("%15.2f\n", b[k]);
+        }
+    }
 
-    printf("exitCode: %d\n", exitCode);
+    // for(int k = 0; k < (nx+2)*(ny+2); k++) {
+    //     printf("%5d", k);
+    //     for(int i = 0; i < 5; i++)
+    //         printf("%15.2f", A[5*k+i]);
+    //     printf("%15.2f\n", b[k]);
+    // }
+
+    printMatrix(p, nx+2, ny+2, "p0");
+    int exitCodeGS = solveSystemGS(nx+2, ny+2, tol, maxIt, A, b, p);
+    printMatrix(p, nx+2, ny+2, "p");
+
+    printf("exitCode: %d\n", exitCodeGS);
+
+}
+
+
+
+void printMatrix(const double* a, const int n, const int m, const std::string name) {
+
+    // Print name
+    printf("\n%s = \n", name.c_str());
+
+    // Table header
+    printf("%10s", "");
+    for(int i = 0; i < n; i++)
+        printf("%10d", i);
+    printf("\n");
+
+    // Table content
+    for(int j = m-1; j >= 0; j--) {
+        printf("%5d%5s", j, "");
+        for(int i = 0; i < n; i++)
+            printf("%12.2f", a[j*n+i]);
+        printf("\n");
+    }
+    printf("\n");
+
+}
+
+void computeRuSimplified(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props) {
+
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    for(int j = 1; j < ny+1; j++) {
+
+        for(int i = 1; i < nx; i++) {
+
+            // Nodal velocities
+            int node = j*(nx+1) + i;
+            double uP = u[node];
+            double uW = u[node-1];
+            double uE = u[node+1];
+            double uS = u[node-(nx+1)];
+            double uN = u[node+(nx+1)];
+
+            // Faces velocities
+            double uw = schemeCDS(uP, uW);
+            double ue = schemeCDS(uP, uE);
+            double us = (j > 1 ? schemeCDS(uP, uS) : uS);
+            double un = (j < ny ? schemeCDS(uP, uN) : uN);
+
+            // Areas
+            double Ax = m.atSurfX(j);
+            double Ay = m.atSurfY_StaggX(i);
+            double Ay_left = m.atSemiSurfY(i,1);
+            double Ay_right = m.atSemiSurfY(i+1,0);
+
+            // Mass flows
+            double mw = 0.5 * props.rho * (uP + uW) * Ax;
+            double me = 0.5 * props.rho * (uP + uE) * Ax;
+            double mn = props.rho * (v[j*(nx+2)+i] * Ay_left + v[j*(nx+2)+i+1] * Ay_right);
+            double ms = props.rho * (v[(j-1)*(nx+2)+i] * Ay_left + v[(j-1)*(nx+2)+i+1] * Ay_right);
+
+            // Operator R(u)
+            double integral1 = -(me * ue - mw * uw + mn * un - ms * us);
+            double integral2 = Ax * (uE - uP) / m.atDistFaceX(i) - Ax * (uP - uW) / m.atDistFaceX(i-1);
+            integral2 += Ay * (uN - uP) / m.atDistY(j) - Ay * (uP - uS) / m.atDistY(j-1);
+            integral2 *= props.mu;
+            Ru[j*(nx+1)+i] = (integral1 + integral2) / m.atVolStaggX(i,j);
+
+
+        }
+
+    }
 
 }
 
@@ -296,6 +384,54 @@ void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, con
     }
 }
 
+void computeRvSimplified(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    for(int i = 1; i < nx+1; i++) {
+
+        for(int j = 1; j < ny; j++) {
+
+            int node = j * (nx + 2) + i;
+            // Nodal velocities
+            double vP = v[node];
+            double vW = v[node-1];
+            double vE = v[node+1];
+            double vS = v[node-(nx+2)];
+            double vN = v[node+(nx+2)];
+
+            // Face velocities
+            double vw = (i > 1 ? schemeCDS(vP, vW) : vW);
+            double ve = (i < nx ? schemeCDS(vP, vE) : vE);
+            double vs = schemeCDS(vP, vS);
+            double vn = schemeCDS(vP, vN);
+
+            // Areas
+            double Ax = m.atSurfX_StaggY(j);
+            double Ax_up = m.atSemiSurfX(j+1,0);
+            double Ax_down = m.atSemiSurfX(j,1);
+            double Ay = m.atSurfY(i);
+
+            // Mass flows
+            double mw = props.rho * (u[j*(nx+1)+i-1] * Ax_down + u[(j+1)*(nx+1)+i-1] * Ax_up);
+            double me = props.rho * (u[j*(nx+1)+i] * Ax_down + u[(j+1)*(nx+1)+i+1] * Ax_up);
+            double ms = 0.5 * props.rho * (vP + vS) * Ay;
+            double mn = 0.5 * props.rho * (vP + vN) * Ay;
+
+            // Operator R(v)
+            double integral1 = -(me * ve - mw * vw + mn * vn - ms * vs);
+            double integral2 = Ax * (vE - vP) / m.atDistX(i) - Ax * (vP - vW) / m.atDistX(i-1);
+            integral2 += Ay * (vN - vP) / m.atDistFaceY(j) - Ay * (vP - vS) / m.atDistFaceY(j-1);
+            integral2 *= props.mu;
+            Rv[j*(nx+2)+i] = (integral1 + integral2) / m.atVolStaggY(i,j);
+
+        }
+
+}
+
+}
+
 void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props) {
 
 
@@ -431,14 +567,14 @@ void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, con
 
 }
 
-void computePredictorVelocityU(double* u_pred, const NCMesh m, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep) {
+void computePredictorVelocityU(double* u_pred, const int nx, const int ny, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep) {
 
-    int nx = m.getNX();
-    int ny = m.getNY();
+    // int nx = m.getNX();
+    // int ny = m.getNY();
 
     for(int i = 1; i < nx; i++) {
         for(int j = 1; j < ny+1; j++) {
-            int k = j*(nx+1) + i;
+            int k = j * (nx + 1) + i;
             u_pred[k] = u[k] + tstep / props.rho * (1.5 * Ru[k] - 0.5 * Ru_prev[k]);
         }
     }
@@ -446,10 +582,10 @@ void computePredictorVelocityU(double* u_pred, const NCMesh m, const double* u, 
 }
 
 
-void computePredictorVelocityV(double* v_pred, const NCMesh m, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep) {
+void computePredictorVelocityV(double* v_pred, const int nx, const int ny, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep) {
 
-    int nx = m.getNX();
-    int ny = m.getNY();
+    // int nx = m.getNX();
+    // int ny = m.getNY();
 
     for(int i = 1; i < nx+1; i++) {
         for(int j = 1; j < ny; j++) {
@@ -467,7 +603,7 @@ void computeDiscretizationCoefficients(double* A, double* b, const NCMesh m, con
 
     for(int i = 1; i < nx+1; i++) {
         for(int j = 1; j < ny+1; j++) {
-            int node = j*(nx+2) + i;
+            int node = j * (nx + 2) + i;
 
             double Ax = m.atSurfX(j);
             double Ay = m.atSurfY(i);
@@ -492,8 +628,8 @@ void computeDiscretizationCoefficients(double* A, double* b, const NCMesh m, con
             A[5*node+4] = A[5*node] + A[5*node+1] + A[5*node+2] + A[5*node+3];
 
             // Independent term
-            int node_x = j*(nx+1) + i;
-            int node_y = j*(nx+2) + i;
+            int node_x = j * (nx + 1) + i;
+            int node_y = j * (nx + 2) + i;
             b[node] = u_pred[node_x] * Ax - u_pred[node_x-1] * Ax;          // Independent term: predictor x-velocity terms
             b[node] += v_pred[node_y] * Ay - v_pred[node_y-(nx+2)] * Ay;    // Independent term: predictor y-velocity terms
             b[node] *= (-props.rho) / tstep;
@@ -514,6 +650,41 @@ void computeTimeStep(double &tstep, const NCMesh m, const double* u, const doubl
         }
     }
 
+}
+
+void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, double* &Ru_prev, double* &Rv_prev, int &exitCode) {
+
+    exitCode = -1;
+
+    // Operator Ru at time n
+    Ru = (double*) calloc((nx+1)*(ny+2), sizeof(double));
+    if(!Ru) {
+        printf("Error: could not allocate enough memory for Ru\n");
+        return;
+    }
+
+    // Operator Rv at time n
+    Rv = (double*) calloc((nx+2)*(ny+1), sizeof(double));
+    if(!Rv) {
+        printf("Error: could not allocate enough memory for Rv\n");
+        return;
+    }
+
+    // Operator Ru at time n-1
+    Ru_prev = (double*) calloc((nx+1)*(ny+2), sizeof(double));
+    if(!Ru_prev) {
+        printf("Error: could not allocate enough memory for Ru\n");
+        return;
+    }
+
+    // Operator Rv at time n-1
+    Rv_prev = (double*) calloc((nx+2)*(ny+1), sizeof(double));
+    if(!Rv) {
+        printf("Error: could not allocate enough memory for Rv_prev\n");
+        return;
+    }
+
+    exitCode = 1;   // All arrays were allocated successfully
 }
 
 double* allocateDoubleArray(int n, int m) {
@@ -556,7 +727,25 @@ double schemeCDS(double A, double B) {
 
 
 // Lid-driven cavity
-void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh m, const double u_ref) {
+
+void lid_driven::setInitialMaps(double* u, double* v, double* p, const NCMesh m, const double u_ref, const double p_ref) {
+
+    int nx = m.getNX(); // Number of control volumes along x axis
+    int ny = m.getNY(); // Number of control volumes along y axis
+
+    // Arrays u, v and p allocated using calloc, all bits set to zero by calloc
+
+    // x-velocity (u) initial map
+    for(int i = 0; i < nx+1; i++)
+        u[(ny+1)*(nx+1)+i] = u_ref;
+
+    // pressure (p) initial map
+    for(int k = 0; k < (nx+2)*(ny+2); k++)
+        p[k] = p_ref;
+}
+
+
+void lid_driven::setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh m, const double u_ref) {
 
     int nx = m.getNX();
     int ny = m.getNY();
@@ -589,7 +778,7 @@ void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const NCMesh
 
 }
 
-void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMesh m) {
+void lid_driven::computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMesh m) {
 
     int nx = m.getNX();
     int ny = m.getNY();
@@ -605,7 +794,7 @@ void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMes
         A[5*node+4] = 1;    // Central node
         b[node] = 0;        // Independent term
         // Upper boundary
-        node = (nx+2)*(ny+1) + i;
+        node = (ny + 1) * (nx + 2) + i;
         A[5*node] = 1;      // South node
         A[5*node+1] = 0;    // West node
         A[5*node+2] = 0;    // East node
@@ -617,7 +806,7 @@ void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMes
     // LEFT AND RIGHT BOUNDARIES
     for(int j = 1; j < ny+1; j++) {
         // Left boundary
-        int node = j*(nx+2);
+        int node = j * (nx + 2);
         A[5*node] = 0;      // South node
         A[5*node+1] = 0;    // West node
         A[5*node+2] = 1;    // East node
@@ -625,7 +814,7 @@ void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMes
         A[5*node+4] = 1;    // Central node
         b[node] = 0;        // Independent term
         // Right boundary
-        node = j*(nx+2) + (nx+1);
+        node = j * (nx + 2) + (nx + 1);
         A[5*node] = 0;      // South node
         A[5*node+1] = 1;    // West node
         A[5*node+2] = 0;    // East node
