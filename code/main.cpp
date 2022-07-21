@@ -2,6 +2,10 @@
 #include <vector>
 #include <cstring>
 #include <chrono>
+#include <algorithm>
+#include <cmath>
+#include <fstream>
+#include <iomanip>
 #include "RCGrid.h"
 #include "NCMesh.h"
 #include "schemes.h"
@@ -13,6 +17,7 @@ struct Properties {
 };
 
 void printMatrix(const double* a, const int n, const int m, const std::string name);
+void printLinearSystem(const double* A, const double* b, const int nx, const int ny);
 
 double* allocateDoubleArray(int n, int m);
 void allocateMatrices(double* &u, double* &v, double* &Ru, double* &Rv, const NCMesh m);
@@ -24,14 +29,21 @@ double schemeCDS(double A, double B);
 // General functions
 void computeRuSimplified(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
 void computeRvSimplified(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
-void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
-void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
+// void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
+// void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
 void computePredictorVelocityU(double* u_pred, const int nx, const int ny, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep);
 void computePredictorVelocityV(double* v_pred, const int nx, const int ny, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep);
 void computeDiscretizationCoefficients(double* A, double* b, const NCMesh m, const double* u_pred, const double* v_pred, const Properties props, const double tstep);
+
+void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, double* &Ru_prev, double* &Rv_prev);
+
+void computeVelocityU(double* u, const NCMesh m, const double* u_pred, const double* p, const Properties props, const double tstep, double& maxDiff);
+void computeVelocityV(double* v, const NCMesh m, const double* v_pred, const double* p, const Properties props, const double tstep, double& maxDiff);
 void computeTimeStep(double &tstep, const NCMesh m, const double* u, const double* v, const Properties props);
 
-void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, double* &Ru_prev, double* &Rv_prev, int& exitCode);
+void computeVelocityCollocatedMesh(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v);
+
+void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const char* filename, const int precision);
 
 // Lid-driven cavity
 namespace lid_driven {
@@ -45,20 +57,21 @@ namespace lid_driven {
 
 int main(int argc, char* argv[]) {
 
-    double rho = 0.9982;    // Water density at 20 ºC           [kg/m^3]
-    double mu = 1.0016e-3;  // Water dynamic viscosity at 20 ºC [Pa s]
+    double rho = 1;    // Density
+    double mu = 1e-5;  // Dynamic viscosity
     double u_ref = 1;       // X-velocity boundary condition    [m/s]
     double p_ref = 1e5;     // Pressure
     Properties props = {rho, mu};
 
     const double L = 1;
 
-    const int nx = 10;
-    const int ny = 10;
-    double tstep = 1e-2;
+    const int nx = 50;
+    const int ny = 50;
+    double tstep = 1;
 
-    const double tol = 1e-12;
-    const int maxIt = 500;
+    const double tol = 1e-9;       // Linear system solver tolerance
+    const int maxIt = 10000;         // Linear system max iterations
+    const double sstol = 2.5e-2;      // Tolerance for steady state check
     NCMesh m(L, L, 1, nx, ny);
     // m.saveMeshData();
     // m.printMeshData();
@@ -90,33 +103,18 @@ int main(int argc, char* argv[]) {
 
     lid_driven::setInitialMaps(u, v, p, m, u_ref, p_ref);
 
-    double t = 0;   // Current time
+    double t = 0;           // Current time
+    int it = 0;             // Iteration counter
     bool steady = false;    // Steady state bool. true = steady state reached, false = steady state not reached
 
-    int exitCode = 0;
     double* Ru;
     double* Rv;
     double* Ru_prev;
     double* Rv_prev;
-    allocateOperatorR(nx, ny, Ru, Rv, Ru_prev, Rv_prev, exitCode);
-    if(exitCode == -1) {
-        printf("Error. The simulation will stop\n");
-        return false;
-    }
+    allocateOperatorR(nx, ny, Ru, Rv, Ru_prev, Rv_prev);
 
-    // printMatrix(Ru, nx+1, ny+2, "Ru");
-    // printMatrix(Ru_prev, nx+1, ny+2, "Ru_prev");
-
-    // std::chrono::steady_clock::time_point begin, end;
-
-
-    computeRu(Ru, m, u, v, props);
     computeRuSimplified(Ru_prev, m, u, v, props);
-    std::memcpy(Ru_prev, Ru, (nx+1)*(ny+2)*sizeof(double));
-
-    computeRvSimplified(Rv, m, u, v, props);
     computeRvSimplified(Rv_prev, m, u, v, props);
-    std::memcpy(Rv_prev, Rv, (nx+2)*(ny+1)*sizeof(double));
 
     double* u_pred = (double*) calloc((nx+1)*(ny+2), sizeof(double));
     if(!u_pred) {
@@ -130,10 +128,13 @@ int main(int argc, char* argv[]) {
         return false;
     }
 
-    computePredictorVelocityU(u_pred, nx, ny, u, Ru, Ru_prev, props, tstep);
-    computePredictorVelocityV(v_pred, nx, ny, v, Rv, Rv_prev, props, tstep);
 
-    lid_driven::setBoundaryPredictorVelocities(u_pred, v_pred, m, u_ref);
+
+
+    // printMatrix(u_pred, nx+1, ny+2, "u_pred");
+    // printMatrix(v_pred, nx+2, ny+1, "v_pred");
+
+
 
     double* A = (double*) calloc(5*(nx+2)*(ny+2), sizeof(double));
     if(!A) {
@@ -147,32 +148,77 @@ int main(int argc, char* argv[]) {
         return false;
     }
 
+    while(!steady) {
 
-    computeDiscretizationCoefficients(A, b, m, u_pred, v_pred, props, tstep);
-    lid_driven::computeBoundaryDiscretizationCoefficients(A, b, m);
+        // Compute operator R(u) and R(v)
+        computeRuSimplified(Ru, m, u, v, props);
+        computeRvSimplified(Rv, m, u, v, props);
 
-    for(int j = 0; j < ny+2; j++) {
-        for(int i = 0; i < nx+2; i++) {
-            int k = j * (nx + 2) + i;
-            printf("(%3d,%3d)%10d", i, j, k);
-            for(int i = 0; i < 5; i++)
-                printf("%15.2f", A[5*k+i]);
-            printf("%15.2f\n", b[k]);
+        // Compute predictor velocities
+        computePredictorVelocityU(u_pred, nx, ny, u, Ru, Ru_prev, props, tstep);
+        computePredictorVelocityV(v_pred, nx, ny, v, Rv, Rv_prev, props, tstep);
+        lid_driven::setBoundaryPredictorVelocities(u_pred, v_pred, m, u_ref);
+
+        // Compute discretization coefficients
+        computeDiscretizationCoefficients(A, b, m, u_pred, v_pred, props, tstep);
+        lid_driven::computeBoundaryDiscretizationCoefficients(A, b, m);
+
+        // Solve linear system
+        int exitCodeGS = solveSystemGS(nx+2, ny+2, tol, maxIt, A, b, p);
+        if(exitCodeGS == -1) {
+            printf("Error solviusaodhsadisadsa\n");
+            return false;
         }
+
+        // Compute velocities at time n+1
+        double maxDiffU = 0;
+        computeVelocityU(u, m, u_pred, p, props, tstep, maxDiffU);
+        double maxDiffV = 0;
+        computeVelocityV(v, m, v_pred, p, props, tstep, maxDiffV);
+
+        maxDiffU = std::max(maxDiffU, maxDiffV);
+        t += tstep;
+        it++;
+
+        printf("%6d %5s %10.5f %5s %10.5f %5s %10.5e %5s %d\n", it, "", t, "", tstep, "", maxDiffU, "", exitCodeGS);
+
+        if(maxDiffU < sstol)
+            steady = true;
+        else {
+            // Compute next time step
+            computeTimeStep(tstep, m, u, v, props);
+
+            // Update operator R
+            std::memcpy(Ru_prev, Ru, (nx+1)*(ny+2)*sizeof(double));
+            std::memcpy(Rv_prev, Rv, (nx+2)*(ny+1)*sizeof(double));
+        }
+
+
     }
 
-    // for(int k = 0; k < (nx+2)*(ny+2); k++) {
-    //     printf("%5d", k);
-    //     for(int i = 0; i < 5; i++)
-    //         printf("%15.2f", A[5*k+i]);
-    //     printf("%15.2f\n", b[k]);
-    // }
+    double* u_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    double* v_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    if(!u_col) {
+        printf("Error: could not allocate enough memory for u_col\n");
+        return false;
+    }
+    if(!v_col) {
+        printf("Error: could not allocate enough memory for v_col\n");
+        return false;
+    }
+    computeVelocityCollocatedMesh(u_col, v_col, nx, ny, u, v);
 
-    printMatrix(p, nx+2, ny+2, "p0");
-    int exitCodeGS = solveSystemGS(nx+2, ny+2, tol, maxIt, A, b, p);
-    printMatrix(p, nx+2, ny+2, "p");
+    // printMatrix(u_col, nx+2, ny+2, "u_col");
+    // printMatrix(v_col, nx+2, ny+2, "v_col");
 
-    printf("exitCode: %d\n", exitCodeGS);
+    const char* filename = "sim/vel.txt";
+    printVelocityToFile(m, u_col, v_col, filename, 5);
+
+    // printMatrix(p, nx+2, ny+2, "p");
+    // printMatrix(u, nx+1, ny+2, "u");
+    // printMatrix(v, nx+2, ny+1, "v");
+
+
 
 }
 
@@ -186,7 +232,7 @@ void printMatrix(const double* a, const int n, const int m, const std::string na
     // Table header
     printf("%10s", "");
     for(int i = 0; i < n; i++)
-        printf("%10d", i);
+        printf("%12d", i);
     printf("\n");
 
     // Table content
@@ -198,6 +244,18 @@ void printMatrix(const double* a, const int n, const int m, const std::string na
     }
     printf("\n");
 
+}
+
+void printLinearSystem(const double* A, const double* b, const int nx, const int ny) {
+    for(int j = 0; j < ny+2; j++) {
+        for(int i = 0; i < nx+2; i++) {
+            int k = j * (nx + 2) + i;
+            printf("(%3d,%3d)%10d", i, j, k);
+            for(int i = 0; i < 5; i++)
+                printf("%15.2f", A[5*k+i]);
+            printf("%15.2f\n", b[k]);
+        }
+    }
 }
 
 void computeRuSimplified(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props) {
@@ -575,7 +633,7 @@ void computePredictorVelocityU(double* u_pred, const int nx, const int ny, const
     for(int i = 1; i < nx; i++) {
         for(int j = 1; j < ny+1; j++) {
             int k = j * (nx + 1) + i;
-            u_pred[k] = u[k] + tstep / props.rho * (1.5 * Ru[k] - 0.5 * Ru_prev[k]);
+            u_pred[k] = u[k] + (tstep / props.rho) * (1.5 * Ru[k] - 0.5 * Ru_prev[k]);
         }
     }
 
@@ -603,6 +661,7 @@ void computeDiscretizationCoefficients(double* A, double* b, const NCMesh m, con
 
     for(int i = 1; i < nx+1; i++) {
         for(int j = 1; j < ny+1; j++) {
+
             int node = j * (nx + 2) + i;
 
             double Ax = m.atSurfX(j);
@@ -639,23 +698,55 @@ void computeDiscretizationCoefficients(double* A, double* b, const NCMesh m, con
 
 }
 
-void computeTimeStep(double &tstep, const NCMesh m, const double* u, const double* v, const Properties props) {
+void computeVelocityU(double* u, const NCMesh m, const double* u_pred, const double* p, const Properties props, const double tstep, double& maxDiff) {
 
     int nx = m.getNX();
     int ny = m.getNY();
-
-    for(int i = 1; i < nx+1; i++) {
+    for(int i = 1; i < nx; i++) {
         for(int j = 1; j < ny+1; j++) {
-
+            double px = (p[j*(nx+2)+i+1] - p[j*(nx+2)+i]) / m.atDistX(i);   // Partial derivative of pressure with respect to x
+            double u_next = u_pred[j*(nx+1)+i] - (tstep / props.rho) * px;  // X-velocity at time instant n+1
+            maxDiff = std::max(maxDiff, std::abs(u[j*(nx+1)+i] - u_next));  // Update maximum difference to check convergence
+            u[j*(nx+1)+i] = u_next;                                         // Update velocity
         }
     }
 
 }
 
-void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, double* &Ru_prev, double* &Rv_prev, int &exitCode) {
+void computeVelocityV(double* v, const NCMesh m, const double* v_pred, const double* p, const Properties props, const double tstep, double& maxDiff) {
 
-    exitCode = -1;
+    int nx = m.getNX();
+    int ny = m.getNY();
+    for(int i = 1; i < nx+1; i++) {
+        for(int j = 1; j < ny; j++) {
+            double py = (p[(j+1)*(nx+2)+i] - p[j*(nx+2)+i]) / m.atDistY(j); // Partial derivative of pressure with respect to y
+            double v_next = v_pred[j*(nx+2)+i] - (tstep / props.rho) * py;  // Y-velocity at time instant n+1
+            maxDiff = std::max(maxDiff, std::abs(v[j*(nx+2)+i] - v_next));  // Update maximum difference to check convergence
+            v[j*(nx+2)+i] = v_next;                                         // Update velocity
+        }
+    }
 
+}
+
+void computeTimeStep(double &tstep, const NCMesh m, const double* u, const double* v, const Properties props) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+    for(int i = 1; i < nx; i++) {
+        for(int j = 1; j < ny; j++) {
+            double u_node = u[j*(nx+1)+i];
+            double v_node = u[j*(nx+2)+i];
+            double vel = std::sqrt(u_node * u_node + v_node * v_node);
+            double delta = std::min(m.atDistX(i), m.atDistY(j));
+            double tstep_c = 0.35 * delta / vel;
+            double tstep_d = 0.2 * props.rho * delta * delta / props.mu;
+            tstep = std::min(tstep, std::min(tstep_c, tstep_d));
+        }
+    }
+}
+
+
+void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, double* &Ru_prev, double* &Rv_prev) {
     // Operator Ru at time n
     Ru = (double*) calloc((nx+1)*(ny+2), sizeof(double));
     if(!Ru) {
@@ -683,8 +774,6 @@ void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, dou
         printf("Error: could not allocate enough memory for Rv_prev\n");
         return;
     }
-
-    exitCode = 1;   // All arrays were allocated successfully
 }
 
 double* allocateDoubleArray(int n, int m) {
@@ -758,7 +847,7 @@ void lid_driven::setBoundaryPredictorVelocities(double* u_pred, double* v_pred, 
     }
 
     // Left and right boundaries
-    for(int j = 1; j < ny+2; j++) {
+    for(int j = 1; j < ny+1; j++) {
         u_pred[j*(nx+1)] = 0;           // Left boundary
         u_pred[j*(nx+1)+nx] = 0;        // Right boundary
     }
@@ -822,4 +911,72 @@ void lid_driven::computeBoundaryDiscretizationCoefficients(double* A, double* b,
         A[5*node+4] = 1;    // Central node
         b[node] = 0;        // Independent term
     }
+}
+
+void computeVelocityCollocatedMesh(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v) {
+
+    // COMPUTE U_COL
+    // x-velocity at the center of the non-staggered control volumes
+    // Left and right columns
+    for(int j = 0; j < ny+2; j++) {
+        u_col[j*(nx+2)] = u[j*(nx+1)];
+        u_col[j*(nx+2)+nx+1] = u[j*(nx+1)+nx];
+    }
+    // Central columns
+    for(int i = 1; i < nx+1; i++) {
+        for(int j = 0; j < ny+2; j++) {
+            double uW = u[j*(nx+1)+i-1];
+            double uE = u[j*(nx+1)+i];
+            u_col[j*(nx+2)+i] = schemeCDS(uW, uE);
+        }
+    }
+
+    // Compute V_COL
+    // y-velocity at the center of the non-staggered control volumes
+    // Lower and upper rows
+    for(int i = 0; i < nx+2; i++) {
+        v_col[i] = v[i];
+        v_col[(ny+1)*(nx+2)+i] = v[ny*(nx+2)+i];
+    }
+    // Central rows
+    for(int j = 1; j < ny+1; j++) {
+        for(int i = 0; i < nx+2; i++) {
+            double vN = v[j*(nx+2)+i];
+            double vS = v[(j-1)*(nx+2)+i];
+            v_col[j*(nx+2)+i] = schemeCDS(vS, vN);
+        }
+    }
+
+
+}
+
+void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const char* filename, const int precision) {
+
+
+
+    std::ofstream file;
+    file.open(filename);
+
+    if(!file.is_open()) {
+        printf("Error. Could not open file\n");
+        file.close();
+        return;
+    }
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    file << std::setprecision(precision) << std::fixed;
+    for(int i = 0; i < nx+2; i++) {
+        for(int j = 0; j < ny+2; j++) {
+            int node = j * (nx + 2) + i;
+            double norm = std::sqrt(u_col[node] * u_col[node] + v_col[node] * v_col[node]);
+            file << m.atNodeX(i) << " " << m.atNodeY(j) << " " << norm << std::endl;
+        }
+        file << std::endl;
+    }
+
+
+    file.close();
+
 }
