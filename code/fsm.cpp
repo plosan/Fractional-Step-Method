@@ -394,8 +394,6 @@ void computeVelocityCollocatedMesh(double* u_col, double* v_col, const int nx, c
 
 void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const char* filename, const int precision) {
 
-
-
     std::ofstream file;
     file.open(filename);
 
@@ -421,6 +419,89 @@ void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const cha
 
     file.close();
 
+}
+
+void printVelocityUToFile(const NCMesh m, double* u_col, const char* filename, const int precision) {
+
+    std::ofstream file;
+    file.open(filename);
+
+    if(!file.is_open()) {
+        printf("Error. Could not open file\n");
+        file.close();
+        return;
+    }
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    file << std::setprecision(precision) << std::fixed;
+    for(int i = 0; i < nx+2; i++) {
+        for(int j = 0; j < ny+2; j++) {
+            int node = j * (nx + 2) + i;
+            file << m.atNodeX(i) << " " << m.atNodeY(j) << " " << u_col[node] << std::endl;
+        }
+        file << std::endl;
+    }
+
+
+    file.close();
+
+}
+
+void printVelocityVToFile(const NCMesh m, double* v_col, const char* filename, const int precision) {
+
+    std::ofstream file;
+    file.open(filename);
+
+    if(!file.is_open()) {
+        printf("Error. Could not open file\n");
+        file.close();
+        return;
+    }
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    file << std::setprecision(precision) << std::fixed;
+    for(int i = 0; i < nx+2; i++) {
+        for(int j = 0; j < ny+2; j++) {
+            int node = j * (nx + 2) + i;
+            file << m.atNodeX(i) << " " << m.atNodeY(j) << " " << v_col[node] << std::endl;
+        }
+        file << std::endl;
+    }
+
+
+    file.close();
+}
+
+
+void printPressureToFile(const NCMesh m, double* p, const char* filename, const int precision) {
+
+    std::ofstream file;
+    file.open(filename);
+
+    if(!file.is_open()) {
+        printf("Error. Could not open file\n");
+        file.close();
+        return;
+    }
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    file << std::setprecision(precision) << std::fixed;
+    for(int i = 0; i < nx+2; i++) {
+        for(int j = 0; j < ny+2; j++) {
+            int node = j * (nx + 2) + i;
+            file << m.atNodeX(i) << " " << m.atNodeY(j) << " " << p[node] << std::endl;
+        }
+        file << std::endl;
+    }
+
+
+    file.close();
 }
 
 // Lid-driven cavity

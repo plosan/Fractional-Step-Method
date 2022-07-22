@@ -33,6 +33,9 @@ void updateOperatorR(double* Ru_prev, double* Rv_prev, const double* Ru, const d
 
 void computeVelocityCollocatedMesh(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v);
 void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const char* filename, const int precision);
+void printVelocityUToFile(const NCMesh m, double* u_col, const char* filename, const int precision);
+void printVelocityVToFile(const NCMesh m, double* v_col, const char* filename, const int precision);
+void printPressureToFile(const NCMesh m, double* p, const char* filename, const int precision);
 
 // Lid-driven cavity
 namespace lid_driven {

@@ -25,20 +25,20 @@ double schemeCDS(double A, double B);
 int main(int argc, char* argv[]) {
 
     double rho = 1;    // Density
-    double mu = 2e-4;  // Dynamic viscosity
-    double u_ref = 1;       // X-velocity boundary condition    [m/s]
+    double mu = 1e-4;  // Dynamic viscosity
+    double u_ref = 1e-2;       // X-velocity boundary condition    [m/s]
     double p_ref = 1e5;     // Pressure
     Properties props = {rho, mu};
 
     const double L = 1;
 
-    const int nx = 100;
-    const int ny = 100;
+    const int nx = 129;
+    const int ny = 129;
     double tstep = 1e-2;
 
-    const double tol = 1e-9;       // Linear system solver tolerance
+    const double tol = 1e-12;       // Linear system solver tolerance
     const int maxIt = 1e5;         // Linear system max iterations
-    const double sstol = 5e-5;      // Tolerance for steady state check
+    const double sstol = 1e-7;      // Tolerance for steady state check
     NCMesh m(L, L, 1, nx, ny);
 
 
@@ -69,7 +69,11 @@ int main(int argc, char* argv[]) {
     double* b;
     allocateLinearSystemVariables(nx, ny, A, b);
 
+    std::chrono::steady_clock::time_point begin, end;
+
     while(!steady) {
+
+        begin = std::chrono::steady_clock::now();
 
         // Compute operator R(u) and R(v)
         computeRu(Ru, m, u, v, props);
@@ -97,7 +101,38 @@ int main(int argc, char* argv[]) {
         t += tstep;
         it++;
 
-        printf("%6d %5s %10.5f %5s %10.5f %5s %10.5e %5s %d\n", it, "", t, "", tstep, "", maxDiff, "", exitCodeGS);
+        end = std::chrono::steady_clock::now();
+        double elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1e6;
+
+
+        printf("%6d %5s %10.5f %5s %10.5f %5s %10.5e %5s %10d %5s %.3f\n", it, "", t, "", tstep, "", maxDiff, "", exitCodeGS, "", elapsed);
+
+        if(it % 100 == 0) {
+
+            double* u_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+            double* v_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+            if(!u_col) {
+                printf("Error: could not allocate enough memory for u_col\n");
+                return false;
+            }
+            if(!v_col) {
+                printf("Error: could not allocate enough memory for v_col\n");
+                return false;
+            }
+            computeVelocityCollocatedMesh(u_col, v_col, nx, ny, u, v);
+
+            // printMatrix(u_col, nx+2, ny+2, "u_col");
+            // printMatrix(v_col, nx+2, ny+2, "v_col");
+
+            printVelocityToFile(m, u_col, v_col, "sim/vel.txt", 5);
+            printVelocityUToFile(m, u_col, "sim/u.txt", 5);
+            printVelocityVToFile(m, v_col, "sim/v.txt", 5);
+            printPressureToFile(m, p, "sim/p.txt", 5);
+
+            free(u_col);
+            free(v_col);
+
+        }
 
         if(maxDiff < sstol)
             steady = true;
@@ -110,26 +145,10 @@ int main(int argc, char* argv[]) {
             std::memcpy(Rv_prev, Rv, (nx+2)*(ny+1)*sizeof(double));
         }
 
-
+        // printf("here\n");
     }
 
-    double* u_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
-    double* v_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
-    if(!u_col) {
-        printf("Error: could not allocate enough memory for u_col\n");
-        return false;
-    }
-    if(!v_col) {
-        printf("Error: could not allocate enough memory for v_col\n");
-        return false;
-    }
-    computeVelocityCollocatedMesh(u_col, v_col, nx, ny, u, v);
 
-    // printMatrix(u_col, nx+2, ny+2, "u_col");
-    // printMatrix(v_col, nx+2, ny+2, "v_col");
-
-    const char* filename = "sim/vel.txt";
-    printVelocityToFile(m, u_col, v_col, filename, 5);
 
     // printMatrix(p, nx+2, ny+2, "p");
     // printMatrix(u, nx+1, ny+2, "u");
