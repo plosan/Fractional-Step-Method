@@ -87,13 +87,7 @@ bool NCMesh::computeFaceXY() {
         printf("Mesh: error. Could not allocate enough memory for faceX\n");
         return false;
     }
-    // faceX[0] = 0;       // First face at x = 0
-    // faceX[nx] = lx;     // Last face at x = lx
-    // double d = lx/nx;   // X-size of a control volume in a uniform mesh
-    // for(int i = 1; i < nx; i++)
-    //     faceX[i] = i*d;
-
-    double d = lx/nx;
+    double d = lx/nx;   // Control volume width (size in x axis)
     for(int i = 0; i < nx+1; i++)
         faceX[i] = i*d;
 
@@ -103,12 +97,7 @@ bool NCMesh::computeFaceXY() {
         printf("Mesh: error. Could not allocate enough memory for faceY\n");
         return false;
     }
-    // faceY[0] = 0;       // First face at y = 0
-    // faceY[ny] = ly;     // Last face at y = ly
-    // d = ly/ny;          // Y-size of a control volume in a uniform mesh
-    // for(int j = 1; j < ny; j++)
-    //     faceY[j] = j*d;
-    d = ly/ny;
+    d = ly/ny;          // Control volume height (size in y axis)
     for(int j = 0; j < ny+1; j++)
         faceY[j] = j*d;
 
@@ -222,7 +211,6 @@ bool NCMesh::computeSurfXY() {
 //  - false: if the function was unable to allocate memory either for semiSurfX or semiSurfY
 //  - true: otherwise
 bool NCMesh::computeSemiSurfXY() {
-
     // Compute semiSurfX: control volume surface between the wall and the node (perpendicular to the Y axis)
     semiSurfX = (double*) calloc(2*ny, sizeof(double));
     if(!semiSurfX) {
