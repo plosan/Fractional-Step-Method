@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <fstream>
 #include <cfloat>
+#include <cstring>
+#include <chrono>
 
 #include "fsm.h"
 #include "schemes.h"
@@ -10,20 +12,31 @@
 
 
 void allocateFluidVariables(const int nx, const int ny, double* &u, double* &v, double* &p) {
+    /*
+    allocateFluidVariables: allocates the arrays for x-velocity, y-velocity and pressure
+    --------------------------------------------------------------------------------------------------------------------------------------------------
+    Inputs:
+        - nx    Control volumes in x direction          [const int]
+        - ny    Control volumes in y direction          [const int]
+        - u     X-velocity array. Size: (nx+1)*(ny+2)   [double* &]
+        - v     Y-velocity array. Size: (nx+2)*(ny+1)   [double* &]
+        - p     Pressure. Size: (nx+2)*(ny+2)           [double* v]
+    --------------------------------------------------------------------------------------------------------------------------------------------------
+    Outputs:
+        - none
+    */
     // X-component of velocity
     u = (double*) calloc((nx+1)*(ny+2), sizeof(double));
     if(!u) {
         printf("Error: could not allocate enough memory for u\n");
         return;
     }
-
     // Y-component of velocity
     v = (double*) calloc((nx+2)*(ny+1), sizeof(double));
     if(!v) {
         printf("Error: could not allocate enough memory for v\n");
         return;
     }
-
     // Pressure
     p = (double*) calloc((nx+2)*(ny+2), sizeof(double));
     if(!p) {
@@ -33,6 +46,20 @@ void allocateFluidVariables(const int nx, const int ny, double* &u, double* &v, 
 }
 
 void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, double* &Ru_prev, double* &Rv_prev) {
+    /*
+    allocateOperatorR: allocates the arrays for the operator R, namely Ru, Rv, Ru_prev and Rv_prev
+    --------------------------------------------------------------------------------------------------------------------------------------------------
+    Inputs:
+        - nx        Control volumes in x direction                                          [const int]
+        - ny        Control volumes in y direction                                          [const int]
+        - Ru        X-component of operator R at the current time. Size: (nx+1)*(ny+2)      [double* &]
+        - Rv        Y-component of operator R at the current time. Size: (nx+2)*(ny+1)      [double* &]
+        - Ru_prev   X-component of operator R at the previous time. Size: (nx+1)*(ny+2)     [double* &]
+        - Rv_prev   Y-component of operator R at the previous time. Size: (nx+2)*(ny+1)     [double* &]
+    --------------------------------------------------------------------------------------------------------------------------------------------------
+    Outputs:
+        - none
+    */
     // Operator Ru at time n
     Ru = (double*) calloc((nx+1)*(ny+2), sizeof(double));
     if(!Ru) {
@@ -355,7 +382,7 @@ void updateOperatorR(double* Ru_prev, double* Rv_prev, const double* Ru, const d
     }
 }
 
-void computeVelocityCollocatedMesh(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v) {
+void computeCenteredNodesVelocities(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v) {
 
     // COMPUTE U_COL
     // x-velocity at the center of the non-staggered control volumes
@@ -505,6 +532,134 @@ void printPressureToFile(const NCMesh m, double* p, const char* filename, const 
 }
 
 // Lid-driven cavity
+
+void lid_driven::mainLoop(const double rho, const double mu, const double u_ref, const double p_ref, const double L, const int nx, const int ny, const double tstep0, const int maxIt, const double tol, const double sstol) {
+
+    // General variables
+    Properties props = {rho, mu};   // Fluid properties
+    NCMesh m(L, L, 1, nx, ny);      // Node centered staggered mesh
+    double t = 0;           // Current time
+    int it = 0;             // Iteration counter
+    bool steady = false;    // Steady state bool. true = steady state reached, false = steady state not reached
+    double tstep = tstep0;  // Initial time step
+
+    // Fluid variables
+    double* u;  // X-velocity array
+    double* v;  // Y-velocity array
+    double* p;  // Pressure array
+    allocateFluidVariables(nx, ny, u, v, p);                // Allocate the previous arrays
+    lid_driven::setInitialMaps(u, v, p, m, u_ref, p_ref);   // Set initial values
+
+    // Operators for the fractional step method
+    double* Ru;         // Operator Ru at time n
+    double* Rv;         // Operator Rv at time n
+    double* Ru_prev;    // Operator Ru at time n-1
+    double* Rv_prev;    // Operator Rv at time n-1
+    allocateOperatorR(nx, ny, Ru, Rv, Ru_prev, Rv_prev);    // Allocate the previous arrays
+    computeRu(Ru_prev, m, u, v, props);                     // Compute initial value of Ru
+    computeRv(Rv_prev, m, u, v, props);                     // Compute initial value of Rv
+
+    // Predictor velocities
+    double* u_pred;     // X-component of predictor velocity
+    double* v_pred;     // Y-component of predictor velocity
+    allocatePredictorVelocities(nx, ny, u_pred, v_pred);    // Allocate the previous arrays
+
+    // Linear system variables
+    double* A;          // Linear system matrix
+    double* b;          // Linear system vector
+    allocateLinearSystemVariables(nx, ny, A, b);    // Allocate the previous arrays
+
+    std::chrono::steady_clock::time_point begin, end;
+
+    // Run the loop until steady state is reached
+    while(!steady) {
+
+        begin = std::chrono::steady_clock::now();
+
+        // Compute operator R(u) and R(v)
+        computeRu(Ru, m, u, v, props);
+        computeRv(Rv, m, u, v, props);
+        // Compute predictor velocities
+        computePredictorVelocityU(u_pred, nx, ny, u, Ru, Ru_prev, props, tstep);
+        computePredictorVelocityV(v_pred, nx, ny, v, Rv, Rv_prev, props, tstep);
+        lid_driven::setBoundaryPredictorVelocities(u_pred, v_pred, nx, ny, u_ref);
+        // Compute discretization coefficients
+        computeDiscretizationCoefficients(A, b, m, u_pred, v_pred, props, tstep);
+        lid_driven::computeBoundaryDiscretizationCoefficients(A, b, m);
+        // Solve linear system
+        int exitCodeGS = solveSystemGS(nx+2, ny+2, tol, maxIt, A, b, p);
+        if(exitCodeGS == -1) {
+            printf("Error solving the linear system. Convergence not achieved.\n");
+            return;
+        }
+        // Compute the velocities at time n+1
+        double maxDerivative = 0;   // Max derivative of velocity with respect to time
+        computeVelocity(u, v, m, u_pred, v_pred, p, props, tstep, maxDerivative);
+        maxDerivative /= tstep;
+        // Update current time and number of iterations
+        t += tstep;
+        it++;
+        // Time elapsed
+        end = std::chrono::steady_clock::now();
+        double elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1e6;
+
+
+        printf("%6d %5s %10.5f %5s %10.5f %5s %10.5e %5s %10d %5s %.3f\n", it, "", t, "", tstep, "", maxDerivative, "", exitCodeGS, "", elapsed);
+
+        if(it % 10 == 0) {
+
+            double* u_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+            double* v_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+            if(!u_col) {
+                printf("Error: could not allocate enough memory for u_col\n");
+                return;
+            }
+            if(!v_col) {
+                printf("Error: could not allocate enough memory for v_col\n");
+                return;
+            }
+            computeCenteredNodesVelocities(u_col, v_col, nx, ny, u, v);
+
+            int Re = std::floor(props.rho * u_ref * L / props.mu);
+            std::string filename = "../plots/vel_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+            printVelocityToFile(m, u_col, v_col, filename.c_str(), 5);
+            filename = "../plots/u" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+            printVelocityUToFile(m, u_col, "sim/u.txt", 5);
+            filename = "../plots/v" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+            printVelocityVToFile(m, v_col, "sim/v.txt", 5);
+            filename = "../plots/p" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+            printPressureToFile(m, p, "sim/p.txt", 5);
+
+            free(u_col);
+            free(v_col);
+
+        }
+
+        // Check steady state condition
+        if(maxDerivative < sstol)
+            steady = true;
+        else {
+            // Compute next time step
+            computeTimeStep(tstep, m, u, v, props, tol);
+            // Update operator R
+            std::memcpy(Ru_prev, Ru, (nx+1)*(ny+2)*sizeof(double));
+            std::memcpy(Rv_prev, Rv, (nx+2)*(ny+1)*sizeof(double));
+        }
+    }
+
+    // Free arrays
+    free(u);
+    free(v);
+    free(p);
+    free(Ru);
+    free(Rv);
+    free(Ru_prev);
+    free(Rv_prev);
+    free(u_pred);
+    free(v_pred);
+    free(A);
+    free(b);
+}
 
 void lid_driven::setInitialMaps(double* u, double* v, double* p, const NCMesh m, const double u_ref, const double p_ref) {
 

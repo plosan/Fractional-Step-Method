@@ -31,7 +31,7 @@ void computeVelocityV(double* v, const NCMesh m, const double* v_pred, const dou
 void computeTimeStep(double &tstep, const NCMesh m, const double* u, const double* v, const Properties props, const double zeroTol);
 void updateOperatorR(double* Ru_prev, double* Rv_prev, const double* Ru, const double* Rv, const int nx, const int ny);
 
-void computeVelocityCollocatedMesh(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v);
+void computeCenteredNodesVelocities(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v);
 void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const char* filename, const int precision);
 void printVelocityUToFile(const NCMesh m, double* u_col, const char* filename, const int precision);
 void printVelocityVToFile(const NCMesh m, double* v_col, const char* filename, const int precision);
@@ -39,6 +39,7 @@ void printPressureToFile(const NCMesh m, double* p, const char* filename, const 
 
 // Lid-driven cavity
 namespace lid_driven {
+    void mainLoop(const double rho, const double mu, const double u_ref, const double p_ref, const double L, const int nx, const int ny, const double tstep, const int maxIt, const double tol, const double sstol);
     void setInitialMaps(double* u, double* v, double* p, const NCMesh m, const double u_ref, const double p_ref);
     void setBoundaryPredictorVelocities(double* u_pred, double* v_pred, const int nx, const int ny, const double u_ref);
     void computeBoundaryDiscretizationCoefficients(double* A, double* b, const NCMesh m);
