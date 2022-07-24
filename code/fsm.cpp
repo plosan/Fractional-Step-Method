@@ -121,6 +121,78 @@ void allocateLinearSystemVariables(const int nx, const int ny, double* &A, doubl
     }
 }
 
+
+void computeMassFlowsStaggX(double* mx, double* my, const NCMesh m, const double* u, const double* v, const Properties props) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    mx = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    for(int j = 1; j < ny+1; j++) {
+        double Ax = m.atSurfX(j);
+        mx[j*(nx+2)] = props.rho * Ax * u[j*(nx+1)];
+        mx[j*(nx+2)+nx+1] = props.rho * Ax * u[j*(nx+1)+nx];
+        for(int i = 1; i < nx+1; i++) {
+            double u1 = u[j*(nx+1)+i-1];
+            double u2 = u[j*(nx+1)+i];
+            mx[j*(nx+2)+i] = 0.5 * props.rho * (u1 + u2) * Ax;
+        }
+    }
+
+    my = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    for(int j = 0; j < ny+1; j++) {
+        my[j*(nx+1)] = props.rho * m.atSemiSurfY(1,0) * v[j*(nx+2)];
+        my[j*(nx+1)+nx] = props.rho * m.atSemiSurfY(nx,1) * v[j*(nx+2)+nx+1];
+    }
+    for(int i = 1; i < nx; i++) {
+        for(int j = 0; j < ny+1; j++) {
+            double Ay_left = m.atSemiSurfY(i,1);
+            double Ay_right = m.atSemiSurfY(i+1,0);
+            double v_left = v[j*(nx+2)+i];
+            double v_right = v[j*(nx+2)+i+1];
+            my[j*(nx+1)+i] = props.rho * (Ay_left * v_left + Ay_right * v_right);
+        }
+    }
+
+}
+
+void computeMassFlowsStaggY(double* mx, double* my, const NCMesh m, const double* u, const double* v, const Properties props) {
+
+    int nx = m.getNX();
+    int ny = m.getNY();
+
+    mx = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    for(int j = 1; j < ny; j++) {
+        for(int i = 0; i < nx+1; i++) {
+            double Ax_down = m.atSemiSurfX(j,1);
+            double Ax_up = m.atSemiSurfX(j+1,0);
+            double u_down = u[j*(nx+1)+i];
+            double u_up = u[(j+1)*(nx+1)+i];
+            mx[j*(nx+1)+i] = props.rho * (Ax_down * u_down + Ax_up * u_up);
+        }
+    }
+
+
+    my = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    for(int i = 1; i < nx+1; i++) {
+        double Ay = m.atSurfY(i);
+        for(int j = 1; j < ny+1; j++) {
+            double v1 = v[(j-1)*(nx+2)+i];
+            double v2 = v[j*(nx+2)+i];
+            my[j*(nx+2)+i] = 0.5 * props.rho * (v1 + v2) * Ay;
+        }
+    }
+}
+
+void computeVelocitiesStaggX() {
+
+}
+
+void computeVelocitiesStaggY() {
+    
+}
+
+
 void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props) {
 
     int nx = m.getNX();
@@ -138,8 +210,8 @@ void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, con
             // Faces velocities
             double uw = schemeCDS(uP, uW);
             double ue = schemeCDS(uP, uE);
-            double us = (j > 1 ? schemeCDS(uP, uS) : uS);
-            double un = (j < ny ? schemeCDS(uP, uN) : uN);
+            double us = (j > 1 ? 0.5*(uP + uS) : uS);
+            double un = (j < ny ? 0.5*(uP + uN) : uN);
             // Areas
             double Ax = m.atSurfX(j);
             double Ay = m.atSurfY_StaggX(i);
@@ -175,8 +247,8 @@ void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, con
             double vS = v[node-(nx+2)];
             double vN = v[node+(nx+2)];
             // Face velocities
-            double vw = (i > 1 ? schemeCDS(vP, vW) : vW);
-            double ve = (i < nx ? schemeCDS(vP, vE) : vE);
+            double vw = (i > 1 ? 0.5*(vP + vW) : vW);
+            double ve = (i < nx ? 0.5*(vP + vE) : vE);
             double vs = schemeCDS(vP, vS);
             double vn = schemeCDS(vP, vN);
             // Areas

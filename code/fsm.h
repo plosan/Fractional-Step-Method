@@ -17,6 +17,9 @@ void allocatePredictorVelocities(const int nx, const int ny, double* &u_pred, do
 void allocateLinearSystemVariables(const int nx, const int ny, double* &A, double* &b);
 
 // Operator Ru and Rv
+void computeMassFlowsStaggX(double* mx, double* my, const NCMesh m, const double* u, const double* v);
+void computeMassFlowsStaggY(double* mx, double* my, const NCMesh m, const double* u, const double* v);
+
 void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
 void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
 

@@ -19,14 +19,14 @@ int main(int argc, char* argv[]) {
 
     double rho = 1;    // Density
     double mu = 1e-4;  // Dynamic viscosity
-    double u_ref = 1e-2;       // X-velocity boundary condition    [m/s]
+    double u_ref = 1e-1;       // X-velocity boundary condition    [m/s]
     double p_ref = 1e5;     // Pressure
 
     const double L = 1;
 
     const int nx = 129;
     const int ny = 129;
-    double tstep = 1e-2;
+    double tstep = 1e-3;
 
     const double tol = 1e-12;       // Linear system solver tolerance
     const int maxIt = 1e6;         // Linear system max iterations
