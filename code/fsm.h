@@ -27,11 +27,11 @@ void computeVelocitiesStaggY_CDS(double* ue, double* un, const int nx, const int
 // Operator Ru and Rv
 // void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
 // void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
-void computeRu2(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
-void computeRv2(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
+// void computeRu2(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
+// void computeRv2(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
 
-void computeRu3();
-void computeRv3();
+void computeRu3(double* Ru, const NCMesh m, const double* u, const double* ux_staggX, const double* uy_staggX, const double* mx_staggX, const double* my_staggX, const Properties props);
+void computeRv3(double* Rv, const NCMesh m, const double* v, const double* vx_staggY, const double* vy_staggY, const double* mx_staggY, const double* my_staggY, const Properties props);
 
 // Predictor velocities computation
 void computePredictorVelocityU(double* u_pred, const int nx, const int ny, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep);
@@ -44,10 +44,11 @@ void computeTimeStep(double &tstep, const NCMesh m, const double* u, const doubl
 void updateOperatorR(double* Ru_prev, double* Rv_prev, const double* Ru, const double* Rv, const int nx, const int ny);
 
 void computeCenteredNodesVelocities(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v);
-void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const char* filename, const int precision);
-void printVelocityUToFile(const NCMesh m, double* u_col, const char* filename, const int precision);
-void printVelocityVToFile(const NCMesh m, double* v_col, const char* filename, const int precision);
-void printPressureToFile(const NCMesh m, double* p, const char* filename, const int precision);
+void printVariablesToFile(const NCMesh m, const double* u, const double* v, const double* p, const int Re, const int precision);
+void printVelocityToFile(const NCMesh m, const double* u_col, const double* v_col, const char* filename, const int precision);
+void printVelocityUToFile(const NCMesh m, const double* u_col, const char* filename, const int precision);
+void printVelocityVToFile(const NCMesh m, const double* v_col, const char* filename, const int precision);
+void printPressureToFile(const NCMesh m, const double* p, const char* filename, const int precision);
 
 // Lid-driven cavity
 namespace lid_driven {

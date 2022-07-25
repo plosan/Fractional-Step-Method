@@ -254,6 +254,113 @@ void computeVelocitiesStaggY_CDS(double* ve, double* vn, const int nx, const int
     }
 }
 
+void computeVelocitiesStaggX_QUICK(double* ue, double* un, const NCMesh m, const double* mx, const double* u) {
+
+    // Mesh sizes
+    int nx = m.getNX(); // X-axis control volume count
+    int ny = m.getNY(); // Y-axis control volume count
+
+    // Velocities uw and ue at the X-staggered control volume faces (west and east faces)
+    // For j = 0 and j = ny+1 these velocities are not required
+    // For i = 0 and i = nx+1 these velocities are equal to the velocity at the node
+    // ue = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    for(int j = 1; j < ny+1; j++) {
+        ue[j*(nx+2)] = u[j*(nx+1)];             // When i = 0
+        ue[j*(nx+2)+(nx+1)] = u[j*(nx+1)+nx];   // When i = nx + 1
+        for(int i = 1; i < nx+1; i++) {
+
+            double mf = mx[j*(nx+2)+i];
+            if(mf > 0) {    // From left to right
+                if(i == 1) {    // There is no second-upwind node (in this case W), so we use CDS instead
+                    double u_left = u[j*(nx+1)+i-1];
+                    double u_right = u[j*(nx+1)+i];
+                    ue[j*(nx+2)+i] = 0.5 * (u_left + u_right);
+                } else {
+                    // Property values
+                    double u_UU = u[j*(nx+1)+i-2];  // X-velocity at the second upstream node
+                    double u_U = u[j*(nx+1)+i-1];   // X-velocity at the first upstream node
+                    double u_D = u[j*(nx+1)+i];     // X-velocity at the first downstream node
+                    // Nodes and face positions
+                    double x_UU = m.atFaceX(i-2);   // X-position of the second upstream face
+                    double x_U = m.atFaceX(i-1);    // X-position of the first upstream face
+                    double x_D = m.atFaceX(i);      // X-position of the first downstream face
+                    double xe = m.atNodeX(i);       // X-position of the node where the convective property is being computed
+                    // QUICK scheme
+                    ue[j*(nx+2)+i] = schemeQUICK(u_D, u_U, u_UU, x_D, x_U, x_UU, xe);
+                }
+            } else if(mf < 0) {
+                if(i == nx) {   // There is not second-upwind node (in this case EE), so we use CDS instead
+                    double u_left = u[j*(nx+1)+i-1];
+                    double u_right = u[j*(nx+1)+i];
+                    ue[j*(nx+2)+i] = 0.5 * (u_left + u_right);
+                } else {
+                    // Property values
+                    double u_UU = u[j*(nx+1)+i+1];  // X-velocity at the second upstream node
+                    double u_U = u[j*(nx+1)+i];     // X-velocity at the first upstream node
+                    double u_D = u[j*(nx+1)+i-1];   // X-velocity at the first downstream node
+                    // Nodes and face positions
+                    double x_UU = m.atFaceX(i+1);   // X-position of the second upstream face
+                    double x_U = m.atFaceX(i);      // X-position of the first upstream face
+                    double x_D = m.atFaceX(i-1);    // X-position of the first downstream face
+                    double xe = m.atNodeX(i);       // X-position of the node where the convective property is being computed
+                    // QUICK scheme
+                    ue[j*(nx+2)+i] = schemeQUICK(u_D, u_U, u_UU, x_D, x_U, x_UU, xe);
+                }
+            } else {    // Rare case, then use CDS
+                double u_left = u[j*(nx+1)+i-1];
+                double u_right = u[j*(nx+1)+i];
+                ue[j*(nx+2)+i] = 0.5 * (u_left + u_right);
+            }
+
+        }
+    }
+
+    // Velocities us and un at the X-staggered control volumes faces (south and north faces)
+    // For i = 0 and i = nx these velocities are not required
+    // For j = 0 or j = ny and 1 <= i < nx, these velocities are equal to the velocity at the node
+    // un = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    for(int i = 1; i < nx; i++) {
+        un[i] = u[i];                       // When j = 0
+        un[ny*(nx+1)+i] = u[(ny+1)*(nx+1)+i];   // When j = ny
+        for(int j = 1; j < ny; j++) {
+            double u_below = u[j*(nx+1)+i];
+            double u_above = u[(j+1)*(nx+1)+i];
+            un[j*(nx+1)+i] = 0.5 * (u_below + u_above);
+        }
+    }
+}
+
+void computeVelocitiesStaggY_QUICK(double* ve, double* vn, const NCMesh m, cosnt double* my, const double* v) {
+
+    // Velocities vw and ve at the Y-staggered control volume faces (west and east)
+    // For j = 0 and j = ny these velocities are not required
+    // For 1 <= j < ny and (i = 0 or i = nx), these velocities are equal to those at the nodes
+    // ve = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    for(int j = 1; j < ny; j++) {
+        ve[j*(nx+1)] = v[j*(nx+2)];             // When i = 0
+        ve[j*(nx+1)+nx] = v[j*(nx+2)+(nx+1)];   // When i = nx
+        for(int i = 1; i < nx; i++) {
+            double v_left = v[j*(nx+2)+i];
+            double v_right = v[j*(nx+2)+i+1];
+            ve[j*(nx+1)+i] = 0.5 * (v_left + v_right);
+        }
+    }
+
+    // Velocities vs and vn at the Y-staggered control volume faces (south and north)
+    // For i = 0 and i = nx+1 these velocities are not required
+    // For j = 0 or j = ny+1 and 1 <= i < nx+1, these velocities are equal to those at the nodes
+    // vn = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    for(int i = 1; i < nx+1; i++) {
+        vn[i] = v[i];                               // When j = 0
+        vn[(ny+1)*(nx+2)+i] = v[(ny+1)*(nx+2)+i];   // When j = ny+1
+        for(int j = 1; j < ny+1; j++) {
+            double v_below = v[(j-1)*(nx+2)+i];
+            double v_above = v[j*(nx+2)+i];
+            vn[j*(nx+2)+i] = 0.5 * (v_below + v_above);
+        }
+    }
+}
+
 void computeRu2(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props) {
 
     // Mesh sizes
@@ -737,7 +844,51 @@ void computeCenteredNodesVelocities(double* u_col, double* v_col, const int nx, 
 
 }
 
-void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const char* filename, const int precision) {
+
+void printVariablesToFile(const NCMesh m, const double* u, const double* v, const double* p, const int Re, const int precision) {
+
+    // Mesh size
+    int nx = m.getNX(); // Number of control volumes along x axis
+    int ny = m.getNY(); // Number of control volumes along y axis
+
+    // X-velocities at the pressure nodes
+    double* u_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    if(!u_col) {
+        printf("Error: could not allocate enough memory for u_col\n");
+        return;
+    }
+
+    // Y-velocities at the pressure nodes
+    double* v_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    if(!v_col) {
+        printf("Error: could not allocate enough memory for v_col\n");
+        return;
+    }
+
+    // Compute velocities at the pressure nodes
+    computeCenteredNodesVelocities(u_col, v_col, nx, ny, u, v);
+
+    // Save velocity norm
+    std::string filename = "../plots/vel_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+    printVelocityToFile(m, u_col, v_col, filename.c_str(), 5);
+
+    // Save x-velocity
+    filename = "../plots/u_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+    printVelocityUToFile(m, u_col, filename.c_str(), 5);
+
+    // Save y-velocity
+    filename = "../plots/v_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+    printVelocityVToFile(m, v_col, filename.c_str(), 5);
+
+    free(u_col);
+    free(v_col);
+
+    // Save pressure
+    filename = "../plots/p_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+    printPressureToFile(m, p, filename.c_str(), 5);
+}
+
+void printVelocityToFile(const NCMesh m, const double* u_col, const double* v_col, const char* filename, const int precision) {
 
     std::ofstream file;
     file.open(filename);
@@ -755,8 +906,10 @@ void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const cha
     for(int i = 0; i < nx+2; i++) {
         for(int j = 0; j < ny+2; j++) {
             int node = j * (nx + 2) + i;
-            double norm = std::sqrt(u_col[node] * u_col[node] + v_col[node] * v_col[node]);
-            file << m.atNodeX(i) << " " << m.atNodeY(j) << " " << norm << std::endl;
+            double u = u_col[node];
+            double v = v_col[node];
+            double norm = std::sqrt(u * u + v * v);
+            file << m.atNodeX(i) << " " << m.atNodeY(j) << " " << norm << " " << u << " " << v << std::endl;
         }
         file << std::endl;
     }
@@ -766,7 +919,7 @@ void printVelocityToFile(const NCMesh m, double* u_col, double* v_col, const cha
 
 }
 
-void printVelocityUToFile(const NCMesh m, double* u_col, const char* filename, const int precision) {
+void printVelocityUToFile(const NCMesh m, const double* u_col, const char* filename, const int precision) {
 
     std::ofstream file;
     file.open(filename);
@@ -794,7 +947,7 @@ void printVelocityUToFile(const NCMesh m, double* u_col, const char* filename, c
 
 }
 
-void printVelocityVToFile(const NCMesh m, double* v_col, const char* filename, const int precision) {
+void printVelocityVToFile(const NCMesh m, const double* v_col, const char* filename, const int precision) {
 
     std::ofstream file;
     file.open(filename);
@@ -822,7 +975,7 @@ void printVelocityVToFile(const NCMesh m, double* v_col, const char* filename, c
 }
 
 
-void printPressureToFile(const NCMesh m, double* p, const char* filename, const int precision) {
+void printPressureToFile(const NCMesh m, const double* p, const char* filename, const int precision) {
 
     std::ofstream file;
     file.open(filename);
@@ -950,18 +1103,18 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
     // double* mx_staggY;
     // double* my_staggY;
 
-    double* Ru_test = (double*) calloc((nx+1)*(ny+2), sizeof(double));
-    if(!Ru_test) {
-        printf("Error: could not allocate enough memory for Ru_test\n");
-        return;
-    }
-
-    // Operator Rv at time n
-    double* Rv_test = (double*) calloc((nx+2)*(ny+1), sizeof(double));
-    if(!Rv_test) {
-        printf("Error: could not allocate enough memory for Rv_test\n");
-        return;
-    }
+    // double* Ru_test = (double*) calloc((nx+1)*(ny+2), sizeof(double));
+    // if(!Ru_test) {
+    //     printf("Error: could not allocate enough memory for Ru_test\n");
+    //     return;
+    // }
+    //
+    // // Operator Rv at time n
+    // double* Rv_test = (double*) calloc((nx+2)*(ny+1), sizeof(double));
+    // if(!Rv_test) {
+    //     printf("Error: could not allocate enough memory for Rv_test\n");
+    //     return;
+    // }
 
     computeMassFlowsStaggX(mx_staggX, my_staggX, m, u, v, props);
     computeVelocitiesStaggX_CDS(ux_staggX, uy_staggX, nx, ny, u);
@@ -994,8 +1147,8 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
         begin = std::chrono::steady_clock::now();
 
         // Compute operator R(u) and R(v)
-        computeRu2(Ru_test, m, u, v, props);
-        computeRv2(Rv_test, m, u, v, props);
+        // computeRu2(Ru_test, m, u, v, props);
+        // computeRv2(Rv_test, m, u, v, props);
 
         computeMassFlowsStaggX(mx_staggX, my_staggX, m, u, v, props);
         computeVelocitiesStaggX_CDS(ux_staggX, uy_staggX, nx, ny, u);
@@ -1009,13 +1162,13 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
         // computeRu2(Ru_test, m, u, v, props);
         // computeRv2(Rv_test, m, u, v, props);
         //
-        double diffRu = -1;
-        for(int k = 0; k < (nx+1)*(ny+2); k++)
-            diffRu = std::max(diffRu, std::abs(Ru[k] - Ru_test[k]));
-
-        double diffRv = -1;
-        for(int k = 0; k < (nx+2)*(ny+1); k++)
-            diffRv = std::max(diffRv, std::abs(Rv[k] - Rv_test[k]));
+        // double diffRu = -1;
+        // for(int k = 0; k < (nx+1)*(ny+2); k++)
+        //     diffRu = std::max(diffRu, std::abs(Ru[k] - Ru_test[k]));
+        //
+        // double diffRv = -1;
+        // for(int k = 0; k < (nx+2)*(ny+1); k++)
+        //     diffRv = std::max(diffRv, std::abs(Rv[k] - Rv_test[k]));
 
 
 
@@ -1046,65 +1199,19 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
 
         // printf("%20s %10.3e %5s %10.3e\n", "Ru Rv diffs", diffRu, "", diffRv);
         printf("%6d %5s %10.5f %5s %10.5f %5s %10.5e %5s %10d %5s %.3f\n", it, "", t, "", tstep, "", maxDerivative, "", exitCodeGS, "", elapsed);
-        printf("%20s %10.3e %5s %10.3e\n", "Ru Rv diffs", diffRu, "", diffRv);
+        // printf("%20s %10.3e %5s %10.3e\n", "Ru Rv diffs", diffRu, "", diffRv);
 
         if(it % 10 == 0) {
-
-            double* u_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
-            double* v_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
-            if(!u_col) {
-                printf("Error: could not allocate enough memory for u_col\n");
-                return;
-            }
-            if(!v_col) {
-                printf("Error: could not allocate enough memory for v_col\n");
-                return;
-            }
-            computeCenteredNodesVelocities(u_col, v_col, nx, ny, u, v);
-
-            int Re = std::floor(props.rho * u_ref * L / props.mu);
-            std::string filename = "../plots/vel_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printVelocityToFile(m, u_col, v_col, filename.c_str(), 5);
-            filename = "../plots/u_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printVelocityUToFile(m, u_col, filename.c_str(), 5);
-            filename = "../plots/v_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printVelocityVToFile(m, v_col, filename.c_str(), 5);
-            filename = "../plots/p_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printPressureToFile(m, p, filename.c_str(), 5);
-
-            free(u_col);
-            free(v_col);
-
+            int Re = std::round(props.rho * u_ref * L / props.mu);
+            printVariablesToFile(m, u, v, p, Re, 5);
         }
 
         // Check steady state condition
         if(maxDerivative < sstol) {
             steady = true;
-    
-            double* u_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
-            double* v_col = (double*) calloc((nx+2)*(ny+2), sizeof(double));
-            if(!u_col) {
-                printf("Error: could not allocate enough memory for u_col\n");
-                return;
-            }
-            if(!v_col) {
-                printf("Error: could not allocate enough memory for v_col\n");
-                return;
-            }
-            computeCenteredNodesVelocities(u_col, v_col, nx, ny, u, v);
 
-            int Re = std::floor(props.rho * u_ref * L / props.mu);
-            std::string filename = "../plots/vel_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printVelocityToFile(m, u_col, v_col, filename.c_str(), 5);
-            filename = "../plots/u_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printVelocityUToFile(m, u_col, filename.c_str(), 5);
-            filename = "../plots/v_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printVelocityVToFile(m, v_col, filename.c_str(), 5);
-            filename = "../plots/p_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printPressureToFile(m, p, filename.c_str(), 5);
-
-            free(u_col);
-            free(v_col);
+            int Re = std::round(props.rho * u_ref * L / props.mu);
+            printVariablesToFile(m, u, v, p, Re, 5);
 
         }
         else {

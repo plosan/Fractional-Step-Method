@@ -67,7 +67,10 @@ set cblabel ("vel [m/s]")
 
 
 
-plot "vel_129_129_100.txt" with image
+# plot "vel_129_129_100.txt" with image, "vel_129_129_100.txt" using 1:2:4:5 every 5:5 with vectors lc -1 filled
+plot "vel_129_129_100.txt" with image, "vel_129_129_100.txt" using 1:2:($4/(20*sqrt(($4)**2 + ($5)**2))):($5/(20*sqrt(($4)**2 + ($5)**2))) every 5:5 with vectors lc -1 filled
+
+
 
 # --- GRAPH d
 
@@ -93,6 +96,4 @@ plot "p_129_129_100.txt" with image
 
 unset multiplot
 
-
-
-pause 30
+pause 2

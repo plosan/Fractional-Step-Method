@@ -18,3 +18,11 @@ double schemeCDS(double varP, double varF) {
     //  - C     Variable var at node F
     return 0.5*(varP + varF);
 }
+
+
+double schemeQUICK(double varD, double varU, double varUU, double xD, double xU, double xUU, double xe) {
+    double g1 = (xe - xU) * (xe - xUU) / ((xD - xU) * (xD - xUU));
+    double g2 = (xe - xU) * (xD - xe) / ((xU - xUU) * (xD - xUU));
+    double var_e = varU + g1 * (varD - varU) + g2 * (varU - varUU);
+    return var_e;
+}
