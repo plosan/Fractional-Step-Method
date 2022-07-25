@@ -16,13 +16,21 @@ void allocateOperatorR(const int nx, const int ny, double* &Ru, double* &Rv, dou
 void allocatePredictorVelocities(const int nx, const int ny, double* &u_pred, double* &v_pred);
 void allocateLinearSystemVariables(const int nx, const int ny, double* &A, double* &b);
 
+// Mass flows at faces
+// void computeMassFlowsStaggX(double* mx, double* my, const NCMesh m, const double* u, const double* v);
+// void computeMassFlowsStaggY(double* mx, double* my, const NCMesh m, const double* u, const double* v);
+
+// Velocities at faces
+void computeVelocitiesStaggX_CDS(double* ue, double* un, const int nx, const int ny, const double* u);
+void computeVelocitiesStaggY_CDS(double* ue, double* un, const int nx, const int ny, const double* u);
+
 // Operator Ru and Rv
-void computeMassFlowsStaggX(double* mx, double* my, const NCMesh m, const double* u, const double* v);
-void computeMassFlowsStaggY(double* mx, double* my, const NCMesh m, const double* u, const double* v);
+// void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
+// void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
+// void computeRu2(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
+// void computeRv2(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
 
-void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
-void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
-
+// Predictor velocities computation
 void computePredictorVelocityU(double* u_pred, const int nx, const int ny, const double* u, const double* Ru, const double* Ru_prev, const Properties props, const double tstep);
 void computePredictorVelocityV(double* v_pred, const int nx, const int ny, const double* v, const double* Rv, const double* Rv_prev, const Properties props, const double tstep);
 

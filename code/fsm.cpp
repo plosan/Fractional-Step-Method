@@ -122,35 +122,37 @@ void allocateLinearSystemVariables(const int nx, const int ny, double* &A, doubl
 }
 
 
+// Mass flows at faces
 void computeMassFlowsStaggX(double* mx, double* my, const NCMesh m, const double* u, const double* v, const Properties props) {
 
-    int nx = m.getNX();
-    int ny = m.getNY();
+    // Mesh sizes
+    int nx = m.getNX(); // X-axis control volume count
+    int ny = m.getNY(); // Y-axis control volume count
 
-    mx = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    // Mass flow through faces perpendicular to the X axis
+    // For j = 0 and j = ny+1, mass flows are zero
+    // mx = (double*) calloc((nx+2)*(ny+2), sizeof(double));
     for(int j = 1; j < ny+1; j++) {
         double Ax = m.atSurfX(j);
-        mx[j*(nx+2)] = props.rho * Ax * u[j*(nx+1)];
-        mx[j*(nx+2)+nx+1] = props.rho * Ax * u[j*(nx+1)+nx];
+        mx[j*(nx+2)] = props.rho * u[j*(nx+1)] * Ax;
+        mx[j*(nx+2)+(nx+1)] = props.rho * u[j*(nx+1)+nx] * Ax;
         for(int i = 1; i < nx+1; i++) {
-            double u1 = u[j*(nx+1)+i-1];
-            double u2 = u[j*(nx+1)+i];
-            mx[j*(nx+2)+i] = 0.5 * props.rho * (u1 + u2) * Ax;
+            double uW = u[j*(nx+1)+i-1];
+            double uP = u[j*(nx+1)+i];
+            mx[j*(nx+2)+i] = 0.5 * props.rho * (uP + uW) * Ax;
         }
     }
 
-    my = (double*) calloc((nx+1)*(ny+1), sizeof(double));
-    for(int j = 0; j < ny+1; j++) {
-        my[j*(nx+1)] = props.rho * m.atSemiSurfY(1,0) * v[j*(nx+2)];
-        my[j*(nx+1)+nx] = props.rho * m.atSemiSurfY(nx,1) * v[j*(nx+2)+nx+1];
-    }
+    // Mass flow through the faces perpendicular to the Y axis
+    // For i = 0 and i = nx, mass flows are not needed
+    // my = (double*) calloc((nx+1)*(ny+1), sizeof(double));
     for(int i = 1; i < nx; i++) {
+        double Ay_left = m.atSemiSurfY(i,1);        // Y-area to the left of the wall
+        double Ay_right = m.atSemiSurfY(i+1,0);     // Y-area to the right of the wall
         for(int j = 0; j < ny+1; j++) {
-            double Ay_left = m.atSemiSurfY(i,1);
-            double Ay_right = m.atSemiSurfY(i+1,0);
-            double v_left = v[j*(nx+2)+i];
-            double v_right = v[j*(nx+2)+i+1];
-            my[j*(nx+1)+i] = props.rho * (Ay_left * v_left + Ay_right * v_right);
+            double vy_left = v[j*(nx+2)+i];         // Y-velocity to the left of the wall
+            double vy_right = v[j*(nx+2)+i+1];      // Y-velocity to the right of the wall
+            my[j*(nx+1)+i] = props.rho * (vy_left * Ay_left + vy_right * Ay_right);
         }
     }
 
@@ -158,40 +160,199 @@ void computeMassFlowsStaggX(double* mx, double* my, const NCMesh m, const double
 
 void computeMassFlowsStaggY(double* mx, double* my, const NCMesh m, const double* u, const double* v, const Properties props) {
 
-    int nx = m.getNX();
-    int ny = m.getNY();
+    // Mesh sizes
+    int nx = m.getNX(); // X-axis control volume count
+    int ny = m.getNY(); // Y-axis control volume count
 
-    mx = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    // Mass flow through faces perpendicular to the X axis
+    // For j = 0 and j = ny, mass flows are not needed
+    // mx = (double*) calloc((nx+1)*(ny+1), sizeof(double));
     for(int j = 1; j < ny; j++) {
+        double Ax_up = m.atSemiSurfX(j+1,0);    // X-area above the wall
+        double Ax_down = m.atSemiSurfX(j,1);    // X-area below the wall
         for(int i = 0; i < nx+1; i++) {
-            double Ax_down = m.atSemiSurfX(j,1);
-            double Ax_up = m.atSemiSurfX(j+1,0);
-            double u_down = u[j*(nx+1)+i];
-            double u_up = u[(j+1)*(nx+1)+i];
-            mx[j*(nx+1)+i] = props.rho * (Ax_down * u_down + Ax_up * u_up);
+            double ux_up = u[(j+1)*(nx+1)+i];   // X-velocity above the wall
+            double ux_down = u[j*(nx+1)+i];     // X-velocity below the wall
+            mx[j*(nx+1)+i] = props.rho * (ux_up * Ax_up + ux_down * Ax_down);
         }
     }
 
-
-    my = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    // Mass flow through faces perpendicular to the Y axis
+    // For j = 0 and j = ny+1, mass flows are zero
+    // my = (double*) calloc((nx+2)*(ny+2), sizeof(double));
     for(int i = 1; i < nx+1; i++) {
         double Ay = m.atSurfY(i);
+        my[i] = props.rho * v[i] * Ay;
+        my[(ny+1)*(nx+2)+i] = props.rho * v[(ny+1)*(nx+2)+i] * Ay;
         for(int j = 1; j < ny+1; j++) {
-            double v1 = v[(j-1)*(nx+2)+i];
-            double v2 = v[j*(nx+2)+i];
-            my[j*(nx+2)+i] = 0.5 * props.rho * (v1 + v2) * Ay;
+            double vS = v[(j-1)*(nx+2)+i];
+            double vP = v[j*(nx+2)+i];
+            my[j*(nx+2)+i] = 0.5 * props.rho * (vP + vS) * Ay;
         }
     }
 }
 
-void computeVelocitiesStaggX() {
+void computeVelocitiesStaggX_CDS(double* ue, double* un, const int nx, const int ny, const double* u) {
+
+    // Velocities uw and ue at the X-staggered control volume faces (west and east faces)
+    // For j = 0 and j = ny+1 these velocities are not required
+    // For i = 0 and i = nx+1 these velocities are equal to the velocity at the node
+    // ue = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    for(int j = 1; j < ny+1; j++) {
+        ue[j*(nx+2)] = u[j*(nx+1)];             // When i = 0
+        ue[j*(nx+2)+(nx+1)] = u[j*(nx+1)+nx];   // When i = nx + 1
+        for(int i = 1; i < nx+1; i++) {
+            double u_left = u[j*(nx+1)+i-1];
+            double u_right = u[j*(nx+1)+i];
+            ue[j*(nx+2)+i] = 0.5 * (u_left + u_right);
+        }
+    }
+
+    // Velocities us and un at the X-staggered control volumes faces (south and north faces)
+    // For i = 0 and i = nx these velocities are not required
+    // For j = 0 or j = ny and 1 <= i < nx, these velocities are equal to the velocity at the node
+    // un = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    for(int i = 1; i < nx; i++) {
+        un[i] = u[i];                       // When j = 0
+        un[ny*(nx+1)+i] = u[(ny+1)*(nx+1)+i];   // When j = ny
+        for(int j = 1; j < ny; j++) {
+            double u_below = u[j*(nx+1)+i];
+            double u_above = u[(j+1)*(nx+1)+i];
+            un[j*(nx+1)+i] = 0.5 * (u_below + u_above);
+        }
+    }
+}
+
+void computeVelocitiesStaggY_CDS(double* ve, double* vn, const int nx, const int ny, const double* v) {
+
+    // Velocities vs and vn at the Y-staggered control volume faces (south and north)
+    // For i = 0 and i = nx+1 these velocities are not required
+    // For j = 0 or j = ny+1 and 1 <= i < nx+1, these velocities are equal to those at the nodes
+    vn = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    for(int i = 1; i < nx+1; i++) {
+        vn[i] = v[i];                               // When j = 0
+        vn[(ny+1)*(nx+2)+i] = v[(ny+1)*(nx+2)+i];   // When j = ny+1
+        for(int j = 1; j < ny+1; j++) {
+            double v_below = v[(j-1)*(nx+2)+i];
+            double v_above = v[j*(nx+2)+i];
+            vn[j*(nx+2)+i] = 0.5 * (v_below + v_above);
+        }
+    }
+
+    // Velocities vw and ve at the Y-staggered control volume faces (west and east)
+
+    ve = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+
+    for(int j = 1; j < ny; j++) {
+        
+    }
+
+
 
 }
 
-void computeVelocitiesStaggY() {
-    
+void computeRu2(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props) {
+
+    // Mesh sizes
+    int nx = m.getNX(); // X-axis control volume count
+    int ny = m.getNY(); // Y-axis control volume count
+
+    // Mass flows at faces for the X-staggered mesh
+    double* mx = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    double* my = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    computeMassFlowsStaggX(mx, my, m, u, v, props);
+
+    // Velocities at faces for the X-staggered mesh
+    double* u_hor = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    double* u_ver = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    computeVelocitiesStaggX_CDS(u_hor, u_ver, nx, ny, u);
+
+    for(int j = 1; j < ny+1; j++) {
+        for(int i = 1; i < nx; i++) {
+            // Nodal velocities
+            int node = j * (nx + 1) + i;
+            double uP = u[node];
+            double uW = u[node-1];
+            double uE = u[node+1];
+            double uS = u[node-(nx+1)];
+            double uN = u[node+(nx+1)];
+            // Faces velocities
+            double uw = u_hor[j*(nx+2)+i];
+            double ue = u_hor[j*(nx+2)+i+1];
+            double us = u_ver[(j-1)*(nx+1)+i];
+            double un = u_ver[j*(nx+1)+i];
+            // Areas
+            double Ax = m.atSurfX(j);
+            double Ay = m.atSurfY_StaggX(i);
+            // Mass flows
+            double mw = mx[j*(nx+2)+i];
+            double me = mx[j*(nx+2)+i+1];
+            double mn = my[j*(nx+1)+i];
+            double ms = my[(j-1)*(nx+1)+i];
+            // Operator R(u)
+            double integral1 = -(me * ue - mw * uw + mn * un - ms * us);
+            double integral2 = Ax * (uE - uP) / m.atDistFaceX(i) - Ax * (uP - uW) / m.atDistFaceX(i-1);
+            integral2 += Ay * (uN - uP) / m.atDistY(j) - Ay * (uP - uS) / m.atDistY(j-1);
+            integral2 *= props.mu;
+            Ru[j*(nx+1)+i] = (integral1 + integral2) / m.atVolStaggX(i,j);
+        }
+    }
+
+    // Free allocated memory
+    free(mx);
+    free(my);
+    free(u_hor);
+    free(u_ver);
 }
 
+void computeRv2(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props) {
+
+    // Mesh sizes
+    int nx = m.getNX(); // X-axis control volume count
+    int ny = m.getNY(); // Y-axis control volume count
+
+    // Mass flows at faces for the Y-staggered mesh
+    double* mx = (double*) calloc((nx+1)*(ny+1), sizeof(double));
+    double* my = (double*) calloc((nx+2)*(ny+2), sizeof(double));
+    computeMassFlowsStaggY(mx, my, m, u, v, props);
+
+    // Velocities at faces for the Y-staggered mesh
+
+
+    for(int i = 1; i < nx+1; i++) {
+        for(int j = 1; j < ny; j++) {
+            // Nodal velocities
+            int node = j * (nx + 2) + i;
+            double vP = v[node];
+            double vW = v[node-1];
+            double vE = v[node+1];
+            double vS = v[node-(nx+2)];
+            double vN = v[node+(nx+2)];
+            // Face velocities
+            double vw = (i > 1 ? 0.5*(vP + vW) : vW);
+            double ve = (i < nx ? 0.5*(vP + vE) : vE);
+            double vs = schemeCDS(vP, vS);
+            double vn = schemeCDS(vP, vN);
+            // Areas
+            double Ax = m.atSurfX_StaggY(j);
+            double Ay = m.atSurfY(i);
+            // Mass flows
+            double mw = mx[j*(nx+1)+i-1];
+            double me = mx[j*(nx+1)+i];
+            double ms = my[j*(nx+2)+i];
+            double mn = my[(j+1)*(nx+2)+i];
+            // Operator R(v)
+            double integral1 = -(me * ve - mw * vw + mn * vn - ms * vs);
+            double integral2 = Ax * (vE - vP) / m.atDistX(i) - Ax * (vP - vW) / m.atDistX(i-1);
+            integral2 += Ay * (vN - vP) / m.atDistFaceY(j) - Ay * (vP - vS) / m.atDistFaceY(j-1);
+            integral2 *= props.mu;
+            Rv[j*(nx+2)+i] = (integral1 + integral2) / m.atVolStaggY(i,j);
+        }
+    }
+
+    free(mx);
+    free(my);
+}
 
 void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props) {
 
@@ -379,8 +540,6 @@ void computeVelocityV(double* v, const NCMesh m, const double* v_pred, const dou
     // Mesh size
     int nx = m.getNX(); // Number of control volumes along x axis
     int ny = m.getNY(); // Number of control volumes along y axis
-
-
 
     // Y-component of velocity
     for(int i = 1; i < nx+1; i++) {
@@ -643,6 +802,20 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
 
     std::chrono::steady_clock::time_point begin, end;
 
+
+    double* Ru_test = (double*) calloc((nx+1)*(ny+2), sizeof(double));
+    if(!Ru_test) {
+        printf("Error: could not allocate enough memory for Ru_test\n");
+        return;
+    }
+
+    // Operator Rv at time n
+    double* Rv_test = (double*) calloc((nx+2)*(ny+1), sizeof(double));
+    if(!Rv_test) {
+        printf("Error: could not allocate enough memory for Rv_test\n");
+        return;
+    }
+
     // Run the loop until steady state is reached
     while(!steady) {
 
@@ -651,6 +824,22 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
         // Compute operator R(u) and R(v)
         computeRu(Ru, m, u, v, props);
         computeRv(Rv, m, u, v, props);
+
+        // Test
+        computeRu2(Ru_test, m, u, v, props);
+        computeRv2(Rv_test, m, u, v, props);
+
+        double diffRu = -1;
+        for(int k = 0; k < (nx+1)*(ny+2); k++)
+            diffRu = std::max(diffRu, std::abs(Ru[k] - Ru_test[k]));
+
+        double diffRv = -1;
+        for(int k = 0; k < (nx+2)*(ny+1); k++)
+            diffRv = std::max(diffRv, std::abs(Rv[k] - Rv_test[k]));
+
+
+
+
         // Compute predictor velocities
         computePredictorVelocityU(u_pred, nx, ny, u, Ru, Ru_prev, props, tstep);
         computePredictorVelocityV(v_pred, nx, ny, v, Rv, Rv_prev, props, tstep);
@@ -676,6 +865,7 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
         double elapsed = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / 1e6;
 
 
+        printf("%20s %10.3e %5s %10.3e\n", "Ru Rv diffs", diffRu, "", diffRv);
         printf("%6d %5s %10.5f %5s %10.5f %5s %10.5e %5s %10d %5s %.3f\n", it, "", t, "", tstep, "", maxDerivative, "", exitCodeGS, "", elapsed);
 
         if(it % 10 == 0) {
@@ -695,12 +885,12 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
             int Re = std::floor(props.rho * u_ref * L / props.mu);
             std::string filename = "../plots/vel_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
             printVelocityToFile(m, u_col, v_col, filename.c_str(), 5);
-            filename = "../plots/u" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printVelocityUToFile(m, u_col, "sim/u.txt", 5);
-            filename = "../plots/v" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printVelocityVToFile(m, v_col, "sim/v.txt", 5);
-            filename = "../plots/p" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
-            printPressureToFile(m, p, "sim/p.txt", 5);
+            filename = "../plots/u_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+            printVelocityUToFile(m, u_col, filename.c_str(), 5);
+            filename = "../plots/v_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+            printVelocityVToFile(m, v_col, filename.c_str(), 5);
+            filename = "../plots/p_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+            printPressureToFile(m, p, filename.c_str(), 5);
 
             free(u_col);
             free(v_col);
@@ -731,6 +921,9 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
     free(v_pred);
     free(A);
     free(b);
+
+    free(Ru_test);
+    free(Rv_test);
 }
 
 void lid_driven::setInitialMaps(double* u, double* v, double* p, const NCMesh m, const double u_ref, const double p_ref) {
