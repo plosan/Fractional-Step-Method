@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
 
     double rho = 1;    // Density
     double mu = 1e-4;  // Dynamic viscosity
-    double u_ref = 1e-2;       // X-velocity boundary condition    [m/s]
+    double u_ref = 1e-1;       // X-velocity boundary condition    [m/s]
     double p_ref = 1e5;     // Pressure
 
     const double L = 1;

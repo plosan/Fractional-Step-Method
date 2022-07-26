@@ -24,11 +24,10 @@ void allocateLinearSystemVariables(const int nx, const int ny, double* &A, doubl
 void computeVelocitiesStaggX_CDS(double* ue, double* un, const int nx, const int ny, const double* u);
 void computeVelocitiesStaggY_CDS(double* ue, double* un, const int nx, const int ny, const double* u);
 
+void computeVelocitiesStaggX_QUICK(double* ue, double* un, const NCMesh m, const double* mx, const double* u);
+void computeVelocitiesStaggY_QUICK(double* ve, double* vn, const NCMesh m, const double* my, const double* v);
+
 // Operator Ru and Rv
-// void computeRu(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
-// void computeRv(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
-// void computeRu2(double* Ru, const NCMesh m, const double* u, const double* v, const Properties props);
-// void computeRv2(double* Rv, const NCMesh m, const double* u, const double* v, const Properties props);
 
 void computeRu3(double* Ru, const NCMesh m, const double* u, const double* ux_staggX, const double* uy_staggX, const double* mx_staggX, const double* my_staggX, const Properties props);
 void computeRv3(double* Rv, const NCMesh m, const double* v, const double* vx_staggY, const double* vy_staggY, const double* mx_staggY, const double* my_staggY, const Properties props);

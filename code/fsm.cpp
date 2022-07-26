@@ -269,7 +269,7 @@ void computeVelocitiesStaggX_QUICK(double* ue, double* un, const NCMesh m, const
         ue[j*(nx+2)+(nx+1)] = u[j*(nx+1)+nx];   // When i = nx + 1
         for(int i = 1; i < nx+1; i++) {
 
-            double mf = mx[j*(nx+2)+i];
+            double mf = mx[j*(nx+2)+i];         // Mass flow
             if(mf > 0) {    // From left to right
                 if(i == 1) {    // There is no second-upwind node (in this case W), so we use CDS instead
                     double u_left = u[j*(nx+1)+i-1];
@@ -330,7 +330,11 @@ void computeVelocitiesStaggX_QUICK(double* ue, double* un, const NCMesh m, const
     }
 }
 
-void computeVelocitiesStaggY_QUICK(double* ve, double* vn, const NCMesh m, cosnt double* my, const double* v) {
+void computeVelocitiesStaggY_QUICK(double* ve, double* vn, const NCMesh m, const double* my, const double* v) {
+
+    // Mesh sizes
+    int nx = m.getNX(); // X-axis control volume count
+    int ny = m.getNY(); // Y-axis control volume count
 
     // Velocities vw and ve at the Y-staggered control volume faces (west and east)
     // For j = 0 and j = ny these velocities are not required
@@ -354,9 +358,51 @@ void computeVelocitiesStaggY_QUICK(double* ve, double* vn, const NCMesh m, cosnt
         vn[i] = v[i];                               // When j = 0
         vn[(ny+1)*(nx+2)+i] = v[(ny+1)*(nx+2)+i];   // When j = ny+1
         for(int j = 1; j < ny+1; j++) {
-            double v_below = v[(j-1)*(nx+2)+i];
-            double v_above = v[j*(nx+2)+i];
-            vn[j*(nx+2)+i] = 0.5 * (v_below + v_above);
+
+            double mf = my[j*(nx+2)+i];      // Mass flow at face
+
+            if(mf > 0) {
+                if(j == 1) {    // There is no second upwind node (in this case S), so we use CDS instead
+                    double v_below = v[(j-1)*(nx+2)+i];
+                    double v_above = v[j*(nx+2)+i];
+                    vn[j*(nx+2)+i] = 0.5 * (v_below + v_above);
+                } else {
+                    // Property values
+                    double v_UU = v[(j-2)*(nx+2)+i];    // Y-velocity at the second upstream node
+                    double v_U = v[(j-1)*(nx+2)+i];     // Y-velocity at the first upstream node
+                    double v_D = v[j*(nx+2)+i];         // Y-velocity at the first downstream node
+                    // Nodes and face positions
+                    double y_UU = m.atFaceY(j-2);       // Y-position of the second upstream face
+                    double y_U = m.atFaceY(j-1);        // Y-position of the first upstream face
+                    double y_D = m.atFaceY(j);          // Y-position of the first downstream face
+                    double yn = m.atNodeY(j);           // Y-position of the node where the convective property is being computed
+                    // QUICK scheme
+                    vn[j*(nx+2)+i] = schemeQUICK(v_D, v_U, v_UU, y_D, y_U, y_UU, yn);
+                }
+            } else if(mf < 0) {
+                if(j == ny) {   // There is no second upwind node (in this case NN), so we use CDS instead
+                    double v_below = v[(j-1)*(nx+2)+i];
+                    double v_above = v[j*(nx+2)+i];
+                    vn[j*(nx+2)+i] = 0.5 * (v_below + v_above);
+                } else {
+                    // Property values
+                    double v_UU = v[(j+1)*(nx+2)+i];    // Y-velocity at the second upstream node
+                    double v_U = v[j*(nx+2)+i];         // Y-velocity at the first upstream node
+                    double v_D = v[(j-1)*(nx+2)+i];     // Y-velocity at the first downstream node
+                    // Nodes and face positions
+                    double y_UU = m.atFaceY(j+1);       // Y-position of the second upstream face
+                    double y_U = m.atFaceY(j);          // Y-position of the first upstream face
+                    double y_D = m.atFaceY(j-1);        // Y-position of the first downstream face
+                    double yn = m.atNodeY(j);           // Y-position of the node where the convective property is being computed
+                    // QUICK scheme
+                    vn[j*(nx+2)+i] = schemeQUICK(v_D, v_U, v_UU, y_D, y_U, y_UU, yn);
+                }
+            } else {    // Rare case, then use CDS
+                double v_below = v[(j-1)*(nx+2)+i];
+                double v_above = v[j*(nx+2)+i];
+                vn[j*(nx+2)+i] = 0.5 * (v_below + v_above);
+            }
+
         }
     }
 }
@@ -1117,12 +1163,14 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
     // }
 
     computeMassFlowsStaggX(mx_staggX, my_staggX, m, u, v, props);
-    computeVelocitiesStaggX_CDS(ux_staggX, uy_staggX, nx, ny, u);
+    // computeVelocitiesStaggX_CDS(ux_staggX, uy_staggX, nx, ny, u);
+    computeVelocitiesStaggX_QUICK(ux_staggX, uy_staggX, m, mx_staggX, u);
     // computeRu3(Ru_test, m, u, ux_staggX, uy_staggX, mx_staggX, my_staggX, props);
     computeRu3(Ru_prev, m, u, ux_staggX, uy_staggX, mx_staggX, my_staggX, props);
 
     computeMassFlowsStaggY(mx_staggY, my_staggY, m, u, v, props);
-    computeVelocitiesStaggY_CDS(vx_staggY, vy_staggY, nx, ny, v);
+    // computeVelocitiesStaggY_CDS(vx_staggY, vy_staggY, nx, ny, v);
+    computeVelocitiesStaggY_QUICK(vx_staggY, vy_staggY, m, my_staggY, v);
     // computeRv3(Rv_test, m, v, vx_staggY, vy_staggY, mx_staggY, my_staggY, props);
     computeRv3(Rv_prev, m, v, vx_staggY, vy_staggY, mx_staggY, my_staggY, props);
 
@@ -1151,11 +1199,13 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
         // computeRv2(Rv_test, m, u, v, props);
 
         computeMassFlowsStaggX(mx_staggX, my_staggX, m, u, v, props);
-        computeVelocitiesStaggX_CDS(ux_staggX, uy_staggX, nx, ny, u);
+        // computeVelocitiesStaggX_CDS(ux_staggX, uy_staggX, nx, ny, u);
+        computeVelocitiesStaggX_QUICK(ux_staggX, uy_staggX, m, mx_staggX, u);
         computeRu3(Ru, m, u, ux_staggX, uy_staggX, mx_staggX, my_staggX, props);
 
         computeMassFlowsStaggY(mx_staggY, my_staggY, m, u, v, props);
-        computeVelocitiesStaggY_CDS(vx_staggY, vy_staggY, nx, ny, v);
+        // computeVelocitiesStaggY_CDS(vx_staggY, vy_staggY, nx, ny, v);
+        computeVelocitiesStaggY_QUICK(vx_staggY, vy_staggY, m, my_staggY, v);
         computeRv3(Rv, m, v, vx_staggY, vy_staggY, mx_staggY, my_staggY, props);
 
         // // Test

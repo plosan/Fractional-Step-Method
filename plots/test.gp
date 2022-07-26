@@ -23,7 +23,7 @@ set ylabel ("y")
 set cblabel ("u [m/s]")
 
 
-plot "u_129_129_100.txt" with image
+plot "u_129_129_1000.txt" with image
 
 
 
@@ -46,7 +46,7 @@ set cblabel ("v [m/s]")
 
 
 
-plot "v_129_129_100.txt" with image
+plot "v_129_129_1000.txt" with image
 
 # --- GRAPH c
 
@@ -67,8 +67,8 @@ set cblabel ("vel [m/s]")
 
 
 
-# plot "vel_129_129_100.txt" with image, "vel_129_129_100.txt" using 1:2:4:5 every 5:5 with vectors lc -1 filled
-plot "vel_129_129_100.txt" with image, "vel_129_129_100.txt" using 1:2:($4/(20*sqrt(($4)**2 + ($5)**2))):($5/(20*sqrt(($4)**2 + ($5)**2))) every 5:5 with vectors lc -1 filled
+# plot "vel_129_129_1000.txt" with image, "vel_129_129_1000.txt" using 1:2:4:5 every 5:5 with vectors lc -1 filled
+plot "vel_129_129_1000.txt" with image, "vel_129_129_1000.txt" using 1:2:($4/(20*sqrt(($4)**2 + ($5)**2))):($5/(20*sqrt(($4)**2 + ($5)**2))) every 5:5 with vectors lc -1 filled
 
 
 
@@ -91,7 +91,7 @@ set cblabel ("p [Pa]")
 
 
 
-plot "p_129_129_100.txt" with image
+plot "p_129_129_1000.txt" with image
 
 
 unset multiplot
