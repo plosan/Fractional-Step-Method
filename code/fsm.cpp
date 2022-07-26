@@ -891,7 +891,7 @@ void computeCenteredNodesVelocities(double* u_col, double* v_col, const int nx, 
 }
 
 
-void printVariablesToFile(const NCMesh m, const double* u, const double* v, const double* p, const int Re, const int precision) {
+void printVariablesToFile(const NCMesh m, const double* u, const double* v, const double* p, const int Re, const int precision, const int time) {
 
     // Mesh size
     int nx = m.getNX(); // Number of control volumes along x axis
@@ -915,22 +915,22 @@ void printVariablesToFile(const NCMesh m, const double* u, const double* v, cons
     computeCenteredNodesVelocities(u_col, v_col, nx, ny, u, v);
 
     // Save velocity norm
-    std::string filename = "../plots/vel_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+    std::string filename = "../plots/vel_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + "_" + std::to_string(time) + ".txt";
     printVelocityToFile(m, u_col, v_col, filename.c_str(), 5);
 
     // Save x-velocity
-    filename = "../plots/u_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+    filename = "../plots/u_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + "_" + std::to_string(time) + ".txt";
     printVelocityUToFile(m, u_col, filename.c_str(), 5);
 
     // Save y-velocity
-    filename = "../plots/v_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+    filename = "../plots/v_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + "_" + std::to_string(time) + ".txt";
     printVelocityVToFile(m, v_col, filename.c_str(), 5);
 
     free(u_col);
     free(v_col);
 
     // Save pressure
-    filename = "../plots/p_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + ".txt";
+    filename = "../plots/p_" + std::to_string(nx) + "_" + std::to_string(ny) + "_" + std::to_string(Re) + "_" + std::to_string(time) + ".txt";
     printPressureToFile(m, p, filename.c_str(), 5);
 }
 
@@ -1190,6 +1190,9 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
     // printf("%20s %10.3e %5s %10.3e\n", "Ru Rv prev diffs", diffRu, "", diffRv);
 
     // Run the loop until steady state is reached
+
+    double objective_time = 5;
+
     while(!steady) {
 
         begin = std::chrono::steady_clock::now();
@@ -1251,9 +1254,10 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
         printf("%6d %5s %10.5f %5s %10.5f %5s %10.5e %5s %10d %5s %.3f\n", it, "", t, "", tstep, "", maxDerivative, "", exitCodeGS, "", elapsed);
         // printf("%20s %10.3e %5s %10.3e\n", "Ru Rv diffs", diffRu, "", diffRv);
 
-        if(it % 10 == 0) {
+        if(t > objective_time) {
             int Re = std::round(props.rho * u_ref * L / props.mu);
-            printVariablesToFile(m, u, v, p, Re, 5);
+            printVariablesToFile(m, u, v, p, Re, 5, std::floor(t));
+            objective_time += 5;
         }
 
         // Check steady state condition
@@ -1261,7 +1265,7 @@ void lid_driven::mainLoop(const double rho, const double mu, const double u_ref,
             steady = true;
 
             int Re = std::round(props.rho * u_ref * L / props.mu);
-            printVariablesToFile(m, u, v, p, Re, 5);
+            printVariablesToFile(m, u, v, p, Re, 5, std::round(t));
 
         }
         else {

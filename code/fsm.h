@@ -43,7 +43,7 @@ void computeTimeStep(double &tstep, const NCMesh m, const double* u, const doubl
 void updateOperatorR(double* Ru_prev, double* Rv_prev, const double* Ru, const double* Rv, const int nx, const int ny);
 
 void computeCenteredNodesVelocities(double* u_col, double* v_col, const int nx, const int ny, const double* u, const double* v);
-void printVariablesToFile(const NCMesh m, const double* u, const double* v, const double* p, const int Re, const int precision);
+void printVariablesToFile(const NCMesh m, const double* u, const double* v, const double* p, const int Re, const int precision, const int time);
 void printVelocityToFile(const NCMesh m, const double* u_col, const double* v_col, const char* filename, const int precision);
 void printVelocityUToFile(const NCMesh m, const double* u_col, const char* filename, const int precision);
 void printVelocityVToFile(const NCMesh m, const double* v_col, const char* filename, const int precision);
