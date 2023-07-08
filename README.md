@@ -10,4 +10,4 @@ The Navier-Stokes equations are a set of partial differential equations (PDEs) t
   <img src="./mdimages/nseqs.svg">
 </p>
 
-<h1 align="center">Material Bread</h1>
+<h1 align="justified">Material Bread</h1>
