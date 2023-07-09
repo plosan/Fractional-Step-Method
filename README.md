@@ -48,43 +48,43 @@ It consists of a rectangular cavity filled with fluid and open at the top. On th
 
 
 <p align="center">
-  <img src="./mdimages/sec_005.svg" width="350" />
-  <img src="./mdimages/sec_005.svg" width="350" /> 
+  <img src="./mdimages/sec_005.svg" width="400" />
+  <img src="./mdimages/sec_005.svg" width="400" /> 
 </p>
 
 <p align="center">
-  <img src="./mdimages/sec_030.svg" width="350" />
-  <img src="./mdimages/sec_030.svg" width="350" /> 
+  <img src="./mdimages/sec_030.svg" width="400" />
+  <img src="./mdimages/sec_030.svg" width="400" /> 
 </p>
 
 <p align="center">
-  <img src="./mdimages/sec_060.svg" width="350" />
-  <img src="./mdimages/sec_060.svg" width="350" /> 
+  <img src="./mdimages/sec_060.svg" width="400" />
+  <img src="./mdimages/sec_060.svg" width="400" /> 
 </p>
 
 <p align="center">
-  <img src="./mdimages/sec_090.svg" width="350" />
-  <img src="./mdimages/sec_090.svg" width="350" /> 
+  <img src="./mdimages/sec_090.svg" width="400" />
+  <img src="./mdimages/sec_090.svg" width="400" /> 
 </p>
 
 <p align="center">
-  <img src="./mdimages/sec_120.svg" width="350" />
-  <img src="./mdimages/sec_120.svg" width="350" /> 
+  <img src="./mdimages/sec_120.svg" width="400" />
+  <img src="./mdimages/sec_120.svg" width="400" /> 
 </p>
 
 <p align="center">
-  <img src="./mdimages/sec_150.svg" width="350" />
-  <img src="./mdimages/sec_150.svg" width="350" /> 
+  <img src="./mdimages/sec_150.svg" width="400" />
+  <img src="./mdimages/sec_150.svg" width="400" /> 
 </p>
 
 <p align="center">
-  <img src="./mdimages/sec_180.svg" width="350" />
-  <img src="./mdimages/sec_180.svg" width="350" /> 
+  <img src="./mdimages/sec_180.svg" width="400" />
+  <img src="./mdimages/sec_180.svg" width="400" /> 
 </p>
 
 <p align="center">
-  <img src="./mdimages/sec_206.svg" width="350" />
-  <img src="./mdimages/sec_206.svg" width="350" /> 
+  <img src="./mdimages/sec_206.svg" width="400" />
+  <img src="./mdimages/sec_206.svg" width="400" /> 
 </p>
 
 
