@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8) (preloaded format=pdflatex 2021.8.11)  9 JUL 2023 16:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8) (preloaded format=pdflatex 2021.8.11)  9 JUL 2023 16:59
 entering extended mode
-**./sec_005.tex
-(sec_005.tex
+**./sec_060.tex
+(sec_060.tex
 LaTeX2e <2021-06-01> patch level 1
 L3 programming layer <2021-07-12>
 (C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/base\minimal.cls
@@ -92,8 +92,8 @@ File: l3backend-pdftex.def 2021-08-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count188
 \l__pdf_internal_box=\box50
 )
-(C:\Users\Pedro\Desktop\fractional_step_method\generateGP\auxdir\sec_005.aux)
-\openout1 = `sec_005.aux'.
+(C:\Users\Pedro\Desktop\fractional_step_method\generateGP\auxdir\sec_060.aux)
+\openout1 = `sec_060.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
 LaTeX Font Info:    ... okay on input line 60.
@@ -171,24 +171,24 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 \gptboxheight=\skip50
 \gptboxwidth=\skip51
 \gptboxtext=\box52
-Package epstopdf Info: Source file: <sec_005-inc.eps>
-(epstopdf)                    date: 2023-07-09 16:53:10
-(epstopdf)                    size: 69694 bytes
-(epstopdf)             Output file: <sec_005-inc-eps-converted-to.pdf>
-(epstopdf)                    date: 2023-07-09 16:53:21
-(epstopdf)                    size: 24661 bytes
-(epstopdf)             Command: <miktex-epstopdf --outfile=sec_005-inc-eps-conv
-erted-to.pdf sec_005-inc.eps>
+Package epstopdf Info: Source file: <sec_060-inc.eps>
+(epstopdf)                    date: 2023-07-09 16:58:04
+(epstopdf)                    size: 69755 bytes
+(epstopdf)             Output file: <sec_060-inc-eps-converted-to.pdf>
+(epstopdf)                    date: 2023-07-09 16:59:13
+(epstopdf)                    size: 28612 bytes
+(epstopdf)             Command: <miktex-epstopdf --outfile=sec_060-inc-eps-conv
+erted-to.pdf sec_060-inc.eps>
 (epstopdf)             \includegraphics on input line 177.
 Package epstopdf Info: Output file is already uptodate.
 
 
-pdfTeX warning: pdflatex.exe (file ./sec_005-inc-eps-converted-to.pdf): PDF inc
+pdfTeX warning: pdflatex.exe (file ./sec_060-inc-eps-converted-to.pdf): PDF inc
 lusion: found PDF version <1.7>, but at most version <1.5> allowed
-<sec_005-inc-eps-converted-to.pdf, id=1, 341.275pt x 341.275pt>
-File: sec_005-inc-eps-converted-to.pdf Graphic file (type pdf)
-<use sec_005-inc-eps-converted-to.pdf>
-Package pdftex.def Info: sec_005-inc-eps-converted-to.pdf  used on input line 1
+<sec_060-inc-eps-converted-to.pdf, id=1, 341.275pt x 341.275pt>
+File: sec_060-inc-eps-converted-to.pdf Graphic file (type pdf)
+<use sec_060-inc-eps-converted-to.pdf>
+Package pdftex.def Info: sec_060-inc-eps-converted-to.pdf  used on input line 1
 77.
 (pdftex.def)             Requested size: 341.39912pt x 341.39912pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -197,9 +197,9 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 178.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 178.
-[1{C:/Users/Pedro/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./sec_005-inc
+[1{C:/Users/Pedro/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./sec_060-inc
 -eps-converted-to.pdf>]
-(C:\Users\Pedro\Desktop\fractional_step_method\generateGP\auxdir\sec_005.aux) )
+(C:\Users\Pedro\Desktop\fractional_step_method\generateGP\auxdir\sec_060.aux) )
  
 Here is how much of TeX's memory you used:
  1830 strings out of 478868
@@ -215,7 +215,7 @@ nts/cm/cmmi10.pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/pub
 lic/amsfonts/cm/cmr10.pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/t
 ype1/public/amsfonts/cm/cmsy10.pfb>
 Output written on C:\Users\Pedro\Desktop\fractional_step_method\generateGP\PDF\
-sec_005.pdf (1 page, 66116 bytes).
+sec_060.pdf (1 page, 69806 bytes).
 PDF statistics:
  31 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
