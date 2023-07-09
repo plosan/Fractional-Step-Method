@@ -37,15 +37,16 @@ The Fractional Step Method is a computational procedure to solve the incompressi
 
 ## Application: Driven Cavity
 
+As an application of the Fractional Step Method, I solved the Lid-Driven Cavity problem, which is depicted below:
+
 
 <p align="center">
-  <img src="./mdimages/driven_cavity.pdf">.
+  <img src="./mdimages/driven_cavity.svg">.
 </p>
 
-<object data="./mdimages/driven_cavity.pdf" type="application/pdf" width="700px" height="700px">
-    <embed src="./mdimages/driven_cavity.pdf">
-    </embed>
-</object>
+It consists of a rectangular cavity filled with fluid and open at the top. On the left, right and lower walls, the no-slip condition is imposed. On the upper wall there is a fluid flow that drives the fluid whithin the cavity. 
+
+
 
 
 

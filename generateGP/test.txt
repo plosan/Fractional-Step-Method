@@ -1,0 +1,20 @@
+# --- GRAPH d
+set title 'Pressure'
+
+set xrange [0:1]
+set yrange [0:1]
+set size ratio 1
+
+set xtics axis
+set xtics format '%.1f'
+set xlabel ("$x \\ (\\mathrm{m})$")
+
+set ytics axis
+set ytics format '%.1f'
+set xlabel ("$y \\ (\\mathrm{m})$")
+
+set xlabel ("$p \\ (\\mathrm{Pa})$")
+
+plot 'data/p_129_129_1000_5.txt' with image
+
+unset multiplot
