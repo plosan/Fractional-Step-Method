@@ -1,0 +1,2911 @@
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: vel_060.tex
+%%Creator: gnuplot 5.4 patchlevel 2
+%%CreationDate: Mon Jul 10 18:14:54 2023
+%%DocumentFonts: 
+%%BoundingBox: 50 50 390 390
+%%EndComments
+%%BeginProlog
+/gnudict 256 dict def
+gnudict begin
+%
+% The following true/false flags may be edited by hand if desired.
+% The unit line width and grayscale image gamma correction may also be changed.
+%
+/Color true def
+/Blacktext false def
+/Solid false def
+/Dashlength 1 def
+/Landscape false def
+/Level1 false def
+/Level3 false def
+/Rounded false def
+/ClipToBoundingBox false def
+/SuppressPDFMark false def
+/TransparentPatterns false def
+/gnulinewidth 5.000 def
+/userlinewidth gnulinewidth def
+/Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
+%
+/vshift -73 def
+/dl1 {
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
+  Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
+} def
+/dl2 {
+  10.0 Dashlength userlinewidth gnulinewidth div mul mul mul
+  Rounded { currentlinewidth 0.75 mul add } if
+} def
+/hpt_ 31.5 def
+/vpt_ 31.5 def
+/hpt hpt_ def
+/vpt vpt_ def
+/doclip {
+  ClipToBoundingBox {
+    newpath 50 50 moveto 390 50 lineto 390 390 lineto 50 390 lineto closepath
+    clip
+  } if
+} def
+%
+% Gnuplot Prolog Version 5.2 (Dec 2017)
+%
+%/SuppressPDFMark true def
+%
+/M {moveto} bind def
+/L {lineto} bind def
+/R {rmoveto} bind def
+/V {rlineto} bind def
+/N {newpath moveto} bind def
+/Z {closepath} bind def
+/C {setrgbcolor} bind def
+/f {rlineto fill} bind def
+/g {setgray} bind def
+/Gshow {show} def   % May be redefined later in the file to support UTF-8
+/vpt2 vpt 2 mul def
+/hpt2 hpt 2 mul def
+/Lshow {currentpoint stroke M 0 vshift R 
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
+/Rshow {currentpoint stroke M dup stringwidth pop neg vshift R
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
+/Cshow {currentpoint stroke M dup stringwidth pop -2 div vshift R 
+	Blacktext {gsave 0 setgray textshow grestore} {textshow} ifelse} def
+/UP {dup vpt_ mul /vpt exch def hpt_ mul /hpt exch def
+  /hpt2 hpt 2 mul def /vpt2 vpt 2 mul def} def
+/DL {Color {setrgbcolor Solid {pop []} if 0 setdash}
+ {pop pop pop 0 setgray Solid {pop []} if 0 setdash} ifelse} def
+/BL {stroke userlinewidth 2 mul setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+/AL {stroke userlinewidth 2 div setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+/UL {dup gnulinewidth mul /userlinewidth exch def
+	dup 1 lt {pop 1} if 10 mul /udl exch def} def
+/PL {stroke userlinewidth setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
+% Classic Line colors (version 5.0)
+/LCw {1 1 1} def
+/LCb {0 0 0} def
+/LCa {0 0 0} def
+/LC0 {1 0 0} def
+/LC1 {0 1 0} def
+/LC2 {0 0 1} def
+/LC3 {1 0 1} def
+/LC4 {0 1 1} def
+/LC5 {1 1 0} def
+/LC6 {0 0 0} def
+/LC7 {1 0.3 0} def
+/LC8 {0.5 0.5 0.5} def
+% Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
+/LTw {PL [] 1 setgray} def
+/LTb {PL [] LCb DL} def
+/LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
+/LT0 {PL [] LC0 DL} def
+/LT1 {PL [2 dl1 3 dl2] LC1 DL} def
+/LT2 {PL [1 dl1 1.5 dl2] LC2 DL} def
+/LT3 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC3 DL} def
+/LT4 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
+/LT5 {PL [4 dl1 2 dl2] LC5 DL} def
+/LT6 {PL [1.5 dl1 1.5 dl2 1.5 dl1 1.5 dl2 1.5 dl1 6 dl2] LC6 DL} def
+/LT7 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC7 DL} def
+/LT8 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC8 DL} def
+/SL {[] 0 setdash} def
+/Pnt {stroke [] 0 setdash gsave 1 setlinecap M 0 0 V stroke grestore} def
+/Dia {stroke [] 0 setdash 2 copy vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath stroke
+  Pnt} def
+/Pls {stroke [] 0 setdash vpt sub M 0 vpt2 V
+  currentpoint stroke M
+  hpt neg vpt neg R hpt2 0 V stroke
+ } def
+/Box {stroke [] 0 setdash 2 copy exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath stroke
+  Pnt} def
+/Crs {stroke [] 0 setdash exch hpt sub exch vpt add M
+  hpt2 vpt2 neg V currentpoint stroke M
+  hpt2 neg 0 R hpt2 vpt2 V stroke} def
+/TriU {stroke [] 0 setdash 2 copy vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath stroke
+  Pnt} def
+/Star {2 copy Pls Crs} def
+/BoxF {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath fill} def
+/TriUF {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath fill} def
+/TriD {stroke [] 0 setdash 2 copy vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath stroke
+  Pnt} def
+/TriDF {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath fill} def
+/DiaF {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath fill} def
+/Pent {stroke [] 0 setdash 2 copy gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath stroke grestore Pnt} def
+/PentF {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath fill grestore} def
+/Circle {stroke [] 0 setdash 2 copy
+  hpt 0 360 arc stroke Pnt} def
+/CircleF {stroke [] 0 setdash hpt 0 360 arc fill} def
+/C0 {BL [] 0 setdash 2 copy moveto vpt 90 450 arc} bind def
+/C1 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C2 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C3 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C4 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 180 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C5 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc
+	2 copy moveto
+	2 copy vpt 180 270 arc closepath fill
+	vpt 0 360 arc} bind def
+/C6 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C7 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C8 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 270 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C9 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 270 450 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C10 {BL [] 0 setdash 2 copy 2 copy moveto vpt 270 360 arc closepath fill
+	2 copy moveto
+	2 copy vpt 90 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C11 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 180 arc closepath fill
+	2 copy moveto
+	2 copy vpt 270 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C12 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 180 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C13 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc closepath fill
+	2 copy moveto
+	2 copy vpt 180 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C14 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 360 arc closepath fill
+	vpt 0 360 arc} bind def
+/C15 {BL [] 0 setdash 2 copy vpt 0 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/Rec {newpath 4 2 roll moveto 1 index 0 rlineto 0 exch rlineto
+	neg 0 rlineto closepath} bind def
+/Square {dup Rec} bind def
+/Bsquare {vpt sub exch vpt sub exch vpt2 Square} bind def
+/S0 {BL [] 0 setdash 2 copy moveto 0 vpt rlineto BL Bsquare} bind def
+/S1 {BL [] 0 setdash 2 copy vpt Square fill Bsquare} bind def
+/S2 {BL [] 0 setdash 2 copy exch vpt sub exch vpt Square fill Bsquare} bind def
+/S3 {BL [] 0 setdash 2 copy exch vpt sub exch vpt2 vpt Rec fill Bsquare} bind def
+/S4 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt Square fill Bsquare} bind def
+/S5 {BL [] 0 setdash 2 copy 2 copy vpt Square fill
+	exch vpt sub exch vpt sub vpt Square fill Bsquare} bind def
+/S6 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt vpt2 Rec fill Bsquare} bind def
+/S7 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt vpt2 Rec fill
+	2 copy vpt Square fill Bsquare} bind def
+/S8 {BL [] 0 setdash 2 copy vpt sub vpt Square fill Bsquare} bind def
+/S9 {BL [] 0 setdash 2 copy vpt sub vpt vpt2 Rec fill Bsquare} bind def
+/S10 {BL [] 0 setdash 2 copy vpt sub vpt Square fill 2 copy exch vpt sub exch vpt Square fill
+	Bsquare} bind def
+/S11 {BL [] 0 setdash 2 copy vpt sub vpt Square fill 2 copy exch vpt sub exch vpt2 vpt Rec fill
+	Bsquare} bind def
+/S12 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill Bsquare} bind def
+/S13 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill
+	2 copy vpt Square fill Bsquare} bind def
+/S14 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill
+	2 copy exch vpt sub exch vpt Square fill Bsquare} bind def
+/S15 {BL [] 0 setdash 2 copy Bsquare fill Bsquare} bind def
+/D0 {gsave translate 45 rotate 0 0 S0 stroke grestore} bind def
+/D1 {gsave translate 45 rotate 0 0 S1 stroke grestore} bind def
+/D2 {gsave translate 45 rotate 0 0 S2 stroke grestore} bind def
+/D3 {gsave translate 45 rotate 0 0 S3 stroke grestore} bind def
+/D4 {gsave translate 45 rotate 0 0 S4 stroke grestore} bind def
+/D5 {gsave translate 45 rotate 0 0 S5 stroke grestore} bind def
+/D6 {gsave translate 45 rotate 0 0 S6 stroke grestore} bind def
+/D7 {gsave translate 45 rotate 0 0 S7 stroke grestore} bind def
+/D8 {gsave translate 45 rotate 0 0 S8 stroke grestore} bind def
+/D9 {gsave translate 45 rotate 0 0 S9 stroke grestore} bind def
+/D10 {gsave translate 45 rotate 0 0 S10 stroke grestore} bind def
+/D11 {gsave translate 45 rotate 0 0 S11 stroke grestore} bind def
+/D12 {gsave translate 45 rotate 0 0 S12 stroke grestore} bind def
+/D13 {gsave translate 45 rotate 0 0 S13 stroke grestore} bind def
+/D14 {gsave translate 45 rotate 0 0 S14 stroke grestore} bind def
+/D15 {gsave translate 45 rotate 0 0 S15 stroke grestore} bind def
+/DiaE {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath stroke} def
+/BoxE {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath stroke} def
+/TriUE {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath stroke} def
+/TriDE {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath stroke} def
+/PentE {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath stroke grestore} def
+/CircE {stroke [] 0 setdash 
+  hpt 0 360 arc stroke} def
+/Opaque {gsave closepath 1 setgray fill grestore 0 setgray closepath} def
+/DiaW {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V Opaque stroke} def
+/BoxW {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V Opaque stroke} def
+/TriUW {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V Opaque stroke} def
+/TriDW {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V Opaque stroke} def
+/PentW {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  Opaque stroke grestore} def
+/CircW {stroke [] 0 setdash 
+  hpt 0 360 arc Opaque stroke} def
+/BoxFill {gsave Rec 1 setgray fill grestore} def
+/Density {
+  /Fillden exch def
+  currentrgbcolor
+  /ColB exch def /ColG exch def /ColR exch def
+  /ColR ColR Fillden mul Fillden sub 1 add def
+  /ColG ColG Fillden mul Fillden sub 1 add def
+  /ColB ColB Fillden mul Fillden sub 1 add def
+  ColR ColG ColB setrgbcolor} def
+/BoxColFill {gsave Rec PolyFill} def
+/PolyFill {gsave Density fill grestore grestore} def
+/h {rlineto rlineto rlineto closepath gsave fill grestore stroke} bind def
+%
+% PostScript Level 1 Pattern Fill routine for rectangles
+% Usage: x y w h s a XX PatternFill
+%	x,y = lower left corner of box to be filled
+%	w,h = width and height of box
+%	  a = angle in degrees between lines and x-axis
+%	 XX = 0/1 for no/yes cross-hatch
+%
+/PatternFill {gsave /PFa [ 9 2 roll ] def
+  PFa 0 get PFa 2 get 2 div add PFa 1 get PFa 3 get 2 div add translate
+  PFa 2 get -2 div PFa 3 get -2 div PFa 2 get PFa 3 get Rec
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+  clip
+  currentlinewidth 0.5 mul setlinewidth
+  /PFs PFa 2 get dup mul PFa 3 get dup mul add sqrt def
+  0 0 M PFa 5 get rotate PFs -2 div dup translate
+  0 1 PFs PFa 4 get div 1 add floor cvi
+	{PFa 4 get mul 0 M 0 PFs V} for
+  0 PFa 6 get ne {
+	0 1 PFs PFa 4 get div 1 add floor cvi
+	{PFa 4 get mul 0 2 1 roll M PFs 0 V} for
+ } if
+  stroke grestore} def
+%
+/languagelevel where
+ {pop languagelevel} {1} ifelse
+dup 2 lt
+	{/InterpretLevel1 true def
+	 /InterpretLevel3 false def}
+	{/InterpretLevel1 Level1 def
+	 2 gt
+	    {/InterpretLevel3 Level3 def}
+	    {/InterpretLevel3 false def}
+	 ifelse }
+ ifelse
+%
+% PostScript level 2 pattern fill definitions
+%
+/Level2PatternFill {
+/Tile8x8 {/PaintType 2 /PatternType 1 /TilingType 1 /BBox [0 0 8 8] /XStep 8 /YStep 8}
+	bind def
+/KeepColor {currentrgbcolor [/Pattern /DeviceRGB] setcolorspace} bind def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 8 8 L 0 8 M 8 0 L stroke} 
+>> matrix makepattern
+/Pat1 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 8 8 L 0 8 M 8 0 L stroke
+	0 4 M 4 8 L 8 4 L 4 0 L 0 4 L stroke}
+>> matrix makepattern
+/Pat2 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 0 8 L
+	8 8 L 8 0 L 0 0 L fill}
+>> matrix makepattern
+/Pat3 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -4 8 M 8 -4 L
+	0 12 M 12 0 L stroke}
+>> matrix makepattern
+/Pat4 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -4 0 M 8 12 L
+	0 -4 M 12 8 L stroke}
+>> matrix makepattern
+/Pat5 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -2 8 M 4 -4 L
+	0 12 M 8 -4 L 4 12 M 10 0 L stroke}
+>> matrix makepattern
+/Pat6 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -2 0 M 4 12 L
+	0 -4 M 8 12 L 4 -4 M 10 8 L stroke}
+>> matrix makepattern
+/Pat7 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 8 -2 M -4 4 L
+	12 0 M -4 8 L 12 4 M 0 10 L stroke}
+>> matrix makepattern
+/Pat8 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 -2 M 12 4 L
+	-4 0 M 12 8 L -4 4 M 8 10 L stroke}
+>> matrix makepattern
+/Pat9 exch def
+/Pattern1 {PatternBgnd KeepColor Pat1 setpattern} bind def
+/Pattern2 {PatternBgnd KeepColor Pat2 setpattern} bind def
+/Pattern3 {PatternBgnd KeepColor Pat3 setpattern} bind def
+/Pattern4 {PatternBgnd KeepColor Landscape {Pat5} {Pat4} ifelse setpattern} bind def
+/Pattern5 {PatternBgnd KeepColor Landscape {Pat4} {Pat5} ifelse setpattern} bind def
+/Pattern6 {PatternBgnd KeepColor Landscape {Pat9} {Pat6} ifelse setpattern} bind def
+/Pattern7 {PatternBgnd KeepColor Landscape {Pat8} {Pat7} ifelse setpattern} bind def
+} def
+%
+%
+%End of PostScript Level 2 code
+%
+/PatternBgnd {
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+} def
+%
+% Substitute for Level 2 pattern fill codes with
+% grayscale if Level 2 support is not selected.
+%
+/Level1PatternFill {
+/Pattern1 {0.250 Density} bind def
+/Pattern2 {0.500 Density} bind def
+/Pattern3 {0.750 Density} bind def
+/Pattern4 {0.125 Density} bind def
+/Pattern5 {0.375 Density} bind def
+/Pattern6 {0.625 Density} bind def
+/Pattern7 {0.875 Density} bind def
+} def
+%
+% Now test for support of Level 2 code
+%
+Level1 {Level1PatternFill} {Level2PatternFill} ifelse
+%
+/Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
+dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
+currentdict end definefont pop
+%
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (vel_060.tex)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 5.4 patchlevel 2)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Mon Jul 10 18:14:54 2023)
+  /DOCINFO pdfmark
+end
+} ifelse
+%
+% Support for boxed text - Ethan A Merritt Sep 2016
+%
+/InitTextBox { userdict /TBy2 3 -1 roll put userdict /TBx2 3 -1 roll put
+           userdict /TBy1 3 -1 roll put userdict /TBx1 3 -1 roll put
+	   /Boxing true def } def
+/ExtendTextBox { dup type /stringtype eq
+    { Boxing { gsave dup false charpath pathbbox
+      dup TBy2 gt {userdict /TBy2 3 -1 roll put} {pop} ifelse
+      dup TBx2 gt {userdict /TBx2 3 -1 roll put} {pop} ifelse
+      dup TBy1 lt {userdict /TBy1 3 -1 roll put} {pop} ifelse
+      dup TBx1 lt {userdict /TBx1 3 -1 roll put} {pop} ifelse
+      grestore } if }
+    {} ifelse} def
+/PopTextBox { newpath TBx1 TBxmargin sub TBy1 TBymargin sub M
+               TBx1 TBxmargin sub TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy2 TBymargin add L
+	       TBx2 TBxmargin add TBy1 TBymargin sub L closepath } def
+/DrawTextBox { PL PopTextBox stroke /Boxing false def} def
+/FillTextBox { gsave PopTextBox fill grestore /Boxing false def} def
+0 0 0 0 InitTextBox
+/TBxmargin 20 def
+/TBymargin 20 def
+/Boxing false def
+/textshow { ExtendTextBox Gshow } def
+%
+end
+%%EndProlog
+%%Page: 1 1
+gnudict begin
+gsave
+doclip
+50 50 translate
+0.050 0.050 scale
+0 setgray
+newpath
+gsave % colour palette begin
+/maxcolors 0 def
+/HSV2RGB {  exch dup 0.0 eq {pop exch pop dup dup} % achromatic gray
+  { /HSVs exch def /HSVv exch def 6.0 mul dup floor dup 3 1 roll sub
+     /HSVf exch def /HSVi exch cvi def /HSVp HSVv 1.0 HSVs sub mul def
+	 /HSVq HSVv 1.0 HSVs HSVf mul sub mul def 
+	 /HSVt HSVv 1.0 HSVs 1.0 HSVf sub mul sub mul def
+	 /HSVi HSVi 6 mod def 0 HSVi eq {HSVv HSVt HSVp}
+	 {1 HSVi eq {HSVq HSVv HSVp}{2 HSVi eq {HSVp HSVv HSVt}
+	 {3 HSVi eq {HSVp HSVq HSVv}{4 HSVi eq {HSVt HSVp HSVv}
+	 {HSVv HSVp HSVq} ifelse} ifelse} ifelse} ifelse} ifelse
+  } ifelse} def
+/Constrain {
+  dup 0 lt {0 exch pop}{dup 1 gt {1 exch pop} if} ifelse} def
+/CMY2RGB {  1 exch sub exch 1 exch sub 3 2 roll 1 exch sub 3 1 roll exch } def
+/XYZ2RGB {  3 copy -0.9017 mul exch -0.1187 mul add exch 0.0585 mul exch add
+  Constrain 4 1 roll 3 copy -0.0279 mul exch 1.999 mul add exch
+  -0.9844 mul add Constrain 5 1 roll -0.2891 mul exch -0.5338 mul add
+  exch 1.91 mul exch add Constrain 3 1 roll} def
+/SelectSpace {ColorSpace (HSV) eq {HSV2RGB}{ColorSpace (XYZ) eq {
+  XYZ2RGB}{ColorSpace (CMY) eq {CMY2RGB}{ColorSpace (YIQ) eq {YIQ2RGB}
+  if} ifelse} ifelse} ifelse} def
+/InterpolatedColor false def
+/cF22 {3 mul 1 sub} bind def	% 3x-1
+/cF13 {180 mul sin} bind def	% sin(180x)
+/cF31 {2 mul 0.84 sub} bind def	% 2*x-0.84
+/pm3dround {maxcolors 0 gt {dup 1 ge
+	{pop 1} {maxcolors mul floor maxcolors 1 sub div} ifelse} if} def
+/pm3dGamma 1.0 1.5 Gamma mul div def
+/ColorSpace (RGB) def
+Color InterpolatedColor or { % COLOUR vs. GRAY map
+  InterpolatedColor { %% Interpolation vs. RGB-Formula
+    /g {stroke pm3dround /grayv exch def interpolate
+        SelectSpace setrgbcolor} bind def
+  }{
+  /g {stroke pm3dround dup cF22 Constrain exch dup cF13 Constrain exch 
+	1 exch sub cF31 Constrain 
+       SelectSpace setrgbcolor} bind def
+  } ifelse
+}{
+  /g {stroke pm3dround pm3dGamma exp setgray} bind def
+} ifelse
+1.000 UL
+LTb
+LCb setrgbcolor
+[] 0 setdash
+946 1105 M
+-63 0 V
+63 0 R
+63 0 V
+stroke
+LTb
+946 2032 M
+-63 0 V
+63 0 R
+63 0 V
+stroke
+946 2959 M
+-63 0 V
+63 0 R
+63 0 V
+stroke
+946 3886 M
+-63 0 V
+63 0 R
+63 0 V
+stroke
+946 4813 M
+-63 0 V
+63 0 R
+63 0 V
+stroke
+946 5740 M
+-63 0 V
+63 0 R
+63 0 V
+stroke
+946 1105 M
+0 -63 V
+0 63 R
+0 63 V
+stroke
+1873 1105 M
+0 -63 V
+0 63 R
+0 63 V
+stroke
+2800 1105 M
+0 -63 V
+0 63 R
+0 63 V
+stroke
+3727 1105 M
+0 -63 V
+0 63 R
+0 63 V
+stroke
+4654 1105 M
+0 -63 V
+0 63 R
+0 63 V
+stroke
+5581 1105 M
+0 -63 V
+0 63 R
+0 63 V
+stroke
+1.000 UL
+LTb
+946 5740 N
+0 -4635 V
+4635 0 V
+0 4635 V
+-4635 0 V
+Z stroke
+1.000 UP
+1.000 UL
+LTb
+% Begin plot #1
+1.000 UL
+LTb
+0.58 0.00 0.83 C
+%%%%BeginImage
+gsave 946 5740 N 946 1105 L 5581 1105 L 5581 5740 L Z clip
+InterpretLevel1 {
+  %% Construct a box instead of image
+  LTb
+  928 5758 M
+  4671 0 V
+  0 -4671 V
+  -4671 0 V
+  928 5758 L
+  40 -110 R
+  (PS level 2 image) Lshow
+  % Read data but ignore it
+  /imagebuf 20618 string def
+  currentfile imagebuf readstring
+} {
+gsave
+928 5758 translate
+4671 -4671 scale
+%%%%BeginPalette
+[ /Indexed
+  /DeviceRGB 255
+  <
+   0000ff 0003ff 0006ff 0009ff 000dff 0010ff 0013ff 0016ff
+   0019ff 001cff 001fff 0022ff 0026ff 0029ff 002cff 002fff
+   0032ff 0035ff 0038ff 003bff 003eff 0041fe 0044fc 0047fa
+   004af8 004df6 0050f4 0053f2 0056f0 0059ee 005cec 005fea
+   0062e8 0065e6 0068e4 006be2 006de0 0070de 0073dc 0076da
+   0079d8 007bd6 007ed4 0081d2 0084d0 0086ce 0089cc 008cca
+   008ec8 0091c6 0093c4 0096c2 0098c0 009bbe 009dbc 00a0ba
+   00a2b8 00a5b6 00a7b4 00a9b2 00acb0 00aeae 00b0ac 00b3aa
+   00b5a8 00b7a6 00b9a4 00bba2 00bea0 00c09e 00c29c 00c49a
+   00c698 00c896 00ca94 00cb92 00cd90 00cf8e 00d18c 00d38a
+   00d588 00d686 00d884 00da82 00db80 00dd7e 03de7c 06e07a
+   09e178 0ce376 0fe474 12e672 15e770 18e86e 1bea6c 1eeb6a
+   21ec68 24ed66 27ee64 2aef62 2df160 30f25e 33f35c 36f35a
+   39f458 3cf556 3ff654 42f752 45f850 48f84e 4bf94c 4efa4a
+   51fa48 54fb46 57fb44 5afc42 5dfc40 60fd3e 63fd3c 66fe3a
+   69fe38 6cfe36 6ffe34 72ff32 75ff30 78ff2e 7bff2c 7eff2a
+   81ff28 84ff26 87ff24 8aff22 8dff20 90fe1e 93fe1c 96fe1a
+   99fe18 9cfd16 9ffd14 a2fc12 a5fc10 a8fb0e abfb0c aefa0a
+   b1fa08 b4f906 b7f804 baf802 bdf700 c0f600 c3f500 c6f400
+   c9f300 ccf300 cff200 d2f100 d5ef00 d8ee00 dbed00 deec00
+   e1eb00 e4ea00 e7e800 eae700 ede600 f0e400 f3e300 f6e100
+   f9e000 fcde00 ffdd00 ffdb00 ffda00 ffd800 ffd600 ffd500
+   ffd300 ffd100 ffcf00 ffcd00 ffcb00 ffca00 ffc800 ffc600
+   ffc400 ffc200 ffc000 ffbe00 ffbb00 ffb900 ffb700 ffb500
+   ffb300 ffb000 ffae00 ffac00 ffa900 ffa700 ffa500 ffa200
+   ffa000 ff9d00 ff9b00 ff9800 ff9600 ff9300 ff9100 ff8e00
+   ff8c00 ff8900 ff8600 ff8400 ff8100 ff7e00 ff7b00 ff7900
+   ff7600 ff7300 ff7000 ff6d00 ff6b00 ff6800 ff6500 ff6200
+   ff5f00 ff5c00 ff5900 ff5600 ff5300 ff5000 ff4d00 ff4a00
+   ff4700 ff4400 ff4100 ff3e00 ff3b00 ff3800 ff3500 ff3200
+   ff2f00 ff2c00 ff2900 ff2600 ff2200 ff1f00 ff1c00 ff1900
+   ff1600 ff1300 ff1000 ff0d00 ff0900 ff0600 ff0300 ff0000
+  >
+] setcolorspace
+%%%%EndPalette
+<<
+  /ImageType 1
+  /Width 131
+  /Height 131
+  /BitsPerComponent 8
+  /ImageMatrix [ 131 0 0 131 0 0 ]
+  /Decode [ 0 255 ]
+  /DataSource currentfile /ASCII85Decode filter
+  /MultipleDataSources false
+  /Interpolate false
+>>
+image
+} ifelse
+s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W
+-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s
+8W-!s8W*!,YMp*PG"n[\%KMoa2uQNd*^=lf%8R-g=tE=h;7&Hi8NYSioB([jQ,Fak2tghkND'mkiq?
+rlK[["lg*m&m-O**mHs<.mdBN2mdBQ4n*f`6n*f`6nF5r:nF5r:n*f`6n*f`6n*]W3mHs9,lg!`tk2
+bLXgXjlt_mcCg5QCd8/gDJd0g%p%=C5ZVEHZYWJqf,@O-,ZmR@Bb=TVA6YVl6VrXKA\1Z*L^C[C3QS
+\[oAa]Y2%o^VI\&_Sa=1`Q#p<aN2KGb0.uPbg"DXcHab^cd:%cd*^7gdF$@hdF$@hdEp7ed*L%`c-4
+ARaMu07]t(MQVk0*+F'`'a!!")p0.A%`(`=>;-S.#34?u>,9i4kl>@(`KAnc$uE,p&DG^=adIt<6*L
+51VCMiEaXOHPflQ'[l+R[]h<StD[LU8+N\VPgAlWiN2%Xfeh1YctC;ZEggCZa@*H['d<L[C*EM[C!<
+JZa6sBYck10WMZG_R[&neHuNRr<c`<^!#6n6/L_tg)]0;('G_N)+!N!Z/2&b93'0;h6UaO<9M\Ma<E
+E=->[CfI@qB:dC27[(E,fo?Fa&(UH[L6jJ:W<)KnbA=M2I4MNfT6_OckomQ'IZ%Q^F/.R@9S5S"#n:
+S"#n:S"#n9R[KP0QB[PoNJ`IAI!':;>Z=^;Li<=o%j38M.OZSe*ZGq3'G;#k&ebur)&jS=+s\Ka.kN
+D/1Gq*O4$>eo6:=:68P;cQ:f1.j<``F->[:]E@Uiq\B4u$qCi401EcZ>FG'A1VH@($fIXcitJUrE*K
+7ei1KS>,6KnY57KnP,4K7\Z)IslZgF`D83@U)u5<FUBAB)ho>)C$RV-RL)^*uu:;()7Jq&J,Kb&J>`
+k'c.`+*$-1F,:"Ta.4Zu&0JYFA2E3`Z4[)+s6UXC68P2ZN:/Fed<*!(&>$G6<?XR;PA7]@cBPD3sCi
+!s+DJsH4E,fl;EcQ2@EcQ2@EH,r:Df0E.C1q3h?sHi7;G^:tEK6Jn!!!<@*[2jU,U4KV*uu:=(`!i#
+&ePZd%hB0]&.oKe',;9!(`F>5*ZlOL,UFcc.4Zr%0/,.;2)[ES4$5\k5XIh,7S$*C9MJ8Y;,U=l<``
+C+>$G39?!^iE?XR8M@:<SR@U`eU@U`bS@:3GL?<pc==B8C!:JFMW:g%I^R@@.U!!a/U+!MpS+sJ0P*
+ZZ1<)&F&''GD)k&.]9^%hB0]&.fEd',2/s(Dn#.*$$(B+X/-W-7:5l.kNA-0etRC2`Ni[4?btp6:4.
+17n?3D92&&T:Jakb;GpFl<)cgr<E3%!<E3$u<)cdp;Gp@g:JOVW8k;HA7S$3O?uq:#R8!Y]"qVRj+!
+;^M+WqjJ*?6":)&O,('GD,m&J,Ka%hB0]%hB0^&.oKe',2/s(Dn#.)]]tA+<i$U,pt)i.kE;+0JYF@
+2E*TV4$5\k5X@_(6q'R77n?0B8P2TI91qoN91qoM8kM]I8OuBB7R]a66U<t%5<hA!7S[*"I?g[q7K<
+Dl%M]j$*ZlLI+!2OE*#fe6(`*r''bh;o&ePZd%hB0]%hB0]%hK9a&J>`k'c%T&)&aG6*?H=H+sSB\-
+RgMq/M8\21,CaF2`NfY4$5Yi5<qJ"6:+"+6UO4.6UO4.6UO1,5s[b$5<_7o4?GSa3B/uX3BTPs;."9
+sSZ%Z:!!!03',MQ,*ZcCE*Zc=A)]K\5(`*r''bh;p&eP]e&.f?_%hB0]%hK9a&J>]i'GVB!(Dn#/*$
+$(B+<i$U-7:2k.kE8*0JP=>2)[BQ3BB2_4?Pbi5!D.o5!D.o5!D+m4?P\e3]T2[2`<NM1G^d@0etOC
+3^H>;AU'60W/Nh=!!EZA()\&2*??1A*?6%<)]BS2(`*r&'bh;p&eYcg&J,Kb&.fBa&.fEc&J>`j'GV
+B!(Dn#.*$$(B+<_sT,pt)i.P*/(0/54<1c70M2`NfX3]]>a4$,Mc4$,Ja3B9&Y2`<NN1c$mA0J>%1/
+M&G)/hf+C6;:X!J!?h.L,]/5":>\S(E"/3*$$%>*#on9)AsD0(Ddi%'bh>q'+toi&J5Te&.fBb&J5T
+f&ebom'bqK#(`=52*$$(C+X/-W-7:2k.kE8*0JP==1c7-K2`E]U3B9)[3B9)Z3&iiT2Dm<I1,1I9/h
+JV).Ocep-n$Mq0/PaY:g\0qRAcs51]RLX#nI[b(`F>5*#oq<)]K\6)&X8-(D[c$'bh>q'+toj&eP]f
+&J5Te&eYfj',2,q()@]')&aG6*?H=H+sS?[-R^Gp/1iJ-0etO@1c70L2`E]U3&ilW3&`cS2Dm<J1GU
+[=/hJV).Ocbn-7'ra-7:8r2*FH/A9Nj$WM4_o!!!*-%MBKm)&aG5)]K_8)]BV4)&O2,(D[c$'bh>q'
+,)#l&eYfi&eYfi',)#n'GVB!(Dn#.)]Tk>+!;^N,UFcb.4Qi!/h\n51,CaE2)[?O2`NcV3&iiU2`<N
+N1c$mA0J>"/.k2qp-7'o^,9e?X-Rpc-5>#$kH]FbuT6;ge!!<K9&JPut)&aD4)]K_7)B'J2(`4&*()
+@Z#'bh>r',)#m',)#m',)#m'GM8s()@]'(`=52*$$(B+X/-V,pt)i.P*/(0/,+91GgsI2E*QS3&ilW
+2`EZR2Dm<I1,1I9/M&D$-mp;d,9e9S+X/0Z.ks"M:0_UbP+nqFE@V"h!XK2G',;<#)&aD4)]BV5)As
+D0(`4&*()@Z#'bqDs'GM5p',)#n'GM5r'bqK"(Dmu,)B0Y:*ZlLJ+s\H]-RgMq/M8\10etOA2)[?O2
+`NcV3&ilW2`EWP2)I*D0J>%0.k2qp,pX]Z+WqmM+s\Ne1-.j$?uUa`Uo0Pq.0'>L#7D%T'G_K&)&aD
+3)B'M4)&X;/(`*u)()@Z#'bqGt'GM5q'GM5q'bqH!()Ic((`=52*$$(B+<_pR,pjuf.P!&%0/,+91G
+gsI2E*TT3&ioY3&ilV2`<NM1GU[=0.e_).46Gf,9e9R+<VdN,Ub6$4\&I]FG?0ZV35I=!!!'*$P!a_
+'c.]))&aD3)B'M3)&X8.(`*u)()@Z$'bqGu'bqGu'bqGu()@Z%(Dn#-)B0Y:*ZlLJ+sS?[-R^Do/1i
+M/0etOA2)[BP3&ioY3B9)[3B/uW2Dm<I1,1I8/M&A#-RL)`+sA'O+<_sV.PE\E8loYMMOLB:Naa76!
+!3B4%M9?h()If*)&aD3)B'J2)&O2-(`*u)()@Z$()@W"'bqH!()@Z%(Ddo*)&X>3*$$%@+!DgQ,UFf
+d.4Ql#/hf"81GgsI2`E]V3B9,]3]T2\3&iiT2)I*E0eb43.k2qp,pX]Z+WqmN+s\Nd0f_Qp>AAMDS>
+;g7?6T@L!X8u@&/#Zm(Dn#-)&aD3)&X;0)&O2-(`*u)(D[c%()@Z$()@Z$(Ddl)(`=20)B0Y:*?H:F
++X86Y-7C;m/1iJ-0etOA2)[BQ3&ru[3]];_3]T2[3&``Q1c$mA0J4q-.OZYk,U4KV+X&$S,q1E%4%2
+tPD17P:URd*B+TMKD"pteN&el&s(Dn#-)&X;0)&X;0)&O2-(`*u)(Ddl((Ddl((Ddl((`4)-)&aD4*
+$$%@+!;^N,UFcb.4Qi"/h\q71GgsI2`NfX3]];_3]];_3]T2[2`<NM1GU[=/hJV(.46Gg,U4KW+sS?
+\.PEYB7oNi8JWZLtRXnK]!!!')#n7CW',;9!(`4,.)&X;0)&X;0(`4),(`4&*(Ddl((Ddl((`4),)&
+X>2)]Kb;*?H:F+X/-W-7:5l.kNA,0etOA2)[BQ3B9,]3]fDb3]];^3B/uW2Dm<I1,1I8/M&A#-mp>f
+,U4NY,UOrk0fVEj<b-9(PFeJ7Hr:sb!!3?2$kEp`'c%T&(`=2/)&X;0)&X;0(`4),(`4),(`4),(`4
+),(`=2/)B'P6*$$%@+!;^N,:+Za-n6_u/h\q71GgsI2`NfX3]]>a4$,Mb3]]8]3&`cS2)I*E0eb43/
+1W1u-RL/d,paia-n?o+3^QPDB6K#oStD3k:E0?7!X8r>%hTHh'c%T&(`=2/)&X;0)&X;0)&O2-(`4)
+,(`4),(`4,.)&aD3)]Kb;*?H:F+X/-V-7:2k.kE;+0JYF@2)[BQ3B9,]4$,Mc4$#D`3B9&X2`<NM1G
+U[=0.nh-.k2tr-RU5f-7:2k/MK(G78I0'H&.`VSW@kc)?9a="UPSI&/#Zl()If))&X;0)&X;0)&X;0
+)&X8.(`4),(`=2/)&X>2)B0V8*$$(A+!;^N,:"Q_-n-Yt/h\n61GgsI2`NfX3]]>a4$,Ja3]T2[3&`
+cS2)I-G1,1I9/hJV*.k2tr-mpAj-n6c$1H7Ti;I40dMO'd$N,V<*!!!'(#n%4S&el&r(Dmu+)&X;0)
+&X;0)&X;0)&X;0)&X;0)&X;1)B'M5)]Th<*ZcCG+X/-V,pk#h.kE8*0JYF@2)[BQ3BB2^3]fDa3]]8
+]3B/rV2Dm?K1G^d@0JG.4/M/M(.k2ts.4H\q.kWP63^HA<@;gRPQCF7tCdf0@!!3<0$P!^\',;9!(D
+mu,)&X;0)&X;0)&X;0)&X;0)&X;0)B'M4)]K_9*$$(A+!;^N,:"Q^-RgMr/MAe41GgsI2`NfY3]];_
+3]];^3B/uW2`<NN1c$pC0ek@90/"q0/M&G'.k<)!.k</&0JbXN6qp`nEIWq5R[&P>65KV%!<i`:%M0
+6d'G_H#(`4,.)&X;0)&X;0)&X;0)&X;0)&aD3)B'P6)]Th<*ZcCG+<_pR,pjug.P!)'0JP@?2)[BQ3
+BB2^3]];_3B9&Y2`<QO1c.!D1,1L;0J>(3/hS_-/M/M)/1`>'/M8\32*!lj:Kh@PJW?%aP(@./('"=
+8"UGJF&.oQi'c%T&(`4,.)&X;0)&X;0)&X;0)&aD3)B'M5)]Kb:*$$%@+!2UK+sS?[-R^Gp/M8_31,
+LjH2`NfY3]];_3]]8]3&``R2)I*E1,1I:0/"q1/hSb//M/P+/M/P+/M/S.0JPCC4$cG9?"nJ7Ng?#m
+I:58R!!!$'#R_(P&JGin()Ic((`=2/)&X;0)&X;0)B'M4)B'M4)B0V7*#oq=*?H:E+<_pR,UFcc.4Z
+r%0/54=2)[BQ3BB2^3]];^3B/rU2Dm<I1,1I90.nk//M/P+/M/P+/M/S-/hSb00/#"61H%6W6q^KdC
+NtPoQ'I;R>riZ"!!*6/$OmUY',2/s(Ddo*)&X;0)&X;0)B'M4)B'M4)B'P6)]Kb:*$$%@+!2UK+sS?
+Z-7:5l/1iM/1,CdG2`NfY3]];_3]T2[2`<NM1GLR:/hJY+/1W5$.k<,$/1`A)/hSb00/,(60etOB3'
+0Ap:01nBHA7KGPDOHd3"l8l!<i`:%1a$`'GVB"(Dmu+)&X;0)&X>2)B'M4)B'M4)]K_8*#oq=*?H7D
++<VgO,:"T`-n6`!/hf%:2)[BQ3BB2_4$#D_3B/rT1c$m@0.nh-.k2ts.4?Vo.4Qet/1`A*0/#"50ek
+F>1c73Q4[M\9>%DT"LQIa_L2p<P&c_n4"UGGE%hTEg'c%Q$(`4)-)&X;0)&aD3)B'M4)B'P6)]Kb:*
+$$%@*ZlIH+X/-V,pk#h.kE;+0f(XE2`NfY3]fDb3]]8\2`3EI0eY.1.k2tr-RL/e-71)f-n-Vr/1iJ
+-0JP:;1G^jF2`Wub6q^H`B6&HWO-5NTDGr>'!!!$'#RV"O&J>`l'c%T%(`4,.)&X;0)B'M4)B'M4)]
+K_8*#oq=*??1C+!;^M+sSB\-R^Gp/MAe51c73O3BB5`4$,Ja3B/rT1bpa</Lr7u-RC#_,9nEX,U=Z`
+-n-Yt/M8\21,:XB2)[BR4$Gu$9iYM6FFT..Oc4d*:b`L]!!*6/$4RLW&ebro()Ic((`=2/)&X;1)B'
+M4)B'P6)]K_9*#ot>*ZcCG+<_pR,UFcc.4Zr%0JP@@2E3]X4$,Mc4$#A]2`3EI0J4n+-mg5b+sA'O+
+!;[L+s\H^-n6c"0/,+91GgsI2`Wo^5X\1>=(,lfJ;K>JM0rr0/e7p^!<i`9%1a!_',2/s(Ddo*(`=2
+/)&X>2)B'M4)B0V7)]Th;*??1B+!2UK+X/-W-7:2k/1iM01,LmJ3BB5`4?P\e3]T,W1bpa;/1N%o,9
+\0N*?6%=*??4E+s\K`.P*/)0etOB2E*TU3]oSm7S?W_@r6IBMN3[NG[j;r%KHJ0"UGGD%M06d'GVB"
+(Dmu+)&X;0)&aD3)B'M5)]K_8*#oq=*?H7D+<VgO,:"Q^-n-Yt/hf%:2)dKT3]fGd4?GVc3&`]N0eP
+",-RBrZ*ZQ+:)&O5/)]TnA,:+]d/1rS11Gh!K3&s#^5!VM,9iPA/Dg?tmNJiF2?UcLS!!!$'#7:kL&
+/#Wj'c%Q$(Dmu+)&X;0)&aD3)B'P6)]Kb:*$$%?*ZlIH+X&$S,UFfd.P!)(0etRD3&s#]4?P_g4$#A
+]2Dd-A/Li+o+s7mF)&F&''bqK$)BBnD,UY#l/hf%;2)dKT3]oPi6:FLC<aTN[H\737M1BSN6RWBD!!
+*6.$4ICU&JGin()@]&(`4)-)&X;0)B'M4)B0V7)]Th;*??1B+!2UK+sS?Z-7:5l/1rV21Gq*N3]fGd
+4Ztnh3]T,V1GCF3-m^&[*?#_/'+tlh&el)u)]g.J-RgT!0f([F3&s#^4[25#7ncf`@;9k2KSbS@I;N
+(N-4BkS!<i]8$k<g\',2/r()Ic((`4,.)&X;1)B'M4)]K_8*#oq=*?H7D+!;^N,:"Q^-n-Yu/hf%;2
+E3]Y4?Yhj4Zkee3&WTK0.\P!,9S!F(DIGl%LijX&JQ$"*?c[U.P*5-1c73P3]oPi5XS"4:/kG-Cit/
+ZM2?n2BiI2>$NL/-":#8B%M03c'GV>u(Ddl)(`4,.)&X;1)B'M5)]K_9*#ot>*ZcCG+<_pR,UFfd.P
+!)(0f([G3'',`4Ztqk4?GS`2D['?.ju\f*ZGq1&Io0U#mq(O',DK,+XAEb/MJq:2E3`Z4[)+t6q9mH
+<aB9SGCG7%LOjSZ:cT[+!!!$&#7:kL&.oNg'GVB!(Ddo*(`=2/)&X>2)B'P6)]Kb:*$$%@*ZlLI+X/
+-V-7:2k/1rV21Gq*O4$5Yi5!D+l4#o5W1GCC1-R9fT)&<hq$O?n>#7D"S()e2:,Ub/q0f([G3BK>e5
+=%Y+8PN)b?tXG'ItWT2IW8di2BN8+!!*3-$4ICU&J>`k'c%Q$(Dmu+(`=2/)&aD3)B'P6)]Th<*??1
+C+!;^M+sSB\-RgMr/hf%;2E3`Z4[)%n5!;"i3B&fN0.\P!,9ImB'bLl]"Te`0$4[[a)BL(K.4d,,1c
+@<S4?Ynp6UaL<:K1P-C3"TMKS>#(DI#dh*=2]G!<`W7$k<d[&ebro()@]&(Dmu+(`=2/)&aD3)B0V7
+*#oq=*?H:E+<_mP,UFcb.4Zu&0JbRF3BB8c5!M7q5!:tf2`3?D/1Dni*uc%2&.AjK!X&`9%hf`u+!W
+*^/MJq;2`Wr_5<qP'7S-<O=']?QF*`@hK7A)Z=@Fn_#QOi*":#8B%M'-a',2/r()@]&(`4),)&X;0)
+B'M4)]K_9*#ot>*ZlIH+X/-V,pk#h.kND/1Gq*O4$5\k5<h@r4ZbY_2)6g9.4$/[)]08#%13=E#7:q
+Q'cA#7,Ub/q0f1dJ3]oSk5sn(392AJh?Y41uH[p^!Huiju5qNrZ!!!$&#7:kL%hTEf'GV>u()Ic'(`
+4),)&X;0)B'M4)]Kb:*$$%@*ZlLJ+sS?Z-7C;n/MAh72)mWY4[)(p5X.Fq4#o5W1+t1-,pFEN(_mYo
+$jm=L%1j3i)]p7N.4d,-2)dNW4[25!6q9gC;,ph/BQ&'AJ:W2qDdcI*.Mi<i!!*3-$4ICT&/#Wj'GV
+B!(Ddl((`4)-)&X;0)B'M5)]Kb:*??1B+!;^N,:"Q^-n-Yu0/5:A3''/b5<hCu5X.Co3]AoO0.\P!,
+9RsD()%8j%Ls!]',MQ-+XAEc/ho.?3''/c5XIk.84u]V=C#HPEHce[J:)KS>Y@()'a=X<!<`W6$k3^
+Y&ebom'bqK"(Ddl)(`4)-)&X;1)B'P6)]Th<*?H7D+<_mP,UFcc.4Zu'1,LmK3]oSj5X7S"5<_1j3&
+NKG/Li+n+W_R>().Ao&ebrq)BBqF-7LK!1,V!N4$>eo6UaL;9i+hn?tO4rG^OshH#dLu7l;P+"onW(
+":#5@%1a!^&ebro'c%Q#(Ddl)(`4)-)&X;1)B'P6*#oq=*ZcCG+<_pS,pk#h.kND01c@<T4?btp5s[
+b$5!:te2D[$>.ju\f*uu7:(D[`$(Dn&2+!N!Z.kWP42E3c]5!VG&7S$0I;HI+4BPqp;I!p?bD.-@00
+d./5!!!$&#71bI%hK<c',2,q'c%Q$(Ddl)(`4)-)&X>2)B0V7*#ot>*ZlIH+X/-W-7C;n/MAk92E<i
+^5!VD"5s[b#4ZbY_1bgX7.4-;`*uu:=)&X;1*$$.G,q(5p0JYLE3]oSk5sn(28ki,]=^GWRE-6GRI!
+KaH>u!R9*Y8GS!!*3-#n%1Q&.oNg'GM8s()@Z%(Ddl)(`4)-)&X>2)B0V8*$$%@+!2UK+sS?[-n-Yu
+0/>@B3BKAg5X@_'5s[b"4?>GZ1,(:1-mg/^+<DOD*$$(B+X89\.P3;/1cIEV4[25"77TpC:Jt7u@:j
+=qG'SF\G&Chm8NA7?%g2k4!<`W6$OmRW&J>`j'GV>t()@Z%(Ddl)(`4,.)&X>2)]K_9*$$(A+!;^N,
+:"T`.4Zu'1,LmL4$>en5sdn)5sRXt4#o2U0eY(--mg2`+WqmM+<_pS-7C>p0/5:A3''/c5XIk.84uZ
+S<EWX<BPqm7H$OUSC1't.2's1M!rr<%":#5@%1Wp]&ebom'GV>u()@Z%(Ddo*(`4,.)&aD3)]Kb:*?
+?1C+<_pR,UFfe.kND/1c@?U4[21u6:4+,5sRUr3]JuQ0J4n+-mg5c,9nEY,UFfe.kND/1Gq*P4?btq
+6UaL;9M\Sg>@;#WDf^,IGB@_7>"q49,8L[i!!!$&#71bI%M'-`&ebrn'bqH!()@]&(Ddo*(`4,.)&a
+D4)]Kb;*?H:E+<_pS,pt)j/MAh82E3c]5=%V'6UO4-5sILo3B&cM0J4n,.4?Pj-71)f.4Qi"0/57?2
+`Wr_5=%Y*7nH?K;,pb*@V9LrFEVkNEGAo^838CG'FFmA!!*3-#n%1P%hK<c',)&o'bqH!()@]&(Ddo
+*(`4,.)&aD4)]Th<*ZcCG+X/-W-7C>p/ho.?3'08f5sdq+6pj=-5X%=l3&WTK0J>"/.k2ts.4Qet/M
+8_31Gq*O4$>en6:=:692/5^='T-EBl7p4F`h_AAR&&!2CTXZ#m(),!<`W6$OdLU&.oNg',2,p'bqH!
+()@Z%(Ddo*(`4,.)B'M5)]Tk=*ZlLJ+sS?[-n6c#0JbRG3^#\n6:4./6pj:,5X%:k3&WTL0eY.2/M&
+G(/M/S.0etRC2`Wr^5!VG&7S$-G:K(:t?=IP_DfTrAF)Pc$<_GV2,oR=#!WW3$"9o/?$k<dZ&J>]i'
+,2,q'bqH!()@Z%(Ddo*(`=2/)B'P6*#ot?*ZlLJ,:"Q_.4Zu(1,V!O4?c"s6UX@36pj:,5<_1j3&WW
+M1,1I90/"t30JP==2)[ES4$>bm6:=:68k`#Y<EWR8ASH"#EcZ8?CLgXH76)qC(CgZN!!!$&"pkVF%M
+'*_&J>`j'GM5r'bqH!()@Z%(Ddo*(`=2/)B'P6*$$%@+!;^N,:+]d.kND01cIEW5!VG%6q'O56ps@-
+5<_1j3B&iR1c$mB1,:U@1c70M3'',a5!VG&77TsD:/Otm>@1lQCMn*3Ec>i-?WKfb1asI[$jH_4!!*
+3,#RUtL%hK9a&eYik'GM5r'bqH!()@Z%(Ddo*(`=20)B'P7*$$(A+!;aP,UOoh/1rY62E<i_5XIh+7
+7Ka8779I.5X%=m3]K&V2)R6K2)R6L2`NfZ4?Yno6:=:58PDlV<**70@:a.hDK'T7D/!H_:e!N",T@@
+("T\T'!<`T4$4I@R%hK<c&ebol'GM5r'bqH!()@Z%(Ddo*(`=20)B0V8*$$(B+<_pS,pt,l/hf(=3'
+08f5sn%/7Rfj:779L05X.Co4$#A]3&`cT3&ioZ4$5Yi5=%V(7S$-F:/Oqj=^>EGB52:%Df9K,A6i2.
+5W(&8(D$lU!<<*#"9o,=$k3[W&.oKe&ebol'GM5r'bqH!()@Z%(Ddo*(`=20)B0V8*?H7D+X/-W-R^
+Js0/>@C3]oVm6UX@47n6'=779L05sRXt4?P\d3]];_4$,Pf5!M;!6UaI88k_uW;c[%+?Xm\^CMds,D
+/*Wh=AM@I0I@eT%L<.:!!!$&"pbPD%1Wm[&.oNf&ebol'GM5q'bqGu()@Z%(Ddo*(`=20)B0Y9*?H:
+F+X86Z-n6c#0f1dK4$Gnr6q'R884Z6@7R]^46:!k$5!D+m4Ztql5!M:u6:4.17nH?J:Jk%k=^5<CAS
+5aoD/F*(Amnk@8O#'`+rV(&#6Or+!!*3,#RUqK%M'']&J5Wg',)#m'GM5q'bqGu()@Z%(Ddo*)&X;1
+)]Kb;*?H:G+sSB].4Zu(1,V$P4[28#77Kd<84Z9B7n,p86UF+*5X7S"5X7S#6:+%-7Rp!A92/2Z<*!
+.+?=@AVBkhI#CM@Bi>Z=Ba3\Vp&((^fV!WW3#!<`T4$4@7O%M'*^&J5Wg',)#m'GM5q'bqGu()@Z%(
+Ddo*)&X>2)]Kb;*ZlLJ+s\K`.P*5-1cIEW5!_P)7Rp!@8P)KE84Q-=779O26UO4.6UO7077Kd<8kVl
+R:f:7o=^,3@@qB=fC27QuAn#%H:I[K(.jGuI%1!(<!!!!""9o,<$OdIS%hK9a&J>]h&ebol',2,p'G
+V>t()@Z%(Ddo*)&X>2)]Th<*ZlLK,:+]d.kNG22)mZ\5XIk.7n?3D8kM]I8OuBB7n,s;77BX77Ros>
+8P2WL:/=_c<EE=.?=78SB4u!oBkV'e>usio5WCDE*u>Lt#6Y&-!!!$%"pbMC$k3[W%hK9a&J>]h&eb
+ol',2,p'GV>t()@Z%(Ddo*)&X>2)]Tk=*ZuUM,UOoh/2&_72`Wua5sn(284cEG91qoN8kM]I8P)HD8
+4Z<D8kM`M9hnJ];H-\!>$PBA@Us(`BP;'lARSkH;G0A=1+FIe'FtNT!s&B%!!*0+#71bH%1WjY&.fE
+c&J>]h&ebol',)&o'GV>t'c%Q$(Ddo*)&X>2)]Tk>+!;^O,pt,l/MJq;3''2f6:=:58P2WK9MA,R9M
+A)P91qoN91qrP9hnJ\;,U@n='8^3?=75QAS,RfB4b[_?!'uu76NL[,p!m9$j["<z!<WK1#mq(M%1Wm
+Z&.fEc&J5Wg&eYik',)&o'GM8s'c%Q#(Ddo*)&X>3)]Tk>+!;aQ,pt,m/ho.?3BTJj6UaL98kViO9h
+e>V9he>V9heAX:/=Y^;,U=l<E<4)>?tQC@Uiq[AnGXc@UNGC;G9PE2_ZX')AE\i#6Y).!!!!"!sJo9
+$4@7O%M'']&.fEc&J5Wg&eYik',)&o'GM8s'c%Q#(Ddo*)&X>3)]Tk>+<_pS-7C>q0/>@C3]oVm6Ua
+L:8kViP:/4P[:JXb^:f'tc;,U:j<)lt$=^#'9?=72N@q9.^A7K%T>?=]s7R/sg.O,rM&e,-O!s&B%!
+!!$%"U>>@$OdIS%M'']&.fEc&J5Wg&eYfj',)#n'GM8s'c%Q#(Ddo*)&X>3*$$(B+<_sU-RgPt0JYL
+F3^#_p6q0^=92&&T:JXe`:f1(e;GpFl<)lt"='8^2>[:ZD@:E_V@q/tV?sQr:;G9SG3\r<6*uPb'$O
+6h:!<<*"!!*0*#7(YE$k3XU%M'']&.fBb&J5Tf&eYfj',)#n'GM8s'c%Q#(Ddo*)&X>3*$$(B+<i$V
+-RgT!0f(^I4$Gnr6q0^>92//W:Janc;GpFl<)cju='&L,>$G6;?=.)K@:E\S@:*>F=B/0k7R0!k/gh
+e]((gu^"p=u-z!<WK1#RLkI$k3[V%hB0^&.fBb&J5Te&eYfi',)#m'GM5r'c%Q#(Ddo*)&aD4*$$(B
++X/0Y-n6c$0f1dK4$Gns77Tm@9MJ8X:f1+g;cH^r<`W:(=]np4>[:ZB?XR8L?sm>I>Zk-,:J4/B3]&
+H;,97U7%grXH!s&B%!!!!"!sJo8#mq%K%1NdW%hB0^&.fBa&J5Te&eYfi',)#m'GM5r'bqK"(Ddo*)
+&aD4*$$(B+X/0Y-n6c$0f1dK4?c"t77Tm@9MJ8X:f1+h<)lq!='/R->$G39?!UcC?=$rD?!CH5<)H@
+]76`gj0.A.f)&3\k#mLM6!<<*"!!!$%"U55=$4@7N%1WjX%hB0]&.fBa&J5Te&J>]h&ebol'GM5r'b
+qK"(Ddo*)&aD4*$$(C+X86Z-n6f%0f1dK4$Gnr6q0^>92//W:f1+h<)lt#='/U.>$G39>[1N=>[(B7
+=&i-o91M?53A`B=,Tdp?&e59T"Tnf+z!!*0*"pbMB$OdFQ%1WjX%hB0]&.fBa&.oKd&J>]h&ebol',
+2,q'bqK"(Ddo*)&aD4*$$(C+X86Z-n6f%0f1dK4$>hq6q0^=92&)V:f1+h<)lt"='/R-=^#!4>$5!1
+=&r9u:JFDL5s71a0.J7j)]'.u$jd+@!W`9$z!<WK0#71_E$OdFQ%1WjX%hB0]%hK9`&.fEc&J5Wg&e
+Yik',2,p'bqK"(Ddo*)&X>3*$$(C+X86Z-n6f%0f1dJ4$>eo6UaL98kVlR:Jand;cHas<`W:'='&I(
+<`N*t;,9kX7mfL&2`!'8,p40E'G(]\#6b22!<<*"!!!!"!sAf5#RLhG$k*RS%1WjX%M''\%hB3_&.f
+Ec&J5Wg&eYik',2,p'bqK"()Ic()&X>3*$$(C+X86Z-n6c#0f([G3]oSk6:=748P2WM:/=\_;,U:j;
+cH^q;c?Rl;,9q\8Ol074ZPAS/L_qf*#KA%%LWOH"9SZ)z!!!$%"9o):#mq%J$k*RS%1WjX%Ls![%hB
+0^&.fBb&J5Tf&eYik',2,p'bqH!()Ic()&X>3*$$(B+X/0Y-n6c#0JYIC3BKAg5XIk-7n?3D9MA/U:
+JXb_:f'ta:JOVW8k;E=5s@@h1b^I/,Tn'D'bV#c#mUV9!W`9$z!!*0)"pYD?$47.K$k*RS%1NdW%Ls
+![%hB0^&.fBa&J5Tf&eYfj',)&o'GV>u()Ic((`=52*$$(B+X/0X-RgPt0/57?2`Wr_5<qP&6q0[;8
+P)NI91qrP91qlL8Ol6<69m^r3&NEC.OQG_*#KD'%h&dN"p>#/zz!<NB-#7(VB$4@4M$k*RS%1NdW%L
+rsZ%hB0]&.fBa&J5Te&eYfj',)&o'GV>u()@]'(`=52)]]tA+<i$V-7C>p/hf%;2)dNW4?btp6:4.0
+77Ka:7n6'=7R]^469m^s3]JuP0.\Ou+s.a@'bV#d$O?q?!s/K'z!!!!"!X&Z2#RC_D$4@4M$k*RS%1
+NaV%LrsY%hB0]%hK9`&.oKd&eYfi',)#n'GV>t()@]&(`=20)]Tk>+<_pS-7:5m/1rV31Gq*N3]fGe
+5!M:u5sdn)6:*t(5X.Fp4#o5V1+t4/-R9iV)]0;&&.K!R#6b54!W`9$z!!!!#"9eu7#RLhF$O[=N$k
+*OR%1NaU%LrsY%M''\%hK9`&.oKd&J>]h',)#n'GM8s()@]&(`4,/)]Tk>+!;aP,pk#h.kNA-0f(XD
+2`NfY4$,Pe4Ztqk4?P\d3B/rT1GLO7.OZSe*uu79'bV&e$OI(C"Tnf,zz!!!''"U52;#mgqG$O[=N$
+k*OR%1NaU%1WjX%M''\%hB3_&.fEc&J>]h',)#m'GM8s'c%Q$(Dn#.)B0Y:*ZlOL,:+Zb.4Zr$0/,+
+91GgsI2`EZT3&iiU2E!EL1,1F7/1N%o,9S$H)&Eu"&.T*U#R1G8!s/K'zz!!39,"pYD>#mgqG$O[=N
+$k*OQ%1NaU%1WjX%Ls![%hB3_&.fEc&J5Wg&ebol'GM5r'c%Q$(Dmu,)B0Y9*ZlLJ+sSB\-R^Gp/1i
+J-0JP:;1,C^B1GU^?0JG+2/1N(r,pOQT*#]Y0'G1ib$jm7F"U"o/!<E0#zz!WrT1#6tM@#mq"H$O[=
+M$k*OQ$k3XT%1NdW%Ls![%hB0^&.fEc&J5Wg&eYik',2,p'bqK"(Ddo+)&aG6*?H:F+X/-V,pjuf.4
+Qi!/1iG+/hSb//M/M(.k)ko,pXZW*uu:<(DRSq%h/pS#R:P;"9S]+zz!!!!#!sAf4#7(SA#mq"H$O[
+=M$OdFP$k*RS%1NaV%LrsZ%hB0^&.fBb&J5Tf&eYik',2,p'bqH!()Ic()&X>3*#ot?+!;^N,:"Q]-
+7:2i.4H\p.4H\p-mpAh,pXZX+<DLA)&F&&&eGQ_$OR1F"pG,3!W`<%zz!!!'&"9eu7#RC_C#mq"H$4
+@4L$OdFP$k*RS%1NaV%LrsZ%hB0]&.fBa&J5Tf&eYfj',)&o'GV>t()@]&(`4,/)]Kb;*ZcCG+X&$S
+,:"N\,pai`,paf^,9e9S+!)FB)As>,'GD&i%LidQ#mUY<"9S`-!<E0#zz!!36*"U52:#RC_C#mq"H$
+4@4L$O[@O$k*OR%1NaU%LrsY%hB0]&.fBa&J5Te&eYfi',)#n'GM8s'c%Q$(Dmu,)&aG5*$$%@*ZlI
+H+<_mO+X&!P+WqmL*Zc=A)]BP0().Dp&.]6Z$OR1G"pG/5!s/N)zzz!WrQ/"pP;<#RC_C#mq"H$47.
+K$O[=N$k*OQ%1NaU%LrsY%hB0]%hK9`&.oKd&J>]h&ebol',2,p'bqH!()Ic((`=20)B0V8*$$%?*?
+H7C*Zc=B*?6%<)AsA.()7Ms&ePWa%1EUO#m^b?"U"o0!W`<%zz!!!!#!sAc2"pYA=#RC_C#mgqG$47
+.K$O[=N$k*OQ%1NaU%1WjX%M''\%hK9`&.oKd&J5Wg&eYik',)&o'GM8s()@Z%(Ddo*)&X;1)B'M5)
+]K_8)B'M3)&O2,()7Pu'+tlg%h9!U$4-tD#6k>7"9S],!<E0#zz!!!'&"9er5"pYA=#RC_C#mgqG$4
+7+J$O[=M$k*OQ$k3XT%1WjX%M''\%hB3_&.fEc&J5Tf&eYfi',)#m'GM5q'bqH!()@Z%(Ddl)(`4),
+(`4),(Ddl'()7Mt'+tlg&.]6[$k!CK#RCY>"U,#2!s/N)!<<*"zz!!*0("9eu6#6tJ>#RC_C#mgnF$
+47+I$O[=M$OdFP$k3XT%1WjX%Ls![%hB3_&.fBb&J5Te&J>]h&eYik',)#n'GM5q'bqGu'c%Q#()@Z
+$()7Q!'bh>q'+toi&.]9]%1EUP$4-tC#6k>8"9\f.!W`<&zzz!<N?+"U,)7#6tM?#RC_C#mgnF$47+
+I$O[=M$OdFP$k3XT%1NdW%Ls![%hB0^&.fBa&.oKd&J5Tf&eYfi&eYik',)#m'GM5q'GM5q'GM5q',
+)#m&eYcg&.f?^%LigT$OR1H#R:S="U,#3!s8T+!<E3$zz!!!!"!WrQ/"U5/9#6tJ>#RC\B#mgnE$47
++I$4@4L$OdFP$k*RS%1NdW%LrsZ%hB0]&.fBa&.fBb&J5Te&J5Tf&eYfi&eYfi&eYfi&eYfi&eYfi&
+J5Td&.f?_%LrpV$k!CL#mgkB#6kA9"U"o0!s/N)!<E0#zz!!!$$!sA`1"U5/9#6tJ>#RC\B#mgnE$4
+7+I$4@4L$O[@O$k*RS%1NaV%LrsY%hB0]%hB3_&.fBa&.fEc&J5Te&J5Te&J5Te&J5Te&J5Te&J,Kb
+&.]9^%LrpW$k*LO$47(F#R:S="pG/5"9S`-!WiB'!<<*"zz!!*-'"9\l3"pP8:#6tJ>#RC\A#mgnE#
+mq"H$47.K$O[@O$k*OR%1NaV%LrsY%M''\%hB0]&.fBa&.fBa&.fBa&.fBa&.fBa&.fBa&.fB`%hB0
+\%LrpW%1EXQ$OR4I#m^eA#6kA9"U"r1!s8T+!W`<&zzz!<N?*"9\l3"pP8:#6tJ=#RC\A#mgnE#mq"
+H$47.K$O[@O$k*OR%1NaU%LrsY%Ls![%hB0]%hB0^&.fBa&.fBa&.fBa&.f?_%hB0]%hB-[%LrpW%1
+EXR$O[:K#mgkC#R:S="pG/5"9\f/!WiE(!<E0#zz!!!!"!WrN-"9er4"pP8:#6tJ=#RC\A#RLeD#mg
+qG$47.K$O[=N$k*OR%1NaU%1WjX%LrsZ%hB0]%hB0]%hB0]%hB0]%hB0]%hB0]%LrsY%LijV%1EXR$
+O[=L$47(G#RCY?#6kA9"U,#3!s8W,!WiB'!<<*"zz!!!$$!WrQ."9er4"pP89#6tJ=#RC\A#RLeD#m
+gqG$47.K$O[=N$k*OQ%1NaU%1WjX%LrsY%Ls![%hB0]%hB0]%hB0]%h9'Z%LrsY%LijV%1EXR$k!FN
+$47+H#mgkC#6tJ<"pG/6"9\i0!s8T+!W`<&zzz!!*-&!s8Z/"U,&5"pP89#6tJ=#7(S@#RC_C#mgqG
+$47+J$O[=N$k*OQ%1NaU%1NdW%LrsY%LrsY%LrsY%LrsY%LrsY%LrsY%1NaU%1EXR$k!FN$OR4J#mg
+nD#RCY?#6kA9"U,#3"9S`.!WiE)!<E3$zzz!<E6(!sA`0"U,&5"pP89#6tJ=#7(S@#RC_C#mgqG$47
++J$O[=M$k*OQ$k3XT%1NaU%LrsY%LrsY%LrsY%LrsY%LrsX%1NaU%1N^S$k*LO$O[:K$4."F#m^eB#
+6tG;"pG/6"9\i1!s8W,!WiB'!<E0#zz!!!!"!<N<)!sA`0"U,&5"pP89"pYA<#6tM?#RC_C#mgqG$4
+7+J$O[=M$k*OQ$k*RS%1NaU%1NaV%LrsY%LrsY%LijV%1NaU%1N^S$k*OP$O[=L$47+H#mgkC#R:S>
+"pP89"U,&4"9\f/!s/N*!W`<&!<<*"zz!!!$#!WiH+!sA`0"U,&5"pP89"pYA<#6tM?#RC_C#mgnF$
+47+J$O[=M$k*OQ$k*OR%1NaU%1NaU%1NaU%1NaU%1NaU%1N^S$k*OQ$O[=M$47+I#mgnE#RC\@#6tG
+;"pP57"U"r2!s8W-!WiE)!<E3%zzz!!**%!WrN,"9\i1"U,&5"U5/8"pYA<#6tM?#RC_C#mgnF$47+
+I$O[=M$OdFP$k*OQ%1NaU%1NaU%1NaU%1NaU%1N^S$k*OQ$k!FN$O[:K$47(G#m^eB#R:S>"pP89"U
+,&4"9\i0!s8T+!WiB'!<E3$zzz!!**%!WrN,"9\i1"U,&5"U5/8"pP;;#6tM?#RC_C#mgnF$47+I$O
+[=M$O[@O$k*OQ$k*RS%1NaU%1NaU%1N^S$k*OQ$k*LO$O[=L$47+H#mgnD#RC\@#6tG;"pP57"U"r2
+"9S`.!s/N*!W`<&!<<*"zzz!<E6'!WrN,"9\i1"9er4"U5/8"pP;;#6tM?#RC\B#mgnF$47+I$O[=M
+$O[@O$k*OQ$k*OQ$k*OQ$k*OQ$k*OQ$k*OP$O[=M$OR4J$4."F#m^eB#R:S>"pP89"U,&4"9\i0!s8
+W,!WiE)!<E3%zzz!!!!"!<N<(!s8W-"9\i1"9er4"U5/8"pP;;#6tM?#RC\B#mgnE$47+I$4@4L$O[
+=M$k*OQ$k*OQ$k*OQ$k*OQ$k*OQ$O[=M$O[:K$47+H#mgnD#RC\@#6tG;"pP57"U,#3"9\f/!s8T+!
+WiB'!<E3$zzz!!!$#!<N<(!s8W-"9\i1"9er4"U,)7"pP;;#6tM?#RC\B#mgnE$47+I$4@4L$O[=M$
+O[@O$k*OQ$k*OQ$k*OQ$O[=M$O[=L$47+I#mgnE#m^eB#R:S>"pP89"U,&5"9\i1!s8W-!WiE)!W`<
+&!<E0#zzz!!**$!WiE)!s8W-!sA`0"9er4"U,)7"pP;;#6tJ>#RC\B#mgnE$47+I$47.K$O[=M$O[=
+M$O[=M$O[=M$O[=M$O[=M$OR4J$47(G#mgkC#RC\@#6tG;"pP57"U,#3"9\f/!s8T+!WiE(!<E3%zz
+zz!!**$!WiE)!s8W-!sA`0"9er4"U,)7"pP;;#6tJ>#RC\A#mgnE#mq"H$47+I$O[=M$O[=M$O[=M$
+O[=M$O[=M$OR4J$47+I#mgnE#RC\A#6tJ="pP89"U,&5"9\i1!s8W-!s/N*!W`<&!<E3$zzzz!<E3%
+!WiE)!s8W-!sA`0"9\l3"U,)7"pP8:#6tJ>#RC\A#mgnE#mgqG$47+I$47.K$O[=M$O[=M$O[=M$O[
+:K$47+I$4."F#mgkC#RCY?#6tG;"pP57"U,#3"9\f/!s8W,!WiE)!<E3%!<<*"zzz!!!!"!<E3&!Wi
+E)!s8W-!sA`0"9\l3"U,)7"pP8:#6tJ>#RC\A#RLeD#mgnF$47+I$47+I$47.K$O[=M$47+I$47+I$
+47(G#mgnE#RC\A#6tJ="pP89"U,&5"U"r2"9S`.!s/N*!WiB'!<E3%zzzz!!!!"!<E3&!WiE)!s8W-
+!sA`0"9\l3"U,)7"pP8:#6tJ=#RC\A#RLeD#mgnE$47+I$47+I$47+I$47+I$47+I$47+H#mgnE#m^
+eB#RCY?#6tG;"pP88"U,&4"9\i0!s8W,!WiE)!<E3%!<E0#zzzz!!!$#!<E3&!WiE)!s8W-!sA`0"9
+\l3"U,&6"pP89#6tJ=#7(S@#RC\B#mgnE#mgnF$47+I$47+I$47+I$47+H#mgnE#mgkC#RC\A#6tJ=
+"pP89"pG/6"U"r2"9S`.!s8T+!WiE(!<E3%!<<*"zzzz!!!$#!<E3&!WiE)!WrN,!s8Z/"9\l3"U,&
+6"pP89#6tJ=#6tM?#RC\A#mgnE#mgnE#mgnE#mgnE#mgnE#mgnE#mgnD#RC\A#R:S>#6tG;"pP57"U
+,&4"9\i0!s8W-!WiE)!W`<&!<E3$zzzzz!!!$#!<E3&!WiE)!WrN,!s8Z/"9\i2"U,&5"pP89"pYA<
+#6tJ>#RC\A#RC\B#mgnE#mgnE#mgnE#mgnE#mgnD#RC\A#RCY?#6tJ="pP89"U,&5"U"r2"9S`.!s8
+T+!WiE(!<E3%!<<*"zzzzz!!**$!<E3&!WiE)!WrN,!s8Z/"9\i2"U,&5"pP89"pP;;#6tJ=#7(S@#
+RC\A#RC\A#mgnE#mgnE#m^eB#RC\A#RC\@#6tJ=#6kA:"pP57"U,#3"9\i0!s8W-!WiE)!W`<&!<E3
+%zzzzzz!!**$!<E3%!WiE)!WrN,!s8W."9\i1"U,&5"U,)7"pP89#6tJ=#6tJ=#RC\A#RC\A#RC\A#
+RC\A#RC\A#RC\@#6tJ=#6tG;"pP88"U,&5"9\i1"9S`.!s8T+!WiE(!<E3%!<E0#zzzzzz!!**$!<E
+3%!WiE)!WiH+!s8W."9\i1"9er4"U,&6"pP89"pP;;#6tJ=#6tJ=#6tM?#RC\A#RC\@#6tJ=#6tJ=#
+6tG;"pP89"U,&5"U"r2"9\f/!s8W,!WiE)!W`<&!<E3%zzzzzzz!!**$!<E3%!WiE)!WiH+!s8W-"9
+\i1"9\i2"U,&5"U5/8"pP89"pP;;#6tJ=#6tJ=#6tJ=#6tJ=#6tJ=#6kA:"pP89"pG/6"U,#3"9\i1
+!s8W-!s/N*!WiE(!<E3%!<E0#zzzzzzz!!!$#!<E3%!<N<(!WiE*!s8W-!s8Z/"9\i1"9er4"U,&5"
+U5/8"pP89"pP89"pP89"pP89"pP89"pP89"pP89"U,&5"U,&4"9\i1"9S`.!s8T+!WiE)!<E3%!<E3
+$zzzzzzzz!!!$#!<E3%!<N<(!WiE)!WrN,!s8W-"9\i1"9\i1"U,&5"U,&5"U,&5"pP89"pP89"pP8
+9"pP89"U,&5"U,&5"U,#3"9\i1"9S`.!s8W,!WiE)!WiB'!<E3%!<<*"zzzzzzzz!!!$#!<E3%!<E3
+&!WiE)!WiE*!s8W-!s8W-"9\i1"9\i1"9\i2"U,&5"U,&5"U,&5"U,&5"U,&5"U,&4"9\i1"9\i1!s
+8W-!s8W-!WiE)!WiB'!<E3%!<E0#zzzzzzzzz!!!!"!<E3%!<E3%!<N<(!WiE)!WiH+!s8W-!s8W-!
+s8Z/"9\i1"9\i1"9\i1"9\i1"9\i1"9\i1"9\i1"9S`.!s8W-!s8W,!WiE)!WiE(!<E3%!<E3$zzzz
+zzzzzzz!!**$!<E3%!<E3%!WiE)!WiE)!WiE)!WrN,!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!s8W-!
+s8W-!s8W,!WiE)!WiE)!WiB'!<E3%!<E3%zzzzzzzzzzzzz!<E3%!<E3%!<E3%!<E3%!WiE)!WiE)!
+WiE)!WiE)!WiE)!WiE)!WiE)!WiE)!WiE)!WiE)!WiE)!WiB'!<E3%!<E3%!<E3$zzzzzzzzzzzzzz
+zz!!**$!<E3%!<E3%!<E3%!<E3%!<E3%!<E3%!<E3%!<E3%!<E3%!<E3%!<E3%!<E3%!<E3%!<E0#z
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz!!~>
+InterpretLevel1 not {
+  grestore
+} if
+grestore
+%%%%EndImage
+LTw
+% End plot #1
+% Begin plot #2
+1.000 UL
+LTb
+LCb setrgbcolor
+[] 0 setdash
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+[] 0 setdash
+LCb setrgbcolor
+gsave 1111 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+1111 5740 M
+stroke
+1111 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+946 5740 M
+165 0 V
+stroke
+gsave 1165 1558 N 12 13 V -61 31 V 37 -58 V 12 14 V 1 PolyFill
+1165 1558 M
+stroke
+1165 1558 N
+12 13 V
+-61 31 V
+37 -58 V
+12 14 V
+Z stroke
+1287 1446 M
+-122 112 V
+stroke
+gsave 1213 1954 N 16 8 V -46 51 V 14 -68 V 16 9 V 1 PolyFill
+1213 1954 M
+stroke
+1213 1954 N
+16 8 V
+-46 51 V
+14 -68 V
+16 9 V
+Z stroke
+1287 1806 M
+-74 148 V
+stroke
+gsave 1238 2323 N 17 5 V -36 58 V 2 -69 V 17 6 V 1 PolyFill
+1238 2323 M
+stroke
+1238 2323 N
+17 5 V
+-36 58 V
+2 -69 V
+17 6 V
+Z stroke
+1287 2165 M
+-49 158 V
+stroke
+gsave 1253 2686 N 17 3 V -31 62 V -3 -69 V 17 4 V 1 PolyFill
+1253 2686 M
+stroke
+1253 2686 N
+17 3 V
+-31 62 V
+-3 -69 V
+17 4 V
+Z stroke
+1287 2524 M
+-34 162 V
+stroke
+gsave 1262 3047 N 17 3 V -27 63 V -7 -69 V 17 3 V 1 PolyFill
+1262 3047 M
+stroke
+1262 3047 N
+17 3 V
+-27 63 V
+-7 -69 V
+17 3 V
+Z stroke
+1287 2884 M
+-25 163 V
+stroke
+gsave 1268 3407 N 18 2 V -25 64 V -10 -68 V 17 2 V 1 PolyFill
+1268 3407 M
+stroke
+1268 3407 N
+18 2 V
+-25 64 V
+-10 -68 V
+17 2 V
+Z stroke
+1287 3243 M
+-19 164 V
+stroke
+gsave 1274 3767 N 18 1 V -22 65 V -13 -68 V 17 2 V 1 PolyFill
+1274 3767 M
+stroke
+1274 3767 N
+18 1 V
+-22 65 V
+-13 -68 V
+17 2 V
+Z stroke
+1287 3602 M
+-13 165 V
+stroke
+gsave 1279 4126 N 18 1 V -21 66 V -14 -68 V 17 1 V 1 PolyFill
+1279 4126 M
+stroke
+1279 4126 N
+18 1 V
+-21 66 V
+-14 -68 V
+17 1 V
+Z stroke
+1287 3961 M
+-8 165 V
+stroke
+gsave 1281 4486 N 18 0 V -20 66 V -15 -67 V 17 1 V 1 PolyFill
+1281 4486 M
+stroke
+1281 4486 N
+18 0 V
+-20 66 V
+-15 -67 V
+17 1 V
+Z stroke
+1287 4321 M
+-6 165 V
+stroke
+gsave 1277 4845 N 17 1 V -21 65 V -13 -68 V 17 2 V 1 PolyFill
+1277 4845 M
+stroke
+1277 4845 N
+17 1 V
+-21 65 V
+-13 -68 V
+17 2 V
+Z stroke
+1287 4680 M
+-10 165 V
+stroke
+gsave 1260 5202 N 17 3 V -28 63 V -6 -69 V 17 3 V 1 PolyFill
+1260 5202 M
+stroke
+1260 5202 N
+17 3 V
+-28 63 V
+-6 -69 V
+17 3 V
+Z stroke
+1287 5039 M
+-27 163 V
+stroke
+gsave 1219 5550 N 16 7 V -43 53 V 11 -68 V 16 8 V 1 PolyFill
+1219 5550 M
+stroke
+1219 5550 N
+16 7 V
+-43 53 V
+11 -68 V
+16 8 V
+Z stroke
+1287 5399 M
+-68 151 V
+stroke
+gsave 1452 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+1452 5740 M
+stroke
+1452 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+1287 5740 M
+165 0 V
+stroke
+gsave 1492 1506 N 7 16 V -69 7 V 56 -40 V 6 17 V 1 PolyFill
+1492 1506 M
+stroke
+1492 1506 N
+7 16 V
+-69 7 V
+56 -40 V
+6 17 V
+Z stroke
+1647 1446 M
+-155 60 V
+stroke
+gsave 1520 1912 N 12 13 V -63 29 V 40 -56 V 11 14 V 1 PolyFill
+1520 1912 M
+stroke
+1520 1912 N
+12 13 V
+-63 29 V
+40 -56 V
+11 14 V
+Z stroke
+1647 1806 M
+-127 106 V
+stroke
+gsave 1547 2298 N 15 10 V -54 43 V 25 -64 V 14 11 V 1 PolyFill
+1547 2298 M
+stroke
+1547 2298 N
+15 10 V
+-54 43 V
+25 -64 V
+14 11 V
+Z stroke
+1647 2165 M
+-100 133 V
+stroke
+gsave 1570 2671 N 16 8 V -47 51 V 15 -68 V 16 9 V 1 PolyFill
+1570 2671 M
+stroke
+1570 2671 N
+16 8 V
+-47 51 V
+15 -68 V
+16 9 V
+Z stroke
+1647 2524 M
+-77 147 V
+stroke
+gsave 1587 3038 N 17 6 V -41 56 V 7 -69 V 17 7 V 1 PolyFill
+1587 3038 M
+stroke
+1587 3038 N
+17 6 V
+-41 56 V
+7 -69 V
+17 7 V
+Z stroke
+1647 2884 M
+-60 154 V
+stroke
+gsave 1601 3402 N 18 5 V -35 59 V 0 -69 V 17 5 V 1 PolyFill
+1601 3402 M
+stroke
+1601 3402 N
+18 5 V
+-35 59 V
+0 -69 V
+17 5 V
+Z stroke
+1647 3243 M
+-46 159 V
+stroke
+gsave 1615 3765 N 17 3 V -30 62 V -4 -69 V 17 4 V 1 PolyFill
+1615 3765 M
+stroke
+1615 3765 N
+17 3 V
+-30 62 V
+-4 -69 V
+17 4 V
+Z stroke
+1647 3602 M
+-32 163 V
+stroke
+gsave 1626 4125 N 18 2 V -26 64 V -9 -68 V 17 2 V 1 PolyFill
+1626 4125 M
+stroke
+1626 4125 N
+18 2 V
+-26 64 V
+-9 -68 V
+17 2 V
+Z stroke
+1647 3961 M
+-21 164 V
+stroke
+gsave 1633 4486 N 18 1 V -23 65 V -12 -68 V 17 2 V 1 PolyFill
+1633 4486 M
+stroke
+1633 4486 N
+18 1 V
+-23 65 V
+-12 -68 V
+17 2 V
+Z stroke
+1647 4321 M
+-14 165 V
+stroke
+gsave 1632 4845 N 18 1 V -24 65 V -11 -68 V 17 2 V 1 PolyFill
+1632 4845 M
+stroke
+1632 4845 N
+18 1 V
+-24 65 V
+-11 -68 V
+17 2 V
+Z stroke
+1647 4680 M
+-15 165 V
+stroke
+gsave 1615 5202 N 17 3 V -30 62 V -4 -69 V 17 4 V 1 PolyFill
+1615 5202 M
+stroke
+1615 5202 N
+17 3 V
+-30 62 V
+-4 -69 V
+17 4 V
+Z stroke
+1647 5039 M
+-32 163 V
+stroke
+gsave 1580 5550 N 17 7 V -43 54 V 10 -68 V 16 7 V 1 PolyFill
+1580 5550 M
+stroke
+1580 5550 N
+17 7 V
+-43 54 V
+10 -68 V
+16 7 V
+Z stroke
+1647 5399 M
+-67 151 V
+stroke
+gsave 1812 5740 N 0 -17 V 66 17 V -66 17 V 0 -17 V 1 PolyFill
+1812 5740 M
+stroke
+1812 5740 N
+0 -17 V
+66 17 V
+-66 17 V
+0 -17 V
+Z stroke
+1647 5740 M
+165 0 V
+stroke
+gsave 1844 1481 N 4 17 V -69 -3 V 61 -31 V 4 17 V 1 PolyFill
+1844 1481 M
+stroke
+1844 1481 N
+4 17 V
+-69 -3 V
+61 -31 V
+4 17 V
+Z stroke
+2006 1446 M
+-162 35 V
+stroke
+gsave 1857 1877 N 8 16 V -68 12 V 52 -44 V 8 16 V 1 PolyFill
+1857 1877 M
+stroke
+1857 1877 N
+8 16 V
+-68 12 V
+52 -44 V
+8 16 V
+Z stroke
+2006 1806 M
+-149 71 V
+stroke
+gsave 1875 2266 N 11 14 V -64 26 V 42 -55 V 11 15 V 1 PolyFill
+1875 2266 M
+stroke
+1875 2266 N
+11 14 V
+-64 26 V
+42 -55 V
+11 15 V
+Z stroke
+2006 2165 M
+-131 101 V
+stroke
+gsave 1894 2646 N 13 12 V -58 37 V 32 -61 V 13 12 V 1 PolyFill
+1894 2646 M
+stroke
+1894 2646 N
+13 12 V
+-58 37 V
+32 -61 V
+13 12 V
+Z stroke
+2006 2524 M
+-112 122 V
+stroke
+gsave 1913 3020 N 15 10 V -52 45 V 22 -65 V 15 10 V 1 PolyFill
+1913 3020 M
+stroke
+1913 3020 N
+15 10 V
+-52 45 V
+22 -65 V
+15 10 V
+Z stroke
+2006 2884 M
+-93 136 V
+stroke
+gsave 1932 3391 N 16 8 V -45 52 V 13 -68 V 16 8 V 1 PolyFill
+1932 3391 M
+stroke
+1932 3391 N
+16 8 V
+-45 52 V
+13 -68 V
+16 8 V
+Z stroke
+2006 3243 M
+-74 148 V
+stroke
+gsave 1953 3759 N 17 5 V -38 58 V 4 -69 V 17 6 V 1 PolyFill
+1953 3759 M
+stroke
+1953 3759 N
+17 5 V
+-38 58 V
+4 -69 V
+17 6 V
+Z stroke
+2006 3602 M
+-53 157 V
+stroke
+gsave 1974 4124 N 17 3 V -30 62 V -4 -69 V 17 4 V 1 PolyFill
+1974 4124 M
+stroke
+1974 4124 N
+17 3 V
+-30 62 V
+-4 -69 V
+17 4 V
+Z stroke
+2006 3961 M
+-32 163 V
+stroke
+gsave 1991 4486 N 18 1 V -24 65 V -11 -68 V 17 2 V 1 PolyFill
+1991 4486 M
+stroke
+1991 4486 N
+18 1 V
+-24 65 V
+-11 -68 V
+17 2 V
+Z stroke
+2006 4321 M
+-15 165 V
+stroke
+gsave 1999 4846 N 18 0 V -20 66 V -15 -67 V 17 1 V 1 PolyFill
+1999 4846 M
+stroke
+1999 4846 N
+18 0 V
+-20 66 V
+-15 -67 V
+17 1 V
+Z stroke
+2006 4680 M
+-7 166 V
+stroke
+gsave 1994 5205 N 18 1 V -22 65 V -13 -68 V 17 2 V 1 PolyFill
+1994 5205 M
+stroke
+1994 5205 N
+18 1 V
+-22 65 V
+-13 -68 V
+17 2 V
+Z stroke
+2006 5039 M
+-12 166 V
+stroke
+gsave 2003 5564 N 18 0 V -18 66 V -17 -67 V 17 1 V 1 PolyFill
+2003 5564 M
+stroke
+2003 5564 N
+18 0 V
+-18 66 V
+-17 -67 V
+17 1 V
+Z stroke
+2006 5399 M
+-3 165 V
+stroke
+gsave 2171 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+2171 5740 M
+stroke
+2171 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+2006 5740 M
+165 0 V
+stroke
+gsave 2201 1469 N 3 17 V -68 -8 V 63 -27 V 2 18 V 1 PolyFill
+2201 1469 M
+stroke
+2201 1469 N
+3 17 V
+-68 -8 V
+63 -27 V
+2 18 V
+Z stroke
+2365 1446 M
+-164 23 V
+stroke
+gsave 2207 1853 N 5 17 V -69 1 V 59 -36 V 5 18 V 1 PolyFill
+2207 1853 M
+stroke
+2207 1853 N
+5 17 V
+-69 1 V
+59 -36 V
+5 18 V
+Z stroke
+2365 1806 M
+-158 47 V
+stroke
+gsave 2216 2237 N 8 16 V -68 12 V 52 -45 V 8 17 V 1 PolyFill
+2216 2237 M
+stroke
+2216 2237 N
+8 16 V
+-68 12 V
+52 -45 V
+8 17 V
+Z stroke
+2365 2165 M
+-149 72 V
+stroke
+gsave 2228 2617 N 10 15 V -65 22 V 45 -52 V 10 15 V 1 PolyFill
+2228 2617 M
+stroke
+2228 2617 N
+10 15 V
+-65 22 V
+45 -52 V
+10 15 V
+Z stroke
+2365 2524 M
+-137 93 V
+stroke
+gsave 2244 2997 N 13 13 V -61 32 V 36 -58 V 12 13 V 1 PolyFill
+2244 2997 M
+stroke
+2244 2997 N
+13 13 V
+-61 32 V
+36 -58 V
+12 13 V
+Z stroke
+2365 2884 M
+-121 113 V
+stroke
+gsave 2265 3375 N 15 11 V -54 42 V 25 -64 V 14 11 V 1 PolyFill
+2265 3375 M
+stroke
+2265 3375 N
+15 11 V
+-54 42 V
+25 -64 V
+14 11 V
+Z stroke
+2365 3243 M
+-100 132 V
+stroke
+gsave 2293 3751 N 17 8 V -45 52 V 12 -68 V 16 8 V 1 PolyFill
+2293 3751 M
+stroke
+2293 3751 N
+17 8 V
+-45 52 V
+12 -68 V
+16 8 V
+Z stroke
+2365 3602 M
+-72 149 V
+stroke
+gsave 2325 4122 N 17 4 V -33 60 V -1 -69 V 17 5 V 1 PolyFill
+2325 4122 M
+stroke
+2325 4122 N
+17 4 V
+-33 60 V
+-1 -69 V
+17 5 V
+Z stroke
+2365 3961 M
+-40 161 V
+stroke
+gsave 2355 4486 N 18 1 V -21 65 V -14 -67 V 17 1 V 1 PolyFill
+2355 4486 M
+stroke
+2355 4486 N
+18 1 V
+-21 65 V
+-14 -67 V
+17 1 V
+Z stroke
+2365 4321 M
+-10 165 V
+stroke
+gsave 2381 4845 N 17 -2 V -11 68 V -24 -65 V 18 -1 V 1 PolyFill
+2381 4845 M
+stroke
+2381 4845 N
+17 -2 V
+-11 68 V
+-24 -65 V
+18 -1 V
+Z stroke
+2365 4680 M
+16 165 V
+stroke
+gsave 2398 5202 N 17 -4 V -4 69 V -31 -62 V 18 -3 V 1 PolyFill
+2398 5202 M
+stroke
+2398 5202 N
+17 -4 V
+-4 69 V
+-31 -62 V
+18 -3 V
+Z stroke
+2365 5039 M
+33 163 V
+stroke
+gsave 2467 5529 N 14 -11 V 26 64 V -55 -42 V 15 -11 V 1 PolyFill
+2467 5529 M
+stroke
+2467 5529 N
+14 -11 V
+26 64 V
+-55 -42 V
+15 -11 V
+Z stroke
+2365 5399 M
+102 130 V
+stroke
+gsave 2530 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+2530 5740 M
+stroke
+2530 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+2365 5740 M
+165 0 V
+stroke
+gsave 2559 1459 N 2 17 V -68 -12 V 65 -23 V 1 18 V 1 PolyFill
+2559 1459 M
+stroke
+2559 1459 N
+2 17 V
+-68 -12 V
+65 -23 V
+1 18 V
+Z stroke
+2725 1446 M
+-166 13 V
+stroke
+gsave 2562 1832 N 3 17 V -69 -7 V 63 -28 V 3 18 V 1 PolyFill
+2562 1832 M
+stroke
+2562 1832 N
+3 17 V
+-69 -7 V
+63 -28 V
+3 18 V
+Z stroke
+2725 1806 M
+-163 26 V
+stroke
+gsave 2564 2206 N 5 17 V -69 0 V 60 -34 V 4 17 V 1 PolyFill
+2564 2206 M
+stroke
+2564 2206 N
+5 17 V
+-69 0 V
+60 -34 V
+4 17 V
+Z stroke
+2725 2165 M
+-161 41 V
+stroke
+gsave 2570 2584 N 7 16 V -69 7 V 56 -40 V 6 17 V 1 PolyFill
+2570 2584 M
+stroke
+2570 2584 N
+7 16 V
+-69 7 V
+56 -40 V
+6 17 V
+Z stroke
+2725 2524 M
+-155 60 V
+stroke
+gsave 2582 2967 N 9 15 V -67 17 V 49 -48 V 9 16 V 1 PolyFill
+2582 2967 M
+stroke
+2582 2967 N
+9 15 V
+-67 17 V
+49 -48 V
+9 16 V
+Z stroke
+2725 2884 M
+-143 83 V
+stroke
+gsave 2603 3356 N 13 13 V -61 32 V 36 -58 V 12 13 V 1 PolyFill
+2603 3356 M
+stroke
+2603 3356 N
+13 13 V
+-61 32 V
+36 -58 V
+12 13 V
+Z stroke
+2725 3243 M
+-122 113 V
+stroke
+gsave 2639 3744 N 16 9 V -50 48 V 19 -66 V 15 9 V 1 PolyFill
+2639 3744 M
+stroke
+2639 3744 N
+16 9 V
+-50 48 V
+19 -66 V
+15 9 V
+Z stroke
+2725 3602 M
+-86 142 V
+stroke
+gsave 2684 4122 N 17 4 V -34 60 V 0 -69 V 17 5 V 1 PolyFill
+2684 4122 M
+stroke
+2684 4122 N
+17 4 V
+-34 60 V
+0 -69 V
+17 5 V
+Z stroke
+2725 3961 M
+-41 161 V
+stroke
+gsave 2730 4486 N 17 -1 V -16 67 V -19 -66 V 18 0 V 1 PolyFill
+2730 4486 M
+stroke
+2730 4486 N
+17 -1 V
+-16 67 V
+-19 -66 V
+18 0 V
+Z stroke
+2725 4321 M
+5 165 V
+stroke
+gsave 2771 4839 N 17 -5 V 0 69 V -35 -59 V 18 -5 V 1 PolyFill
+2771 4839 M
+stroke
+2771 4839 N
+17 -5 V
+0 69 V
+-35 -59 V
+18 -5 V
+Z stroke
+2725 4680 M
+46 159 V
+stroke
+gsave 2807 5183 N 15 -9 V 17 67 V -48 -49 V 16 -9 V 1 PolyFill
+2807 5183 M
+stroke
+2807 5183 N
+15 -9 V
+17 67 V
+-48 -49 V
+16 -9 V
+Z stroke
+2725 5039 M
+82 144 V
+stroke
+gsave 2870 5478 N 8 -16 V 50 47 V -67 -16 V 9 -15 V 1 PolyFill
+2870 5478 M
+stroke
+2870 5478 N
+8 -16 V
+50 47 V
+-67 -16 V
+9 -15 V
+Z stroke
+2725 5399 M
+145 79 V
+stroke
+gsave 2890 5740 N 0 -17 V 66 17 V -66 17 V 0 -17 V 1 PolyFill
+2890 5740 M
+stroke
+2890 5740 N
+0 -17 V
+66 17 V
+-66 17 V
+0 -17 V
+Z stroke
+2725 5740 M
+165 0 V
+stroke
+gsave 2918 1449 N 1 17 V -67 -16 V 66 -19 V 0 18 V 1 PolyFill
+2918 1449 M
+stroke
+2918 1449 N
+1 17 V
+-67 -16 V
+66 -19 V
+0 18 V
+Z stroke
+3084 1446 M
+-166 3 V
+stroke
+gsave 2918 1811 N 1 17 V -67 -16 V 66 -19 V 0 18 V 1 PolyFill
+2918 1811 M
+stroke
+2918 1811 N
+1 17 V
+-67 -16 V
+66 -19 V
+0 18 V
+Z stroke
+3084 1806 M
+-166 5 V
+stroke
+gsave 2919 2173 N 1 17 V -68 -15 V 66 -20 V 1 18 V 1 PolyFill
+2919 2173 M
+stroke
+2919 2173 N
+1 17 V
+-68 -15 V
+66 -20 V
+1 18 V
+Z stroke
+3084 2165 M
+-165 8 V
+stroke
+gsave 2920 2544 N 2 17 V -68 -9 V 64 -25 V 2 17 V 1 PolyFill
+2920 2544 M
+stroke
+2920 2544 N
+2 17 V
+-68 -9 V
+64 -25 V
+2 17 V
+Z stroke
+3084 2524 M
+-164 20 V
+stroke
+gsave 2928 2939 N 6 17 V -69 5 V 57 -39 V 6 17 V 1 PolyFill
+2928 2939 M
+stroke
+2928 2939 N
+6 17 V
+-69 5 V
+57 -39 V
+6 17 V
+Z stroke
+3084 2884 M
+-156 55 V
+stroke
+gsave 2953 3344 N 11 14 V -64 26 V 42 -55 V 11 15 V 1 PolyFill
+2953 3344 M
+stroke
+2953 3344 N
+11 14 V
+-64 26 V
+42 -55 V
+11 15 V
+Z stroke
+3084 3243 M
+-131 101 V
+stroke
+gsave 2993 3740 N 15 10 V -52 45 V 22 -65 V 15 10 V 1 PolyFill
+2993 3740 M
+stroke
+2993 3740 N
+15 10 V
+-52 45 V
+22 -65 V
+15 10 V
+Z stroke
+3084 3602 M
+-91 138 V
+stroke
+gsave 3049 4123 N 17 4 V -31 61 V -3 -69 V 17 4 V 1 PolyFill
+3049 4123 M
+stroke
+3049 4123 N
+17 4 V
+-31 61 V
+-3 -69 V
+17 4 V
+Z stroke
+3084 3961 M
+-35 162 V
+stroke
+gsave 3112 4483 N 17 -3 V -6 69 V -29 -63 V 18 -3 V 1 PolyFill
+3112 4483 M
+stroke
+3112 4483 N
+17 -3 V
+-6 69 V
+-29 -63 V
+18 -3 V
+Z stroke
+3084 4321 M
+28 162 V
+stroke
+gsave 3163 4826 N 16 -9 V 16 67 V -48 -50 V 16 -8 V 1 PolyFill
+3163 4826 M
+stroke
+3163 4826 N
+16 -9 V
+16 67 V
+-48 -50 V
+16 -8 V
+Z stroke
+3084 4680 M
+79 146 V
+stroke
+gsave 3203 5155 N 12 -13 V 35 59 V -60 -34 V 13 -12 V 1 PolyFill
+3203 5155 M
+stroke
+3203 5155 N
+12 -13 V
+35 59 V
+-60 -34 V
+13 -12 V
+Z stroke
+3084 5039 M
+119 116 V
+stroke
+gsave 3241 5450 N 5 -17 V 58 37 V -69 -3 V 6 -17 V 1 PolyFill
+3241 5450 M
+stroke
+3241 5450 N
+5 -17 V
+58 37 V
+-69 -3 V
+6 -17 V
+Z stroke
+3084 5399 M
+157 51 V
+stroke
+gsave 3249 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+3249 5740 M
+stroke
+3249 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+3084 5740 M
+165 0 V
+stroke
+gsave 3278 1437 N 0 18 V -66 -21 V 67 -14 V -1 17 V 1 PolyFill
+3278 1437 M
+stroke
+3278 1437 N
+0 18 V
+-66 -21 V
+67 -14 V
+-1 17 V
+Z stroke
+3443 1446 M
+-165 -9 V
+stroke
+gsave 3279 1784 N -2 18 V -64 -26 V 68 -9 V -2 17 V 1 PolyFill
+3279 1784 M
+stroke
+3279 1784 N
+-2 18 V
+-64 -26 V
+68 -9 V
+-2 17 V
+Z stroke
+3443 1806 M
+-164 -22 V
+stroke
+gsave 3281 2134 N -3 17 V -62 -30 V 69 -4 V -4 17 V 1 PolyFill
+3281 2134 M
+stroke
+3281 2134 N
+-3 17 V
+-62 -30 V
+69 -4 V
+-4 17 V
+Z stroke
+3443 2165 M
+-162 -31 V
+stroke
+gsave 3278 2509 N -1 18 V -65 -24 V 68 -11 V -2 17 V 1 PolyFill
+3278 2509 M
+stroke
+3278 2509 N
+-1 18 V
+-65 -24 V
+68 -11 V
+-2 17 V
+Z stroke
+3443 2524 M
+-165 -15 V
+stroke
+gsave 3282 2918 N 4 17 V -69 -3 V 61 -31 V 4 17 V 1 PolyFill
+3282 2918 M
+stroke
+3282 2918 N
+4 17 V
+-69 -3 V
+61 -31 V
+4 17 V
+Z stroke
+3443 2884 M
+-161 34 V
+stroke
+gsave 3296 3319 N 8 16 V -67 14 V 51 -46 V 8 16 V 1 PolyFill
+3296 3319 M
+stroke
+3296 3319 N
+8 16 V
+-67 14 V
+51 -46 V
+8 16 V
+Z stroke
+3443 3243 M
+-147 76 V
+stroke
+gsave 3325 3718 N 13 13 V -60 34 V 35 -60 V 12 13 V 1 PolyFill
+3325 3718 M
+stroke
+3325 3718 N
+13 13 V
+-60 34 V
+35 -60 V
+12 13 V
+Z stroke
+3443 3602 M
+-118 116 V
+stroke
+gsave 3395 4119 N 18 5 V -36 59 V 1 -69 V 17 5 V 1 PolyFill
+3395 4119 M
+stroke
+3395 4119 N
+18 5 V
+-36 59 V
+1 -69 V
+17 5 V
+Z stroke
+3443 3961 M
+-48 158 V
+stroke
+gsave 3500 4476 N 17 -6 V 5 69 V -39 -57 V 17 -6 V 1 PolyFill
+3500 4476 M
+stroke
+3500 4476 N
+17 -6 V
+5 69 V
+-39 -57 V
+17 -6 V
+Z stroke
+3443 4321 M
+57 155 V
+stroke
+gsave 3559 4799 N 12 -13 V 34 60 V -59 -35 V 13 -12 V 1 PolyFill
+3559 4799 M
+stroke
+3559 4799 N
+12 -13 V
+34 60 V
+-59 -35 V
+13 -12 V
+Z stroke
+3443 4680 M
+116 119 V
+stroke
+gsave 3586 5123 N 9 -16 V 48 49 V -67 -18 V 10 -15 V 1 PolyFill
+3586 5123 M
+stroke
+3586 5123 N
+9 -16 V
+48 49 V
+-67 -18 V
+10 -15 V
+Z stroke
+3443 5039 M
+143 84 V
+stroke
+gsave 3605 5433 N 3 -17 V 62 31 V -69 3 V 4 -17 V 1 PolyFill
+3605 5433 M
+stroke
+3605 5433 N
+3 -17 V
+62 31 V
+-69 3 V
+4 -17 V
+Z stroke
+3443 5399 M
+162 34 V
+stroke
+gsave 3608 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+3608 5740 M
+stroke
+3608 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+3443 5740 M
+165 0 V
+stroke
+gsave 3638 1423 N -2 18 V -63 -27 V 68 -8 V -3 17 V 1 PolyFill
+3638 1423 M
+stroke
+3638 1423 N
+-2 18 V
+-63 -27 V
+68 -8 V
+-3 17 V
+Z stroke
+3802 1446 M
+-164 -23 V
+stroke
+gsave 3645 1754 N -5 17 V -58 -37 V 69 3 V -6 17 V 1 PolyFill
+3645 1754 M
+stroke
+3645 1754 N
+-5 17 V
+-58 -37 V
+69 3 V
+-6 17 V
+Z stroke
+3802 1806 M
+-157 -52 V
+stroke
+gsave 3654 2093 N -8 16 V -52 -45 V 68 13 V -8 16 V 1 PolyFill
+3654 2093 M
+stroke
+3654 2093 N
+-8 16 V
+-52 -45 V
+68 13 V
+-8 16 V
+Z stroke
+3802 2165 M
+-148 -72 V
+stroke
+gsave 3643 2480 N -5 17 V -59 -34 V 69 0 V -5 17 V 1 PolyFill
+3643 2480 M
+stroke
+3643 2480 N
+-5 17 V
+-59 -34 V
+69 0 V
+-5 17 V
+Z stroke
+3802 2524 M
+-159 -44 V
+stroke
+gsave 3637 2883 N 0 18 V -66 -18 V 67 -17 V -1 17 V 1 PolyFill
+3637 2883 M
+stroke
+3637 2883 N
+0 18 V
+-66 -18 V
+67 -17 V
+-1 17 V
+Z stroke
+3802 2884 M
+-165 -1 V
+stroke
+gsave 3638 3266 N 3 17 V -68 -8 V 63 -27 V 2 18 V 1 PolyFill
+3638 3266 M
+stroke
+3638 3266 N
+3 17 V
+-68 -8 V
+63 -27 V
+2 18 V
+Z stroke
+3802 3243 M
+-164 23 V
+stroke
+gsave 3643 3645 N 5 17 V -69 0 V 59 -34 V 5 17 V 1 PolyFill
+3643 3645 M
+stroke
+3643 3645 N
+5 17 V
+-69 0 V
+59 -34 V
+5 17 V
+Z stroke
+3802 3602 M
+-159 43 V
+stroke
+gsave 3680 4074 N 13 13 V -61 32 V 36 -58 V 12 13 V 1 PolyFill
+3680 4074 M
+stroke
+3680 4074 N
+13 13 V
+-61 32 V
+36 -58 V
+12 13 V
+Z stroke
+3802 3961 M
+-122 113 V
+stroke
+gsave 3912 4444 N 13 -12 V 31 62 V -58 -38 V 14 -12 V 1 PolyFill
+3912 4444 M
+stroke
+3912 4444 N
+13 -12 V
+31 62 V
+-58 -38 V
+14 -12 V
+Z stroke
+3802 4321 M
+110 123 V
+stroke
+gsave 3954 4746 N 7 -17 V 54 43 V -68 -10 V 7 -16 V 1 PolyFill
+3954 4746 M
+stroke
+3954 4746 N
+7 -17 V
+54 43 V
+-68 -10 V
+7 -16 V
+Z stroke
+3802 4680 M
+152 66 V
+stroke
+gsave 3961 5086 N 5 -18 V 59 36 V -69 -1 V 5 -17 V 1 PolyFill
+3961 5086 M
+stroke
+3961 5086 N
+5 -18 V
+59 36 V
+-69 -1 V
+5 -17 V
+Z stroke
+3802 5039 M
+159 47 V
+stroke
+gsave 3966 5420 N 2 -18 V 64 26 V -68 9 V 2 -17 V 1 PolyFill
+3966 5420 M
+stroke
+3966 5420 N
+2 -18 V
+64 26 V
+-68 9 V
+2 -17 V
+Z stroke
+3802 5399 M
+164 21 V
+stroke
+gsave 3967 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+3967 5740 M
+stroke
+3967 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+3802 5740 M
+165 0 V
+stroke
+gsave 4001 1405 N -4 17 V -60 -33 V 69 0 V -5 16 V 1 PolyFill
+4001 1405 M
+stroke
+4001 1405 N
+-4 17 V
+-60 -33 V
+69 0 V
+-5 16 V
+Z stroke
+4162 1446 M
+-161 -41 V
+stroke
+gsave 4019 1721 N -9 16 V -48 -49 V 67 18 V -10 15 V 1 PolyFill
+4019 1721 M
+stroke
+4019 1721 N
+-9 16 V
+-48 -49 V
+67 18 V
+-10 15 V
+Z stroke
+4162 1806 M
+-143 -85 V
+stroke
+gsave 4038 2055 N -12 14 V -38 -58 V 62 31 V -12 13 V 1 PolyFill
+4038 2055 M
+stroke
+4038 2055 N
+-12 14 V
+-38 -58 V
+62 31 V
+-12 13 V
+Z stroke
+4162 2165 M
+4038 2055 L
+stroke
+gsave 4015 2448 N -8 16 V -51 -46 V 67 14 V -8 16 V 1 PolyFill
+4015 2448 M
+stroke
+4015 2448 N
+-8 16 V
+-51 -46 V
+67 14 V
+-8 16 V
+Z stroke
+4162 2524 M
+-147 -76 V
+stroke
+gsave 4003 2838 N -5 18 V -59 -35 V 69 0 V -5 17 V 1 PolyFill
+4003 2838 M
+stroke
+4003 2838 N
+-5 18 V
+-59 -35 V
+69 0 V
+-5 17 V
+Z stroke
+4162 2884 M
+-159 -46 V
+stroke
+gsave 4002 3200 N -4 17 V -60 -34 V 69 0 V -5 17 V 1 PolyFill
+4002 3200 M
+stroke
+4002 3200 N
+-4 17 V
+-60 -34 V
+69 0 V
+-5 17 V
+Z stroke
+4162 3243 M
+-160 -43 V
+stroke
+gsave 4009 3539 N -7 17 V -55 -41 V 69 8 V -7 16 V 1 PolyFill
+4009 3539 M
+stroke
+4009 3539 N
+-7 17 V
+-55 -41 V
+69 8 V
+-7 16 V
+Z stroke
+4162 3602 M
+-153 -63 V
+stroke
+gsave 4039 3851 N -12 14 V -38 -58 V 62 31 V -12 13 V 1 PolyFill
+4039 3851 M
+stroke
+4039 3851 N
+-12 14 V
+-38 -58 V
+62 31 V
+-12 13 V
+Z stroke
+4162 3961 M
+4039 3851 L
+stroke
+gsave 4274 4199 N -13 -12 V 58 -37 V -32 61 V -13 -12 V 1 PolyFill
+4274 4199 M
+stroke
+4274 4199 N
+-13 -12 V
+58 -37 V
+-32 61 V
+-13 -12 V
+Z stroke
+4162 4321 M
+112 -122 V
+stroke
+gsave 4324 4652 N -3 -17 V 69 6 V -63 29 V -3 -18 V 1 PolyFill
+4324 4652 M
+stroke
+4324 4652 N
+-3 -17 V
+69 6 V
+-63 29 V
+-3 -18 V
+Z stroke
+4162 4680 M
+162 -28 V
+stroke
+gsave 4327 5042 N 0 -18 V 66 19 V -67 16 V 1 -17 V 1 PolyFill
+4327 5042 M
+stroke
+4327 5042 N
+0 -18 V
+66 19 V
+-67 16 V
+1 -17 V
+Z stroke
+4162 5039 M
+165 3 V
+stroke
+gsave 4327 5409 N 1 -18 V 65 21 V -67 14 V 1 -17 V 1 PolyFill
+4327 5409 M
+stroke
+4327 5409 N
+1 -18 V
+65 21 V
+-67 14 V
+1 -17 V
+Z stroke
+4162 5399 M
+165 10 V
+stroke
+gsave 4327 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+4327 5740 M
+stroke
+4327 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+4162 5740 M
+165 0 V
+stroke
+gsave 4369 1381 N -7 17 V -54 -42 V 68 9 V -7 16 V 1 PolyFill
+4369 1381 M
+stroke
+4369 1381 N
+-7 17 V
+-54 -42 V
+68 9 V
+-7 16 V
+Z stroke
+4521 1446 M
+-152 -65 V
+stroke
+gsave 4405 1688 N -13 13 V -34 -60 V 60 35 V -13 12 V 1 PolyFill
+4405 1688 M
+stroke
+4405 1688 N
+-13 13 V
+-34 -60 V
+60 35 V
+-13 12 V
+Z stroke
+4521 1806 M
+4405 1688 L
+stroke
+gsave 4435 2023 N -15 9 V -19 -66 V 50 48 V -16 9 V 1 PolyFill
+4435 2023 M
+stroke
+4435 2023 N
+-15 9 V
+-19 -66 V
+50 48 V
+-16 9 V
+Z stroke
+4521 2165 M
+-86 -142 V
+stroke
+gsave 4400 2412 N -12 13 V -37 -58 V 61 32 V -12 13 V 1 PolyFill
+4400 2412 M
+stroke
+4400 2412 N
+-12 13 V
+-37 -58 V
+61 32 V
+-12 13 V
+Z stroke
+4521 2524 M
+4400 2412 L
+stroke
+gsave 4380 2797 N -9 15 V -47 -50 V 66 20 V -10 15 V 1 PolyFill
+4380 2797 M
+stroke
+4380 2797 N
+-9 15 V
+-47 -50 V
+66 20 V
+-10 15 V
+Z stroke
+4521 2884 M
+-141 -87 V
+stroke
+gsave 4383 3152 N -10 15 V -45 -52 V 65 22 V -10 15 V 1 PolyFill
+4383 3152 M
+stroke
+4383 3152 N
+-10 15 V
+-45 -52 V
+65 22 V
+-10 15 V
+Z stroke
+4521 3243 M
+-138 -91 V
+stroke
+gsave 4404 3485 N -12 13 V -34 -60 V 59 34 V -13 13 V 1 PolyFill
+4404 3485 M
+stroke
+4404 3485 N
+-12 13 V
+-34 -60 V
+59 34 V
+-13 13 V
+Z stroke
+4521 3602 M
+4404 3485 L
+stroke
+gsave 4451 3811 N -16 8 V -11 -68 V 44 53 V -17 7 V 1 PolyFill
+4451 3811 M
+stroke
+4451 3811 N
+-16 8 V
+-11 -68 V
+44 53 V
+-17 7 V
+Z stroke
+4521 3961 M
+-70 -150 V
+stroke
+gsave 4542 4157 N -18 -2 V 26 -64 V 9 68 V -17 -2 V 1 PolyFill
+4542 4157 M
+stroke
+4542 4157 N
+-18 -2 V
+26 -64 V
+9 68 V
+-17 -2 V
+Z stroke
+4521 4321 M
+21 -164 V
+stroke
+gsave 4636 4560 N -13 -12 V 59 -35 V -33 60 V -13 -13 V 1 PolyFill
+4636 4560 M
+stroke
+4636 4560 N
+-13 -12 V
+59 -35 V
+-33 60 V
+-13 -13 V
+Z stroke
+4521 4680 M
+115 -120 V
+stroke
+gsave 4679 4992 N -5 -17 V 69 -1 V -59 36 V -5 -18 V 1 PolyFill
+4679 4992 M
+stroke
+4679 4992 N
+-5 -17 V
+69 -1 V
+-59 36 V
+-5 -18 V
+Z stroke
+4521 5039 M
+158 -47 V
+stroke
+gsave 4686 5397 N 0 -17 V 67 17 V -67 18 V 0 -18 V 1 PolyFill
+4686 5397 M
+stroke
+4686 5397 N
+0 -17 V
+67 17 V
+-67 18 V
+0 -18 V
+Z stroke
+4521 5399 M
+165 -2 V
+stroke
+gsave 4686 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+4686 5740 M
+stroke
+4686 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+4521 5740 M
+165 0 V
+stroke
+gsave 4748 1346 N -11 15 V -42 -54 V 64 25 V -11 14 V 1 PolyFill
+4748 1346 M
+stroke
+4748 1346 N
+-11 15 V
+-42 -54 V
+64 25 V
+-11 14 V
+Z stroke
+4880 1446 M
+4748 1346 L
+stroke
+gsave 4802 1659 N -16 9 V -15 -67 V 47 50 V -16 8 V 1 PolyFill
+4802 1659 M
+stroke
+4802 1659 N
+-16 9 V
+-15 -67 V
+47 50 V
+-16 8 V
+Z stroke
+4880 1806 M
+-78 -147 V
+stroke
+gsave 4844 2004 N -17 4 V 3 -69 V 32 61 V -18 4 V 1 PolyFill
+4844 2004 M
+stroke
+4844 2004 N
+-17 4 V
+3 -69 V
+32 61 V
+-18 4 V
+Z stroke
+4880 2165 M
+-36 -161 V
+stroke
+gsave 4803 2378 N -16 8 V -15 -67 V 47 51 V -16 8 V 1 PolyFill
+4803 2378 M
+stroke
+4803 2378 N
+-16 8 V
+-15 -67 V
+47 51 V
+-16 8 V
+Z stroke
+4880 2524 M
+-77 -146 V
+stroke
+gsave 4768 2762 N -13 12 V -31 -61 V 58 37 V -14 12 V 1 PolyFill
+4768 2762 M
+stroke
+4768 2762 N
+-13 12 V
+-31 -61 V
+58 37 V
+-14 12 V
+Z stroke
+4880 2884 M
+4768 2762 L
+stroke
+gsave 4770 3119 N -13 12 V -30 -62 V 57 38 V -14 12 V 1 PolyFill
+4770 3119 M
+stroke
+4770 3119 N
+-13 12 V
+-30 -62 V
+57 38 V
+-14 12 V
+Z stroke
+4880 3243 M
+4770 3119 L
+stroke
+gsave 4789 3464 N -15 10 V -21 -66 V 51 46 V -15 10 V 1 PolyFill
+4789 3464 M
+stroke
+4789 3464 N
+-15 10 V
+-21 -66 V
+51 46 V
+-15 10 V
+Z stroke
+4880 3602 M
+-91 -138 V
+stroke
+gsave 4823 3806 N -17 7 V -6 -69 V 40 56 V -17 6 V 1 PolyFill
+4823 3806 M
+stroke
+4823 3806 N
+-17 7 V
+-6 -69 V
+40 56 V
+-17 6 V
+Z stroke
+4880 3961 M
+-57 -155 V
+stroke
+gsave 4866 4156 N -17 2 V 12 -68 V 23 65 V -18 1 V 1 PolyFill
+4866 4156 M
+stroke
+4866 4156 N
+-17 2 V
+12 -68 V
+23 65 V
+-18 1 V
+Z stroke
+4880 4321 M
+-14 -165 V
+stroke
+gsave 4916 4519 N -18 -4 V 32 -61 V 3 69 V -17 -4 V 1 PolyFill
+4916 4519 M
+stroke
+4916 4519 N
+-18 -4 V
+32 -61 V
+3 69 V
+-17 -4 V
+Z stroke
+4880 4680 M
+36 -161 V
+stroke
+gsave 4989 4914 N -14 -12 V 57 -38 V -30 62 V -13 -12 V 1 PolyFill
+4989 4914 M
+stroke
+4989 4914 N
+-14 -12 V
+57 -38 V
+-30 62 V
+-13 -12 V
+Z stroke
+4880 5039 M
+109 -125 V
+stroke
+gsave 5044 5376 N -3 -17 V 69 8 V -64 27 V -2 -18 V 1 PolyFill
+5044 5376 M
+stroke
+5044 5376 N
+-3 -17 V
+69 8 V
+-64 27 V
+-2 -18 V
+Z stroke
+4880 5399 M
+164 -23 V
+stroke
+gsave 5045 5740 N 0 -18 V 67 18 V -67 18 V 0 -18 V 1 PolyFill
+5045 5740 M
+stroke
+5045 5740 N
+0 -18 V
+67 18 V
+-67 18 V
+0 -18 V
+Z stroke
+4880 5740 M
+165 0 V
+stroke
+gsave 5166 1298 N -16 9 V -14 -68 V 46 51 V -16 8 V 1 PolyFill
+5166 1298 M
+stroke
+5166 1298 N
+-16 9 V
+-14 -68 V
+46 51 V
+-16 8 V
+Z stroke
+5240 1446 M
+-74 -148 V
+stroke
+gsave 5207 1643 N -17 4 V 4 -69 V 31 62 V -18 3 V 1 PolyFill
+5207 1643 M
+stroke
+5207 1643 N
+-17 4 V
+4 -69 V
+31 62 V
+-18 3 V
+Z stroke
+5240 1806 M
+-33 -163 V
+stroke
+gsave 5262 2001 N -18 -2 V 26 -64 V 9 68 V -17 -2 V 1 PolyFill
+5262 2001 M
+stroke
+5262 2001 N
+-18 -2 V
+26 -64 V
+9 68 V
+-17 -2 V
+Z stroke
+5240 2165 M
+22 -164 V
+stroke
+gsave 5236 2359 N -17 1 V 16 -67 V 19 66 V -18 0 V 1 PolyFill
+5236 2359 M
+stroke
+5236 2359 N
+-17 1 V
+16 -67 V
+19 66 V
+-18 0 V
+Z stroke
+5240 2524 M
+-4 -165 V
+stroke
+gsave 5164 2737 N -16 9 V -15 -68 V 47 51 V -16 8 V 1 PolyFill
+5164 2737 M
+stroke
+5164 2737 N
+-16 9 V
+-15 -68 V
+47 51 V
+-16 8 V
+Z stroke
+5240 2884 M
+-76 -147 V
+stroke
+gsave 5165 3095 N -16 9 V -14 -68 V 46 51 V -16 8 V 1 PolyFill
+5165 3095 M
+stroke
+5165 3095 N
+-16 9 V
+-14 -68 V
+46 51 V
+-16 8 V
+Z stroke
+5240 3243 M
+-75 -148 V
+stroke
+gsave 5178 3448 N -16 7 V -8 -68 V 41 55 V -17 6 V 1 PolyFill
+5178 3448 M
+stroke
+5178 3448 N
+-16 7 V
+-8 -68 V
+41 55 V
+-17 6 V
+Z stroke
+5240 3602 M
+-62 -154 V
+stroke
+gsave 5196 3802 N -17 5 V 0 -69 V 34 59 V -17 5 V 1 PolyFill
+5196 3802 M
+stroke
+5196 3802 N
+-17 5 V
+0 -69 V
+34 59 V
+-17 5 V
+Z stroke
+5240 3961 M
+-44 -159 V
+stroke
+gsave 5212 4158 N -17 3 V 6 -69 V 29 63 V -18 3 V 1 PolyFill
+5212 4158 M
+stroke
+5212 4158 N
+-17 3 V
+6 -69 V
+29 63 V
+-18 3 V
+Z stroke
+5240 4321 M
+-28 -163 V
+stroke
+gsave 5221 4516 N -17 2 V 10 -68 V 25 64 V -18 2 V 1 PolyFill
+5221 4516 M
+stroke
+5221 4516 N
+-17 2 V
+10 -68 V
+25 64 V
+-18 2 V
+Z stroke
+5240 4680 M
+-19 -164 V
+stroke
+gsave 5235 4874 N -17 1 V 15 -67 V 19 66 V -17 0 V 1 PolyFill
+5235 4874 M
+stroke
+5235 4874 N
+-17 1 V
+15 -67 V
+19 66 V
+-17 0 V
+Z stroke
+5240 5039 M
+-5 -165 V
+stroke
+gsave 5331 5261 N -15 -10 V 52 -45 V -22 65 V -15 -10 V 1 PolyFill
+5331 5261 M
+stroke
+5331 5261 N
+-15 -10 V
+52 -45 V
+-22 65 V
+-15 -10 V
+Z stroke
+5240 5399 M
+91 -138 V
+stroke
+gsave 5405 5740 N 0 -17 V 66 17 V -66 17 V 0 -17 V 1 PolyFill
+5405 5740 M
+stroke
+5405 5740 N
+0 -17 V
+66 17 V
+-66 17 V
+0 -17 V
+Z stroke
+5240 5740 M
+165 0 V
+stroke
+LTw
+% End plot #2
+2.000 UL
+LTb
+LCb setrgbcolor
+[] 0 setdash
+1.000 UL
+LTb
+946 5740 N
+0 -4635 V
+4635 0 V
+0 4635 V
+-4635 0 V
+Z stroke
+stroke gsave	%% draw gray scale smooth box
+maxcolors 0 gt {/imax maxcolors def} {/imax 1024 def} ifelse
+5697 1105 translate 231 4635 scale 0 setlinewidth
+/ystep 1 imax div def /y0 0 def /ii 0 def
+{ y0 g 0 y0 N 1 0 V 0 ystep V -1 0 f
+/y0 y0 ystep add def /ii ii 1 add def
+ii imax ge {exit} if } loop
+grestore 0 setgray
+1.000 UL
+LTb
+5697 1105 N
+231 0 V
+0 4635 V
+-231 0 V
+0 -4635 V
+Z stroke
+1.000 UL
+LTb
+1.000 UL
+LTb
+5928 1105 M
+-63 0 V
+stroke
+5697 1105 M
+63 0 V
+168 927 R
+-63 0 V
+stroke
+5697 2032 M
+63 0 V
+168 927 R
+-63 0 V
+stroke
+5697 2959 M
+63 0 V
+168 927 R
+-63 0 V
+stroke
+5697 3886 M
+63 0 V
+168 927 R
+-63 0 V
+stroke
+5697 4813 M
+63 0 V
+168 927 R
+-63 0 V
+stroke
+5697 5740 M
+63 0 V
+1.000 UP
+stroke
+grestore % colour palette end
+stroke
+grestore
+end
+showpage
+%%Trailer

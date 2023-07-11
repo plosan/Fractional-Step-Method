@@ -27,7 +27,7 @@ set cblabel ("Velocity $[\\mathrm{m / s}]$")
 set cbtics format '%.2f'
 
 
-plot 'data/vel_129_129_1000_5.txt' with image, '../output_data/vel_129_129_1000_5.txt' using 1:2:($4/(20*sqrt(($4)**2 + ($5)**2))):($5/(20*sqrt(($4)**2 + ($5)**2))) every 10:10 with vectors lc -1 filled
+plot '../output_data/vel_129_129_1000_5.txt' with image, '../output_data/vel_129_129_1000_5.txt' using 1:2:($4/(20*sqrt(($4)**2 + ($5)**2))):($5/(20*sqrt(($4)**2 + ($5)**2))) every 10:10 with vectors lc -1 filled
 
 replot
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8) (preloaded format=pdflatex 2021.8.11)  10 JUL 2023 17:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8) (preloaded format=pdflatex 2021.8.11)  10 JUL 2023 18:43
 entering extended mode
 **./pres_005.tex
 (pres_005.tex
@@ -142,14 +142,14 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(0.0pt, 426.69412pt, 0.0pt)
+* h-part:(L,W,R)=(12.54688pt, 426.69412pt, 12.54688pt)
 * v-part:(T,H,B)=(0.0pt, 341.37537pt, 0.0pt)
-* \paperwidth=426.69412pt
+* \paperwidth=451.78787pt
 * \paperheight=341.37537pt
 * \textwidth=426.69412pt
 * \textheight=341.37537pt
-* \oddsidemargin=-72.26999pt
-* \evensidemargin=-72.26999pt
+* \oddsidemargin=-59.72311pt
+* \evensidemargin=-59.72311pt
 * \topmargin=-109.26999pt
 * \headheight=12.0pt
 * \headsep=25.0pt
@@ -172,10 +172,10 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 \gptboxwidth=\skip51
 \gptboxtext=\box52
 Package epstopdf Info: Source file: <pres_005-inc.eps>
-(epstopdf)                    date: 2023-07-10 17:40:54
+(epstopdf)                    date: 2023-07-10 18:41:11
 (epstopdf)                    size: 44891 bytes
 (epstopdf)             Output file: <pres_005-inc-eps-converted-to.pdf>
-(epstopdf)                    date: 2023-07-10 17:40:59
+(epstopdf)                    date: 2023-07-10 18:41:16
 (epstopdf)                    size: 18130 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=pres_005-inc-eps-con
 verted-to.pdf pres_005-inc.eps>
@@ -203,7 +203,7 @@ c-eps-converted-to.pdf>]
 Here is how much of TeX's memory you used:
  1826 strings out of 478868
  29809 string characters out of 2848809
- 329926 words of memory out of 3000000
+ 329936 words of memory out of 3000000
  19741 multiletter control sequences out of 15000+600000
  406477 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -212,11 +212,12 @@ Here is how much of TeX's memory you used:
 Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10
 .pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
 cm/cmmi10.pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/public/
-amsfonts/cm/cmr10.pfb>
+amsfonts/cm/cmr10.pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/amsfonts/cm/cmr8.pfb>
 Output written on C:\Users\Pedro\Desktop\fractional_step_method\plots\PDF\pres_
-005.pdf (1 page, 51424 bytes).
+005.pdf (1 page, 60354 bytes).
 PDF statistics:
- 26 PDF objects out of 1000 (max. 8388607)
+ 31 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

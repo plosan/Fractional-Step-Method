@@ -24,7 +24,7 @@ set xlabel ("Position $x \\ [\\mathrm{m}]$")
 
 set ytics axis
 set ytics format '%.1f'
-set ylabel ("Position$y \\ [\\mathrm{m}]$")
+set ylabel ("Position $y \\ [\\mathrm{m}]$")
 
 set cbrange [-0.002:0.01]
 set cbtics format '%.3f'

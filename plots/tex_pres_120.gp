@@ -20,16 +20,17 @@ set size ratio 1
 
 set xtics axis
 set xtics format '%.1f'
-set xlabel ("$x \\ [\\mathrm{m}]$")
+set xlabel ("Position $x \\ [\\mathrm{m}]$")
 
 set ytics axis
 set ytics format '%.1f'
-set ylabel ("$y \\ [\\mathrm{m}]$")
+set ylabel ("Position $y \\ [\\mathrm{m}]$")
 
-set cblabel ("$ p \\ [\\mathrm{Pa}]$")
 set cbrange [-0.002:0.01]
+set cbtics format '%.3f'
+set cblabel ("Pressure - $10^5$ $[\\mathrm{Pa}]$")
 
-plot 'data/p_129_129_1000_120.txt' using 1:2:($3 - 100000) with image
+plot '../output_data/p_129_129_1000_120.txt' using 1:2:($3 - 100000) with image
 
 replot
 

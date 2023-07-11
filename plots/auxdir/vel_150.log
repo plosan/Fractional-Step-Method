@@ -1,0 +1,222 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8) (preloaded format=pdflatex 2021.8.11)  10 JUL 2023 18:15
+entering extended mode
+**./vel_150.tex
+(vel_150.tex
+LaTeX2e <2021-06-01> patch level 1
+L3 programming layer <2021-07-12>
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/base\minimal.cls
+Document Class: minimal 2001/05/25 Standard LaTeX minimal class
+) (C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/base\size11.clo
+File: size11.clo 2021/02/12 v1.4n Standard LaTeX file (size option)
+)
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count182
+\calc@Bcount=\count183
+\calc@Adimen=\dimen138
+\calc@Bdimen=\dimen139
+\calc@Askip=\skip47
+\calc@Bskip=\skip48
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count184
+\calc@Cskip=\skip49
+)
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2020/12/05 v1.2c Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks16
+)
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.c
+fg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2020/10/05 v1.2a Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen140
+\Gin@req@width=\dimen141
+) (C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/graphics\color.sty
+Package: color 2020/02/24 v1.2b Standard LaTeX Color (DPC)
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package color Info: Driver file: pdftex.def on input line 149.
+) (C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks17
+\inpenc@posthook=\toks18
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/base\cp1252.def
+File: cp1252.def 2021/02/14 v1.3d Input encoding file
+))
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+))
+\Gm@cnth=\count185
+\Gm@cntv=\count186
+\c@Gm@tempcnt=\count187
+\Gm@bindingoffset=\dimen142
+\Gm@wd@mp=\dimen143
+\Gm@odd@mp=\dimen144
+\Gm@even@mp=\dimen145
+\Gm@layoutwidth=\dimen146
+\Gm@layoutheight=\dimen147
+\Gm@layouthoffset=\dimen148
+\Gm@layoutvoffset=\dimen149
+\Gm@dimlist=\toks19
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
+No configuration file gnuplot.cfg found.
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
+tex.def
+File: l3backend-pdftex.def 2021-08-04 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count188
+\l__pdf_internal_box=\box50
+)
+(C:\Users\Pedro\Desktop\fractional_step_method\plots\auxdir\vel_150.aux)
+\openout1 = `vel_150.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
+ii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count189
+\scratchdimen=\dimen150
+\scratchbox=\box51
+\nofMPsegments=\count190
+\nofMParguments=\count191
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count192
+\MPscratchDim=\dimen151
+\MPnumerator=\count193
+\makeMPintoPDFobject=\count194
+\everyMPtoPDFconversion=\toks21
+)
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
+ase.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(C:\Users\Pedro\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.c
+fg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: custom
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(0.0pt, 341.37537pt, 0.0pt)
+* v-part:(T,H,B)=(0.0pt, 341.37537pt, 0.0pt)
+* \paperwidth=341.37537pt
+* \paperheight=341.37537pt
+* \textwidth=341.37537pt
+* \textheight=341.37537pt
+* \oddsidemargin=-72.26999pt
+* \evensidemargin=-72.26999pt
+* \topmargin=-109.26999pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=4.0pt
+* \marginparsep=10.0pt
+* \columnsep=0.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+\gptboxheight=\skip50
+\gptboxwidth=\skip51
+\gptboxtext=\box52
+Package epstopdf Info: Source file: <vel_150-inc.eps>
+(epstopdf)                    date: 2023-07-10 18:14:59
+(epstopdf)                    size: 70415 bytes
+(epstopdf)             Output file: <vel_150-inc-eps-converted-to.pdf>
+(epstopdf)                    date: 2023-07-10 18:15:45
+(epstopdf)                    size: 30320 bytes
+(epstopdf)             Command: <miktex-epstopdf --outfile=vel_150-inc-eps-conv
+erted-to.pdf vel_150-inc.eps>
+(epstopdf)             \includegraphics on input line 177.
+Package epstopdf Info: Output file is already uptodate.
+
+
+pdfTeX warning: pdflatex.exe (file ./vel_150-inc-eps-converted-to.pdf): PDF inc
+lusion: found PDF version <1.7>, but at most version <1.5> allowed
+<vel_150-inc-eps-converted-to.pdf, id=1, 341.275pt x 341.275pt>
+File: vel_150-inc-eps-converted-to.pdf Graphic file (type pdf)
+<use vel_150-inc-eps-converted-to.pdf>
+Package pdftex.def Info: vel_150-inc-eps-converted-to.pdf  used on input line 1
+77.
+(pdftex.def)             Requested size: 341.39912pt x 341.39912pt.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 178.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 178.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 178.
+[1{C:/Users/Pedro/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./vel_150-inc
+-eps-converted-to.pdf>]
+(C:\Users\Pedro\Desktop\fractional_step_method\plots\auxdir\vel_150.aux) ) 
+Here is how much of TeX's memory you used:
+ 1826 strings out of 478868
+ 29763 string characters out of 2848809
+ 328924 words of memory out of 3000000
+ 19741 multiletter control sequences out of 15000+600000
+ 406477 words of font info for 37 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 57i,7n,66p,204b,245s stack positions out of 5000i,500n,10000p,200000b,80000s
+<C:/U
+sers/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.
+pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
+m/cmmi10.pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
+msfonts/cm/cmr10.pfb>
+Output written on C:\Users\Pedro\Desktop\fractional_step_method\plots\PDF\vel_1
+50.pdf (1 page, 64784 bytes).
+PDF statistics:
+ 26 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+

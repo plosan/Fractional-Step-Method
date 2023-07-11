@@ -24,9 +24,10 @@ set ytics format '%.1f'
 set ylabel ("Position $y \\ [\\mathrm{m}]$")
 
 set cblabel ("Velocity norm $[\\mathrm{m / s}]$")
+set cbtics format '%.2f'
 
 
-plot 'data/vel_129_129_1000_206.txt' with image, 'data/vel_129_129_1000_206.txt' using 1:2:($4/(20*sqrt(($4)**2 + ($5)**2))):($5/(20*sqrt(($4)**2 + ($5)**2))) every 10:10 with vectors lc -1 filled
+plot '../output_data/vel_129_129_1000_206.txt' with image, '../output_data/vel_129_129_1000_206.txt' using 1:2:($4/(20*sqrt(($4)**2 + ($5)**2))):($5/(20*sqrt(($4)**2 + ($5)**2))) every 10:10 with vectors lc -1 filled
 
 replot
 
