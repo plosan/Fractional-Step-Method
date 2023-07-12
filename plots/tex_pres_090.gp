@@ -28,13 +28,13 @@ set ylabel ("Position $y \\ [\\mathrm{m}]$")
 
 set cbrange [-0.002:0.01]
 set cbtics format '%.3f'
-set cblabel ("Pressure - $10^5$ $[\\mathrm{Pa}]$")
+set cblabel ("Pressure $[\\mathrm{Pa}]$")
 
 plot '../output_data/p_129_129_1000_90.txt' using 1:2:($3 - 100000) with image
 
 replot
 
-set terminal epslatex standalone color colortext size 12cm,12cm
+set terminal epslatex standalone color colortext size 15cm,12cm
 set rmargin 2
 set output "pres_090.tex"
 replot

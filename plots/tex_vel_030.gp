@@ -9,7 +9,7 @@ set title 'Re = 1000 (t = 30 s, uref = 0.1 m/s, 129 x 129)'
 
 
 # --- GRAPH c
-set title '\textbf{Velocity} (Re = 1000, $t$ = 30 s)'
+set title '\textbf{Velocity field} (Re = 1000, $t$ = 30 s)'
 
 set xrange [0:1]
 set yrange [0:1]
@@ -23,7 +23,7 @@ set ytics axis
 set ytics format '%.2f'
 set ylabel ("Position $y \\ [\\mathrm{m}]$")
 
-set cblabel ("Velocity norm $[\\mathrm{m / s}]$")
+set cblabel ("Velocity $[\\mathrm{m / s}]$")
 set cbtics format '%.2f'
 
 
@@ -31,7 +31,7 @@ plot '../output_data/vel_129_129_1000_30.txt' with image, '../output_data/vel_12
 
 replot
 
-set terminal epslatex standalone color colortext size 12cm,12cm
+set terminal epslatex standalone color colortext size 15cm,12cm
 set rmargin 2
 set output "vel_030.tex"
 replot

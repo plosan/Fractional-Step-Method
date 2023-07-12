@@ -49,12 +49,12 @@ It consists of a rectangular cavity filled with fluid and open at the top. On th
 
 <p align="center">
   <img src="./mdimages/sec_005.svg" width="200" />
-  <img src="./mdimages/sec_005.svg" width="200" /> 
+  <img src="./mdimages/press_005.svg" width="200" /> 
 </p>
 
 <p align="center">
   <img src="./mdimages/sec_030.svg" width="200" />
-  <img src="./mdimages/sec_030.svg" width="200" /> 
+  <img src="./mdimages/press_005.svg" width="200" /> 
 </p>
 
 <p align="center">

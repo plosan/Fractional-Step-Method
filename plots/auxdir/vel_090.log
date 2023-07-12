@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8) (preloaded format=pdflatex 2021.8.11)  10 JUL 2023 18:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8) (preloaded format=pdflatex 2021.8.11)  12 JUL 2023 09:56
 entering extended mode
 **./vel_090.tex
 (vel_090.tex
@@ -142,11 +142,11 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * layout: <same size as paper>
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
-* h-part:(L,W,R)=(0.0pt, 341.37537pt, 0.0pt)
+* h-part:(L,W,R)=(0.0pt, 426.69412pt, 0.0pt)
 * v-part:(T,H,B)=(0.0pt, 341.37537pt, 0.0pt)
-* \paperwidth=341.37537pt
+* \paperwidth=426.69412pt
 * \paperheight=341.37537pt
-* \textwidth=341.37537pt
+* \textwidth=426.69412pt
 * \textheight=341.37537pt
 * \oddsidemargin=-72.26999pt
 * \evensidemargin=-72.26999pt
@@ -172,11 +172,11 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 \gptboxwidth=\skip51
 \gptboxtext=\box52
 Package epstopdf Info: Source file: <vel_090-inc.eps>
-(epstopdf)                    date: 2023-07-10 18:14:56
-(epstopdf)                    size: 69897 bytes
+(epstopdf)                    date: 2023-07-12 09:55:44
+(epstopdf)                    size: 69985 bytes
 (epstopdf)             Output file: <vel_090-inc-eps-converted-to.pdf>
-(epstopdf)                    date: 2023-07-10 18:15:30
-(epstopdf)                    size: 29392 bytes
+(epstopdf)                    date: 2023-07-12 09:56:24
+(epstopdf)                    size: 29819 bytes
 (epstopdf)             Command: <miktex-epstopdf --outfile=vel_090-inc-eps-conv
 erted-to.pdf vel_090-inc.eps>
 (epstopdf)             \includegraphics on input line 177.
@@ -185,12 +185,12 @@ Package epstopdf Info: Output file is already uptodate.
 
 pdfTeX warning: pdflatex.exe (file ./vel_090-inc-eps-converted-to.pdf): PDF inc
 lusion: found PDF version <1.7>, but at most version <1.5> allowed
-<vel_090-inc-eps-converted-to.pdf, id=1, 341.275pt x 341.275pt>
+<vel_090-inc-eps-converted-to.pdf, id=1, 426.59375pt x 341.275pt>
 File: vel_090-inc-eps-converted-to.pdf Graphic file (type pdf)
 <use vel_090-inc-eps-converted-to.pdf>
 Package pdftex.def Info: vel_090-inc-eps-converted-to.pdf  used on input line 1
 77.
-(pdftex.def)             Requested size: 341.39912pt x 341.39912pt.
+(pdftex.def)             Requested size: 426.72287pt x 341.39912pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <10.95> on input line 178.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -203,7 +203,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 Here is how much of TeX's memory you used:
  1826 strings out of 478868
  29763 string characters out of 2848809
- 328924 words of memory out of 3000000
+ 329924 words of memory out of 3000000
  19741 multiletter control sequences out of 15000+600000
  406477 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -214,7 +214,7 @@ pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
 m/cmmi10.pfb><C:/Users/Pedro/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
 msfonts/cm/cmr10.pfb>
 Output written on C:\Users\Pedro\Desktop\fractional_step_method\plots\PDF\vel_0
-90.pdf (1 page, 63810 bytes).
+90.pdf (1 page, 64920 bytes).
 PDF statistics:
  26 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
