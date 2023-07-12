@@ -26,14 +26,11 @@ along with some boundary conditions, one wants to show that there exists a uniqu
   <img src="./md_images/ivp.svg">.
 </p>
 
-A problem of this kind 
-In general, this problem is quite hard. However, for engineering purporses, it suffices to obtain an approximate solution via a numerical method.
-
-
+A problem of this kind, in general, cannot be solved analitically. For engineering purposes however, approximate solutions suffice.
 
 ## Fractional Step Method
 
-The Fractional Step Method is a computational procedure to solve the incompressible Navier-Stokes equations. Its simplicity and the fact that in general it runs fast, makes it preferrable over other similar methods. 
+The Fractional Step Method is a computational procedure to solve the incompressible Navier-Stokes equations. Its simplicity and the fact that in general it runs fast, makes it preferrable over other similar methods. You can find more information [here](https://github.com/plosan/fractional_step_method/blob/master/notes/1a-FSM_slides_3b.pdf).
 
 
 ## Application: Driven Cavity
@@ -64,61 +61,53 @@ thus the Reynolds number is <img src="./md_images/reynolds.svg">. As for numeric
   <li>Gauss-Seidel method is used to solve the linear system</li>
 </ul> 
 
-Results are shown below for times $
-
-The simulation runs until <img src="./md_images/t_206.svg">
-
-The plots below show the results: left column - velocity field, right column - pressure
-
-
-
-
+Velocity field (left column) and pressure (right column) results are shown below for times between <img src="./md_images/t_005.svg"> and <img src="./md_images/t_206.svg">, when a steady state is achieved.
 
 <p align="center">
-  <img src="./md_images/plots/vel_005.svg" width="325" />
-  <img src="./md_images/plots/pres_005.svg" width="325" />
+  <img src="./md_images/plots/vel_005.svg" width="400" />
+  <img src="./md_images/plots/pres_005.svg" width="400" />
 </P>
 
 
 <p align="center">
-  <img src="./md_images/plots/vel_030.svg" width="325" />
-  <img src="./md_images/plots/pres_030.svg" width="325" />
+  <img src="./md_images/plots/vel_030.svg" width="400" />
+  <img src="./md_images/plots/pres_030.svg" width="400" />
 </P>
 
 
 <p align="center">
-  <img src="./md_images/plots/vel_060.svg" width="325" />
-  <img src="./md_images/plots/pres_060.svg" width="325" />
+  <img src="./md_images/plots/vel_060.svg" width="400" />
+  <img src="./md_images/plots/pres_060.svg" width="400" />
 </P>
 
 
 <p align="center">
-  <img src="./md_images/plots/vel_090.svg" width="325" />
-  <img src="./md_images/plots/pres_090.svg" width="325" />
+  <img src="./md_images/plots/vel_090.svg" width="400" />
+  <img src="./md_images/plots/pres_090.svg" width="400" />
 </P>
 
 
 <p align="center">
-  <img src="./md_images/plots/vel_120.svg" width="325" />
-  <img src="./md_images/plots/pres_120.svg" width="325" />
+  <img src="./md_images/plots/vel_120.svg" width="400" />
+  <img src="./md_images/plots/pres_120.svg" width="400" />
 </P>
 
 
 <p align="center">
-  <img src="./md_images/plots/vel_150.svg" width="325" />
-  <img src="./md_images/plots/pres_150.svg" width="325" />
+  <img src="./md_images/plots/vel_150.svg" width="400" />
+  <img src="./md_images/plots/pres_150.svg" width="400" />
 </P>
 
 
 <p align="center">
-  <img src="./md_images/plots/vel_180.svg" width="325" />
-  <img src="./md_images/plots/pres_180.svg" width="325" />
+  <img src="./md_images/plots/vel_180.svg" width="400" />
+  <img src="./md_images/plots/pres_180.svg" width="400" />
 </P>
 
 
 <p align="center">
-  <img src="./md_images/plots/vel_206.svg" width="325" />
-  <img src="./md_images/plots/pres_206.svg" width="325" />
+  <img src="./md_images/plots/vel_206.svg" width="400" />
+  <img src="./md_images/plots/pres_206.svg" width="400" />
 </P>
 
 
